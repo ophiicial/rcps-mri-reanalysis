@@ -60,7 +60,7 @@ def create_run_dir(outputs_root: Path, run_name: str, now: _dt.datetime | None =
 
 
 def write_run_metadata(run_dir: Path, *, argv: list[str], config: dict, seeds: dict | None,
-                       inputs: dict, extra: dict | None = None) -> Path:
+                       inputs: dict, provenance: dict | None = None, extra: dict | None = None) -> Path:
     g = git_state()
     record = {
         "timestamp_utc": _dt.datetime.now(_dt.timezone.utc).isoformat(),
@@ -72,6 +72,8 @@ def write_run_metadata(run_dir: Path, *, argv: list[str], config: dict, seeds: d
         "environment": package_versions(),
         "inputs": inputs,
         "output_dir": str(run_dir),
+        # repository/dataset/verifier/manifest/config-hash block from rcps.provenance.run_provenance
+        "provenance": provenance,
     }
     if extra:
         record.update(extra)

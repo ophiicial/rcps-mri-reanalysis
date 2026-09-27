@@ -16,7 +16,9 @@ import pandas as pd
 
 from .. import fsgeom, labels
 from ..config import REPO_ROOT, load_paths, load_yaml
+from ..provenance import run_provenance
 from ..runrecord import create_run_dir, write_run_metadata
+from .verify_canonical import CANONICAL_CONFIG, load_canonical
 from . import dataset as ds
 from . import spatial
 
@@ -63,7 +65,11 @@ def main(argv=None):
     cfg = load_yaml(REPO_ROOT / "configs" / "qc.yaml")
     run_dir = create_run_dir(P.outputs_root, "curator-reg-investigation")
     subs = sorted(set(ds.read_participants(P.bids_root / "participants.tsv")) | {"sub-SP06"})
-    write_run_metadata(run_dir, argv=sys.argv, config={"qc": cfg}, seeds={}, inputs={"bids_root": str(P.bids_root)})
+    prov = run_provenance(P.bids_root, load_canonical(),
+                          config_files={"qc": REPO_ROOT / "configs" / "qc.yaml", "canonical_dataset": CANONICAL_CONFIG},
+                          resolved_config={"qc": cfg}, run_verifier=True)
+    write_run_metadata(run_dir, argv=sys.argv, config={"qc": cfg}, seeds={}, inputs={"bids_root": str(P.bids_root)},
+                       provenance=prov)
     with ProcessPoolExecutor(args.workers) as ex:
         rows = list(ex.map(one_scan, [(s, c, P, cfg) for s in subs for c in CONDS]))
     pd.DataFrame(rows).to_csv(run_dir / "curator_transform_comparison.tsv", sep="\t", index=False)

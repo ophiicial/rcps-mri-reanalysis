@@ -1,0 +1,9 @@
+# Canonical dataset identity (docs/qc_decisions.md §1, §6). Machine-independent; the local location is bids_root
+# in configs/paths.local.yaml.
+accession: ds004733
+release_tag: "1.0.1"
+release_commit: badd0108199e5b9f85451d317e472e5ee6105464
+doi: "10.18112/openneuro.ds004733.v1.0.1"
+expected_manifest: configs/ds004733_v1.0.1_expected_sha256.tsv   # relative to the repository root
+expected_participants: [sub-SP02, sub-SP03, sub-SP05, sub-SP06, sub-SP09, sub-SP10, sub-SP11, sub-SP12, sub-SP14,
+                        sub-SP15, sub-SP16, sub-SP18, sub-SP20, sub-SP21, sub-SP22, sub-SP23, sub-SP26, sub-SP28]

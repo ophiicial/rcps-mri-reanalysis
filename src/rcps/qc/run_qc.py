@@ -15,7 +15,9 @@ from pathlib import Path
 import pandas as pd
 
 from ..config import REPO_ROOT, load_paths, load_yaml
+from ..provenance import run_provenance
 from ..runrecord import create_run_dir, write_run_metadata
+from .verify_canonical import CANONICAL_CONFIG, load_canonical
 from . import dataset as ds
 from . import overlays, spatial
 
@@ -87,10 +89,17 @@ def main(argv=None):
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s",
                         handlers=[logging.FileHandler(run_dir / "logs" / "qc_log.txt"), logging.StreamHandler()])
     log.info("run dir %s", run_dir)
-    write_run_metadata(run_dir, argv=sys.argv, config={"qc": cfg, "paths_file": args.paths}, seeds={},
+    canonical = load_canonical()
+    prov = run_provenance(paths.bids_root, canonical,
+                          config_files={"qc": Path(args.qc_config), "canonical_dataset": CANONICAL_CONFIG},
+                          resolved_config={"qc": cfg, "skip_historical": args.skip_historical, "workers": args.workers},
+                          run_verifier=True)
+    log.info("provenance: dataset tag=%s commit=%s clean=%s verifier PASS=%s", prov["dataset"]["tag"],
+             prov["dataset"]["commit"], prov["dataset"]["clean"], prov["canonical_verifier"].get("PASS"))
+    write_run_metadata(run_dir, argv=sys.argv, config={"qc": cfg, "paths_file": Path(args.paths).name}, seeds={},
                        inputs={"bids_root": str(paths.bids_root), "comparison_roots": [str(p) for p in paths.comparison_roots],
                                "historical_finaltry": str(paths.historical_finaltry)},
-                       extra={"status": "started"})
+                       provenance=prov, extra={"status": "started"})
 
     # ---------------- Phase A
     dd = run_dir / "dataset"
@@ -190,12 +199,12 @@ def main(argv=None):
         _tsv([r for res in hres for r in res["historical"]], run_dir / "alignment" / "historical_bbregister_comparison.tsv")
         log.info("historical comparison complete")
 
-    write_run_metadata(run_dir, argv=sys.argv, config={"qc": cfg, "paths_file": args.paths}, seeds={},
+    write_run_metadata(run_dir, argv=sys.argv, config={"qc": cfg, "paths_file": Path(args.paths).name}, seeds={},
                        inputs={"bids_root": str(paths.bids_root), "source_manifest_sha256": manifest_hash,
                                "n_manifest_files": len(manifest),
                                "comparison_roots": [str(p) for p in paths.comparison_roots],
                                "historical_finaltry": str(paths.historical_finaltry)},
-                       extra={"status": "completed", "subjects_processed": subjects})
+                       provenance=prov, extra={"status": "completed", "subjects_processed": subjects})
     log.info("done")
     return run_dir
 

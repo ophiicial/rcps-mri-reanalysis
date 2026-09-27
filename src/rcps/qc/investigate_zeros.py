@@ -16,7 +16,9 @@ from scipy import ndimage
 
 from .. import labels
 from ..config import load_paths
+from ..provenance import run_provenance
 from ..runrecord import create_run_dir, write_run_metadata
+from .verify_canonical import CANONICAL_CONFIG, load_canonical
 from . import dataset as ds
 from . import spatial
 
@@ -99,8 +101,11 @@ def main(argv=None):
     run_dir = create_run_dir(P.outputs_root, "zero-investigation")
     subs = ds.read_participants(P.bids_root / "participants.tsv")
     subs = sorted(set(subs) | {"sub-SP06"})
-    write_run_metadata(run_dir, argv=sys.argv, config={"conditions": CONDS, "dist_bins_mm": DIST_BINS_MM},
-                       seeds={}, inputs={"bids_root": str(P.bids_root), "subjects": subs})
+    cfg = {"conditions": CONDS, "dist_bins_mm": DIST_BINS_MM}
+    prov = run_provenance(P.bids_root, load_canonical(), config_files={"canonical_dataset": CANONICAL_CONFIG},
+                          resolved_config=cfg, run_verifier=True)
+    write_run_metadata(run_dir, argv=sys.argv, config=cfg, seeds={},
+                       inputs={"bids_root": str(P.bids_root), "subjects": subs}, provenance=prov)
     with ProcessPoolExecutor(args.workers) as ex:
         scans = list(ex.map(one_scan, [(s, c, P) for s in subs for c in CONDS]))
         cross = list(ex.map(cross_condition, [(s, P) for s in subs]))
