@@ -1,20 +1,25 @@
 # QC Decisions: Canonical Dataset and PET–MRI Spatial Handling
 
-**Status: DECISIONS FINAL (2026-09-27); execution checks pending.**
+**Status: FINAL for the primary analysis (2026-09-27).**
 
-- The decisions below are final.
-- The QC runs that support them were executed from an **uncommitted** working tree
-  (`usable_for_reported_results: false`) against the local copy that §1 verified.
-- **Before any analysis run**, the clean v1.0.1 copy must be created and verified (§6), and `rcps.qc.run_qc` must be
-  re-run from a committed tree against it. That re-run is expected to reproduce these results byte-for-byte on the
-  imaging, because the imaging bytes are identical. Any deviation reopens the affected decision.
-- No predictive modelling has been run, and no ROI-mean target has been computed.
+| Item | Status |
+|---|---|
+| Canonical dataset creation (DataLad clone of ds004733, tag `1.0.1`) | **COMPLETE** |
+| Canonical verification (`rcps.qc.verify_canonical --require-git`) | **PASS**: 444/444 files, roster 18/18, HEAD = release commit, clean tree |
+| Committed-tree QC rerun (repo `b4e9608`, clean) against the canonical copy | **PASS**: reproduces the pre-commit QC exactly (§7) |
+| Spatial handling | **FINAL** for the primary analysis (§3) |
+| Cohort | **FINAL**: v1.0.1 roster, N = 18; S1 = v1.0.0 roster, N = 17, descriptive (§2) |
+| Zero handling | **FINAL**: primary includes exact zeros; S7 excludes them (§3b) |
+
+No predictive modelling has been run, and no ROI-mean target has been computed.
 
 **Runs** (git-ignored; regenerate from the listed modules):
 
 | Run | Content | Module |
 |---|---|---|
-| `outputs/20260927-030610_qc_nocommit/` | Dataset verification, geometry, labels, alignment, historical `bbregister`, overlays | `rcps.qc.run_qc` |
+| **`outputs/20260927-131732_qc_b4e9608/`** | **Reference QC run**: committed tree `b4e9608` (clean, `usable_for_reported_results: true`) against the canonical v1.0.1 copy. Supplementary record: `logs/supplementary_provenance.json` | `rcps.qc.run_qc` |
+| `outputs/20260927-131655_verify-canonical_b4e9608/` | Canonical verification: 444/444 PASS | `rcps.qc.verify_canonical --require-git` |
+| `outputs/20260927-030610_qc_nocommit/` | Pre-commit QC (uncommitted tree, pre-canonical local copy); superseded by the reference run, reproduced exactly | `rcps.qc.run_qc` |
 | `outputs/20260927-112615_zero-investigation_nocommit/` | Zero-valued rCPS voxels (§3b) | `rcps.qc.investigate_zeros` |
 | `outputs/20260927-112818_curator-reg-investigation_nocommit/` | Curators' PETPrep PET→T1 transforms under the same criteria (§3) | `rcps.qc.investigate_curator_reg` |
 | `outputs/20260927-025943_qc_nocommit/` | **Failed run** (table-writer crash; `logs/RUN_FAILED.txt`). Do not use | — |
@@ -274,20 +279,38 @@ limitation above and by S7.
 
 | ID | Item | Status |
 |---|---|---|
-| D1 | Clean, verified v1.0.1 copy at `~/Documents/Research/PET-MRI/openneuro/ds004733/` | **Execution pending** (§6; download not yet approved) |
+| D1 | Clean, verified v1.0.1 copy at `~/Documents/Research/PET-MRI/openneuro/ds004733/` | **COMPLETE**, verifier PASS (§6) |
 | D2 | Primary cohort | Resolved: v1.0.1, N = 18. S1 = v1.0.0 roster, N = 17, descriptive |
 | D3 | Zero-voxel ROI-mean rule | Resolved: primary includes zeros; S7 excludes them (§3b) |
 | D4 | R6 threshold | Resolved: descriptive only (§3c) |
 | D5 | R10 / R11 tolerances | Resolved: descriptive only (§3c) |
 | D6 | R9 visual rating | Resolved: 54/54 PASS (agent-assisted). Human spot-check recommended, not required |
-| D7 | QC re-run from a committed tree on the clean copy | **Execution pending** (after D1 and the first commit) |
+| D7 | QC re-run from a committed tree on the clean copy | **PASS**: exact reproduction (§7) |
 
-No open QC *decisions* remain. D1 and D7 are execution steps.
+No open QC items remain.
 
-## 6. Canonical dataset: creation and verification instructions (not yet executed)
+## 6. Canonical dataset: creation and verification (executed 2026-09-27)
 
-**Do not run until the download is approved.** Nothing here modifies the existing Desktop or Research copies; they
-remain as archaeology.
+**Executed 2026-09-27.** The results are below; the procedure is kept for re-creation. The existing Desktop and
+Research copies were not modified and remain as archaeology (comparison-only in `configs/paths.local.yaml`).
+
+**Result:**
+
+- **Tools:** DataLad 1.1.4 and git-annex 10.20240927 were already installed; nothing was installed.
+- **Clone:** `https://github.com/OpenNeuroDatasets/ds004733.git` checked out at tag `1.0.1`, HEAD
+  `badd0108199e5b9f85451d317e472e5ee6105464`, with a clean `git status`.
+- **Retrieved content:** only the 444 manifest paths. 342 annexed files were fetched and 102 were git-tracked;
+  1.88 GB of the 244 GB dataset. Another 36 files (`mri/orig/001.mgz`, `scripts/lastcall.build-stamp.txt`) became
+  present automatically because they share annex keys with required files. There is no unused annex content.
+- **`git annex fsck`** on the required files: 342/342 ok (full re-hash).
+- **Metadata:** `dataset_description.json`, `participants.tsv`, `README` and `CHANGES` equal the published 1.0.1 git
+  blobs. The README has no stray line, and `participants.tsv` lists the 18 expected IDs.
+- **Verifier:** `verify_canonical --require-git` PASS, 444/444.
+- **Write protection:** git-annex objects are read-only by default. All 516 git-tracked regular working-tree files
+  were set `a-w`; `.git/` and directories were left untouched so git-annex keeps working. `git status` stayed
+  clean, and a test write was refused.
+- **Operational rule, in addition:** analysis code never writes into `bids_root`; all outputs go to this
+  repository's `outputs/`; and `verify_canonical --require-git` is run before scientific runs.
 
 **Target:** `~/Documents/Research/PET-MRI/openneuro/ds004733/`, a DataLad clone of the official OpenNeuro mirror,
 checked out at release tag **`1.0.1`** (commit `badd0108199e5b9f85451d317e472e5ee6105464`).
@@ -343,3 +366,39 @@ README); the roster did not match; and the copy is not a git checkout.
 - Analysis code will record the dataset HEAD SHA and the expected-hash table's hash in every run record.
 - `verify_canonical --require-git` is run before each reported analysis.
 - Any metadata correction needed later goes into this repository as a documented override, never into the dataset.
+
+## 7. Reproducibility of the committed-tree QC rerun
+
+Reference run `outputs/20260927-131732_qc_b4e9608/` compared with the pre-commit run
+`outputs/20260927-030610_qc_nocommit/`:
+
+**Identical cell for cell (all 9 imaging-derived tables):** `image_geometry`, `affine_checks`, `roi_voxel_counts`,
+`label_integrity`, `left_right_check`, `zeros_by_tissue`, `quantitative_metrics`, `perturbation_profiles`,
+`historical_bbregister_comparison`. This covers:
+
+- 54/54 automated critical PASS;
+- lossless 68-ROI NN label mapping;
+- header alignment near the local optimum;
+- historical `bbregister` worse on all prespecified metrics in 54/54;
+- identical zero-voxel fractions;
+- no exclusions.
+
+**Byte-identical outputs:** all 126 standard overlays, all 54 historical-comparison overlays, and all 18 NN label
+images. The 54/54 visual PASS rating (§4) therefore applies unchanged to the reference run's overlays.
+
+**Expected dataset-table differences (by design):**
+
+- The local copy is now v1.0.1, so `dataset_description.json`, `participants.tsv` and `CHANGES` differ from 1.0.0
+  (and equal 1.0.1).
+- The README now equals the published text.
+- The local roster is 18.
+- The new `source_manifest.tsv` matches `configs/ds004733_v1.0.1_expected_sha256.tsv` in 444/444 files.
+- Its own file hash differs from the pre-commit manifest because the manifest also records modification times.
+
+**Known cosmetic issue in committed code (no effect on results):**
+
+- `subject_eligibility.tsv` still names a column `preliminary_eligible_primary_as_planned_N17`; it correctly reads
+  True for all 18.
+- `run_qc`'s `run_metadata.json` does not natively record the dataset tag/commit, the verifier result or the
+  config hashes. Those are in `logs/supplementary_provenance.json` for this run.
+- Both should be fixed in a follow-up commit.
