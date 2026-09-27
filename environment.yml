@@ -1,0 +1,13 @@
+name: rcps-mri-reanalysis
+channels:
+  - conda-forge
+dependencies:
+  - python=3.12
+  - numpy
+  - pandas
+  - scipy
+  - scikit-learn
+  - matplotlib
+  - pyyaml
+  - pytest
+  - nibabel   # NIfTI/MGZ I/O for imaging QC and ROI extraction

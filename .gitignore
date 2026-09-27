@@ -1,0 +1,23 @@
+# OS / editor
+.DS_Store
+
+# Python
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# Secrets / local environment
+.env
+.env.*
+
+# Machine-specific local config (e.g. dataset paths); commit only *.example.yaml templates
+configs/*.local.yaml
+
+# Data and generated outputs (never committed)
+data/
+outputs/*
+!outputs/.gitkeep
+
+# Manuscript drafts and private correspondence
+*.docx
+comments.md

@@ -1,0 +1,44 @@
+# Prespecified parameters for canonical-dataset and imaging QC (docs/qc_plan.md).
+# Fixed BEFORE QC is run; independent of any predictive result (none exist at QC time).
+
+openneuro:
+  accession: ds004733
+  github_mirror: OpenNeuroDatasets/ds004733   # official OpenNeuro GitHub mirror (git-annex keys = SHA256E)
+  releases: ["1.0.0", "1.0.1"]
+
+conditions: [Awake, SleepDeprived, Asleep]
+
+# Cortical ROI set: Desikan-Killiany aparc labels in aparc+aseg (lh 1000+idx, rh 2000+idx);
+# unknown (x000) and corpuscallosum (x004) excluded by definition (docs/analysis_plan.md §4).
+dk_exclude_codes: [1000, 1004, 2000, 2004]
+
+# FreeSurfer aseg codes used to build a coarse tissue-class image for the similarity metric.
+tissue_classes:
+  cerebral_wm: [2, 41, 7, 46, 77, 251, 252, 253, 254, 255]
+  subcortical_gm_cerebellum: [8, 47, 10, 11, 12, 13, 17, 18, 26, 28, 49, 50, 51, 52, 53, 54, 58, 60, 16]
+  csf: [4, 5, 14, 15, 24, 43, 44, 72, 31, 63]
+  # cortical GM = aparc labels 1000-1035, 2000-2035
+
+similarity:
+  # Moving image is always anatomy; rCPS values are never interpolated.
+  # rCPS maps are masked (zero outside a brain-like support), so a whole-brain metric is dominated by a
+  # possibly anatomy-derived edge (circular). PRIMARY metric therefore uses the brain INTERIOR only.
+  primary_metric: nmi_t1_interior
+  secondary_metrics: [nmi_t1_full, nmi_tissue_interior, nmi_tissue_full]
+  bins: 64                  # histogram bins for NMI (continuous images); tissue-class image uses its class count
+  intensity_clip_pct: [0.5, 99.5]   # rCPS / T1w intensity range for binning, computed inside evaluation mask
+  mask_dilation_mm: 4       # 'full' mask   = FreeSurfer brainmask>0 dilated by this many voxels (1 mm)
+  mask_erosion_mm: 3        # 'interior' mask = FreeSurfer brainmask>0 eroded by this many voxels
+  optimize_metrics: [nmi_t1_interior, nmi_t1_full]   # local 6-DOF search from the header alignment
+  optimize_bounds: {translation_mm: 6, rotation_deg: 6}
+  voxel_stride: 2           # evaluate every 2nd voxel along each axis (speed); fixed for all comparisons
+  profile_translations_mm: [-3, -2, -1, 0, 1, 2, 3]
+  profile_rotations_deg: [-3, -2, -1, 0, 1, 2, 3]
+  rotation_centre: brainmask_centroid   # rotations about the brain-mask centroid (world coords)
+
+overlays:
+  axial_fractions: [0.30, 0.50, 0.70]      # fractions of the cortical-label bounding box extent
+  coronal_fractions: [0.25, 0.50, 0.75]
+  sagittal_fractions: [0.25, 0.50, 0.75]
+  small_rois: [frontalpole, temporalpole, entorhinal, transversetemporal, pericalcarine, bankssts]
+  small_roi_box_mm: 40

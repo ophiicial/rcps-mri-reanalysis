@@ -1,0 +1,448 @@
+# Expected SHA-256 of the files used from OpenNeuro ds004733 release 1.0.1 (tag commit badd0108199e5b9f85451d317e472e5ee6105464).
+# Derived 2026-09-27 from a local copy verified against the published release (annex SHA256E keys / git blobs);
+# the four release-metadata files use the published 1.0.1 text. Paths are relative to the dataset root.
+relpath	bytes	sha256	verified_against
+dataset_description.json	2998	757079a6331a229489cd0cc6e0dfbbf5eb975c643d744b10af1786054afd53c2	published 1.0.1 git text
+participants.tsv	439	c00cfb3c7de2c5eacdb3557683dfaa4ea67a2482a7310a4214db4a3b8585f60b	published 1.0.1 git text
+participants.json	443	25a4564316fb3927b63f6eccd20a7f1b697d50fb7155413eb923713f5cb1f31b	published git blob (1.0.0 = 1.0.1)
+README	4954	dbbdf67a698e1915029638a45d55ea80a338366e8fadee6cd2375ee7b577e3f7	published 1.0.1 git text
+CHANGES	118	bc42e812fc9fc620593935f09b2f141d9d8d02cdb58caf4fb30beb63b3976ab3	published 1.0.1 git text
+sessions.json	1600	9a8485a2fe0aecebb77c6f8ed136e45c142ccb668de45af9ed5b757de2266ad1	published git blob (1.0.0 = 1.0.1)
+recording-manual_blood.json	1287	39d622f438386d78d0671c4b83a1c488c02c0605c7a0568148093db23d6e7175	published git blob (1.0.0 = 1.0.1)
+.bidsignore	55	a77d80adf04d8a1ec393ce4067ffd29f82a3a2e8c6c2a9fdbef95d5e2dfa8d61	published git blob (1.0.0 = 1.0.1)
+.datalad/config	63	93fdc46eebec2d382b8b760167c7dfe6708267a6d4e02511d3c496a1efaf8018	published git blob (1.0.0 = 1.0.1)
+.gitattributes	385	8a59773996a80c81a8399a9e1f10ae8b1b33b43e66f5c90aad928fc97479564f	published git blob (1.0.0 = 1.0.1)
+sub-SP02/sub-SP02_sessions.tsv	303	191f85b8abdda36cefef1f12b1eab8376a5ae4bb98ac49235f990cb4a4891769	published git blob (1.0.0 = 1.0.1)
+sub-SP03/sub-SP03_sessions.tsv	300	779b867c44c77fe32ceb9540f359b38677db5a3e785d8bf5700cbe1b2a2db6bb	published git blob (1.0.0 = 1.0.1)
+sub-SP05/sub-SP05_sessions.tsv	300	29558908e3b702c4354031cbc708cda1215cbf4380c9befb5492a9ece6b72fc3	published git blob (1.0.0 = 1.0.1)
+sub-SP09/sub-SP09_sessions.tsv	298	7656295ce1da15ad06b4f645b7aa59211da818f02c85c191d2b87239cb89eb99	published git blob (1.0.0 = 1.0.1)
+sub-SP10/sub-SP10_sessions.tsv	295	b52ee8183cece62502ba49af45ac926dbff4526f7d76707d26599a06fea377f7	published git blob (1.0.0 = 1.0.1)
+sub-SP11/sub-SP11_sessions.tsv	295	c4c02c803ecfd92e1020d7d62fa6a806644e997527e46cd9f9dd104c93bda818	published git blob (1.0.0 = 1.0.1)
+sub-SP12/sub-SP12_sessions.tsv	300	2ebecb36c6f90f76284c78ebcd5f9d1441cb94b69df88b1d6e06bf701744dad0	published git blob (1.0.0 = 1.0.1)
+sub-SP14/sub-SP14_sessions.tsv	302	80257a615880c511ff2ab6e79c51dc43e68680c8be16a26e6af3c6e1bbd09de7	published git blob (1.0.0 = 1.0.1)
+sub-SP15/sub-SP15_sessions.tsv	306	f76aed3ef1ac3df8ed5ecbb77409ebb37512def9e69b0841e0166944bc1f3841	published git blob (1.0.0 = 1.0.1)
+sub-SP16/sub-SP16_sessions.tsv	302	6a1f79231548babf28f866b31608525e40a9392ad4af849dd23bb0450bd66979	published git blob (1.0.0 = 1.0.1)
+sub-SP18/sub-SP18_sessions.tsv	308	365bcc90d35e47707d579456b5d8e12fb3055586fd7ef45bfe0778c574181194	published git blob (1.0.0 = 1.0.1)
+sub-SP20/sub-SP20_sessions.tsv	309	1cd256297ef6afd0f21d99fc20190983ac537483a48ac90e4159bf31a91a9ecb	published git blob (1.0.0 = 1.0.1)
+sub-SP21/sub-SP21_sessions.tsv	308	f15d7201749f25d2427f30f8805e28fc8d4a188f38b4910dc46c2650fd03ad2b	published git blob (1.0.0 = 1.0.1)
+sub-SP22/sub-SP22_sessions.tsv	308	bd715ae1d5db1e282dc79ff302af9b85dcc6c435ae5106dde010769dbce1eb8c	published git blob (1.0.0 = 1.0.1)
+sub-SP23/sub-SP23_sessions.tsv	307	5f4b237243d5493acc48eee8dec058faaede4141bbcd0f5100234377daf411fa	published git blob (1.0.0 = 1.0.1)
+sub-SP26/sub-SP26_sessions.tsv	312	ad9b1e836728afaf0b4ac76e66af8807444dcbc0c70813dae1636f7f3bae7b78	published git blob (1.0.0 = 1.0.1)
+sub-SP28/sub-SP28_sessions.tsv	301	96a4cceac540015ef9cd75f405036862651e8ae3b3261ca4320839e1662af850	published git blob (1.0.0 = 1.0.1)
+sub-SP02/ses-MRI/anat/sub-SP02_ses-MRI_T1w.nii.gz	29483600	364e6ffef2f116d8808ca7a15745cd0ef6893088b0aaa75d66e19e3f06727b9d	published annex key
+sub-SP03/ses-MRI/anat/sub-SP03_ses-MRI_T1w.nii.gz	28376695	c7e44788dc3a5cee8f445ff39cd9052416ff94a2daf73786c9615dc81f7704eb	published annex key
+sub-SP05/ses-MRI/anat/sub-SP05_ses-MRI_T1w.nii.gz	25850984	05cb7cacc3efb493b7be4655603b7ffadddfec9b7f421889e5fd6703ceb9da20	published annex key
+sub-SP06/ses-MRI/anat/sub-SP06_ses-MRI_T1w.nii.gz	28200078	6f41351ab1f6ef4d6d0a876bd58f368f88320048f07810bc68bde8aa4919a004	published annex key
+sub-SP09/ses-MRI/anat/sub-SP09_ses-MRI_T1w.nii.gz	18888951	a05fd4552a7fb339e5514305efbdd90e30a937fc699c8ef2c0cdd2a5c423fed7	published annex key
+sub-SP10/ses-MRI/anat/sub-SP10_ses-MRI_T1w.nii.gz	27972702	53d107f24caedbdbe1d10d0ce68fa707da26bd01fe5df569718d76ee273a7077	published annex key
+sub-SP11/ses-MRI/anat/sub-SP11_ses-MRI_T1w.nii.gz	23842674	5bfe86898653a6be81e13115b07238b706958d39a89e5c68768530d330b74057	published annex key
+sub-SP12/ses-MRI/anat/sub-SP12_ses-MRI_T1w.nii.gz	23087072	dfe6eb7625f179cf6cd47ecf0cb86d5a86530c9b70b874066681e2ea423bc4c5	published annex key
+sub-SP14/ses-MRI/anat/sub-SP14_ses-MRI_T1w.nii.gz	20770188	f7829be8a3d0d31d2d91e150c97336375281f1068f1d08e72dec99dd5b268e91	published annex key
+sub-SP15/ses-MRI/anat/sub-SP15_ses-MRI_T1w.nii.gz	31723320	33994224e8c5f29f2133e7f7045f82f80700f1b6310c47bcb280e5a1897ede1d	published annex key
+sub-SP16/ses-MRI/anat/sub-SP16_ses-MRI_T1w.nii.gz	20694029	40f113791bf65ea50bba11ba50cb55f813c8ac7da55a161646a92616beca2e12	published annex key
+sub-SP18/ses-MRI/anat/sub-SP18_ses-MRI_T1w.nii.gz	19268455	7f3e23e5df1ed4862f2d51c6b4fd400fcebb7721e1f1df4413749c4f4baa4667	published annex key
+sub-SP20/ses-MRI/anat/sub-SP20_ses-MRI_T1w.nii.gz	26281083	b4a4979eb67ce01cb8816ac8d6dd89141e5690477dc3a599587fded53cdfe117	published annex key
+sub-SP21/ses-MRI/anat/sub-SP21_ses-MRI_T1w.nii.gz	20810293	c9b07588ba9dc1c80706cb1a9f86d7ce85d7cd1c0ce9aec7f54474c43742a473	published annex key
+sub-SP22/ses-MRI/anat/sub-SP22_ses-MRI_T1w.nii.gz	19232287	0dce2b6cefc1fdb9bb3c2dc44c59306aa00e659bbf96a50e8008127557466da1	published annex key
+sub-SP23/ses-MRI/anat/sub-SP23_ses-MRI_T1w.nii.gz	18765890	b412750ab5c4e56a2abca430e50c9cacd9a65121316acbb47d1fc3cadce60ec0	published annex key
+sub-SP26/ses-MRI/anat/sub-SP26_ses-MRI_T1w.nii.gz	21802257	40a90b79e50f6831c176d1bf8d45f54a80ff568531c93cbe4872e52c9c92471a	published annex key
+sub-SP28/ses-MRI/anat/sub-SP28_ses-MRI_T1w.nii.gz	20695202	28df4f949cc3bda8a148940ae27329e4fbd011b316a493b7a458037072e6e009	published annex key
+sub-SP02/ses-MRI/anat/sub-SP02_ses-MRI_T1w.json	667	7a22971644550a559cbab91da1af527c59d164fb62430a4844578b3ec06c27c4	published git blob (1.0.0 = 1.0.1)
+sub-SP03/ses-MRI/anat/sub-SP03_ses-MRI_T1w.json	858	5156e25670237dc97a5d476350401b47a3e5997dcaae89b92150c74fb5ef9472	published git blob (1.0.0 = 1.0.1)
+sub-SP05/ses-MRI/anat/sub-SP05_ses-MRI_T1w.json	858	280da2f95ed23c268143d55795ee87c40ca0f411e44c511a9876335a126eb75b	published git blob (1.0.0 = 1.0.1)
+sub-SP06/ses-MRI/anat/sub-SP06_ses-MRI_T1w.json	714	7562995d1a9ad8bd80c6a600e19721ba8b31631469d73e616dfa222ed36ac599	published git blob (1.0.0 = 1.0.1)
+sub-SP09/ses-MRI/anat/sub-SP09_ses-MRI_T1w.json	817	a2b304004f99f67db177c8a9346982b33fddf12bdd7f166ded2768595ad6a45c	published git blob (1.0.0 = 1.0.1)
+sub-SP10/ses-MRI/anat/sub-SP10_ses-MRI_T1w.json	715	d25c5bda1c9e71e7c34c52f3949b4007a212efb40cbb5fbbb2f71a47df2a0907	published git blob (1.0.0 = 1.0.1)
+sub-SP11/ses-MRI/anat/sub-SP11_ses-MRI_T1w.json	858	9766d5c2f4de37c1d3b239a8e9609c87226f431f64d8f36f80b8b95c77b0d2c4	published git blob (1.0.0 = 1.0.1)
+sub-SP12/ses-MRI/anat/sub-SP12_ses-MRI_T1w.json	858	24202c91283a7966f36d557bad4cdbed0db29b516f20260704862973a60d5de3	published git blob (1.0.0 = 1.0.1)
+sub-SP14/ses-MRI/anat/sub-SP14_ses-MRI_T1w.json	821	4982fca483dc024f6073f9a8989dc40747ee7040b740f13737e7dc7ebfa113c2	published git blob (1.0.0 = 1.0.1)
+sub-SP15/ses-MRI/anat/sub-SP15_ses-MRI_T1w.json	845	c5c69241cba5539cc747a264787c78e161f924ca01c95a72a80c401af9348363	published git blob (1.0.0 = 1.0.1)
+sub-SP16/ses-MRI/anat/sub-SP16_ses-MRI_T1w.json	846	81059e3614034da15feb1afcc9053b4b35dc7fcbc8ec1397087a3b12c0259fdb	published git blob (1.0.0 = 1.0.1)
+sub-SP18/ses-MRI/anat/sub-SP18_ses-MRI_T1w.json	846	91725c8ddb3a4fcb455790f431716aadc9b9889082af32b100672238c2e56f4a	published git blob (1.0.0 = 1.0.1)
+sub-SP20/ses-MRI/anat/sub-SP20_ses-MRI_T1w.json	850	35561d4f9586a17ba90b1c4386b1fd149a5a9ada8d6d8f4190bd896ceca94a89	published git blob (1.0.0 = 1.0.1)
+sub-SP21/ses-MRI/anat/sub-SP21_ses-MRI_T1w.json	850	95decc28b0fac4601c8828a055a651771537c2efd527cb50ee48adb1d3ab83c6	published git blob (1.0.0 = 1.0.1)
+sub-SP22/ses-MRI/anat/sub-SP22_ses-MRI_T1w.json	850	4766c77ae985dfdc82a3e9c41cfc94ce5219d17084aaa2b5b241ca4c311537ce	published git blob (1.0.0 = 1.0.1)
+sub-SP23/ses-MRI/anat/sub-SP23_ses-MRI_T1w.json	846	0897861d8053f72d1f083db29624cb8aebbb467d97bea2061aebfe10ee747428	published git blob (1.0.0 = 1.0.1)
+sub-SP26/ses-MRI/anat/sub-SP26_ses-MRI_T1w.json	848	510c6aa902ce3c485760fbd4ef0f8a5f907f893ddd7b37147b7ab4b33a32e4d0	published git blob (1.0.0 = 1.0.1)
+sub-SP28/ses-MRI/anat/sub-SP28_ses-MRI_T1w.json	847	0a7ecbc79d41ccaa8b349c519e562d64b553a5a42005f24af57cd87b61b8b3e2	published git blob (1.0.0 = 1.0.1)
+derivatives/rCPS/dataset_description.json	297	9a52c8168561a2ca2c66d7c96e787449f472c61c65a0d173a1919ed5efca350d	published git blob (1.0.0 = 1.0.1)
+derivatives/rCPS/sub-SP02/ses-Asleep/sub-SP02_ses-Asleep_desc-ArtIF_stat-rCPS_statmap.json	302	18321dd5efd895e59602cb7583952d40a47efd7b4844a49329a797241e388492	published git blob (1.0.0 = 1.0.1)
+derivatives/rCPS/sub-SP02/ses-Asleep/sub-SP02_ses-Asleep_desc-ArtIF_stat-rCPS_statmap.nii.gz	4623939	25ec7125ed4e5e0c21ad41892357e87add9a54db9fad9419f6985ab4b1ac4e9a	published annex key
+derivatives/rCPS/sub-SP02/ses-Awake/sub-SP02_ses-Awake_desc-ArtIF_stat-rCPS_statmap.json	302	18321dd5efd895e59602cb7583952d40a47efd7b4844a49329a797241e388492	published git blob (1.0.0 = 1.0.1)
+derivatives/rCPS/sub-SP02/ses-Awake/sub-SP02_ses-Awake_desc-ArtIF_stat-rCPS_statmap.nii.gz	4577658	349a7831f79ecfc40d12eab262dbc4e5db955235c217eea848e504e59b04e882	published annex key
+derivatives/rCPS/sub-SP02/ses-SleepDeprived/sub-SP02_ses-SleepDeprived_desc-ArtIF_stat-rCPS_statmap.json	302	18321dd5efd895e59602cb7583952d40a47efd7b4844a49329a797241e388492	published git blob (1.0.0 = 1.0.1)
+derivatives/rCPS/sub-SP02/ses-SleepDeprived/sub-SP02_ses-SleepDeprived_desc-ArtIF_stat-rCPS_statmap.nii.gz	4559429	d6407999ff73091b3b48e5679944b4d9c8c633422aedde786b3715a86908a00d	published annex key
+derivatives/rCPS/sub-SP03/ses-Asleep/sub-SP03_ses-Asleep_desc-ArtIF_stat-rCPS_statmap.json	302	18321dd5efd895e59602cb7583952d40a47efd7b4844a49329a797241e388492	published git blob (1.0.0 = 1.0.1)
+derivatives/rCPS/sub-SP03/ses-Asleep/sub-SP03_ses-Asleep_desc-ArtIF_stat-rCPS_statmap.nii.gz	7039373	4d3f7be251de88d94a3728e7af79c717094d451afdcacbcc229ceeb0b879729a	published annex key
+derivatives/rCPS/sub-SP03/ses-Awake/sub-SP03_ses-Awake_desc-ArtIF_stat-rCPS_statmap.json	302	18321dd5efd895e59602cb7583952d40a47efd7b4844a49329a797241e388492	published git blob (1.0.0 = 1.0.1)
+derivatives/rCPS/sub-SP03/ses-Awake/sub-SP03_ses-Awake_desc-ArtIF_stat-rCPS_statmap.nii.gz	7033042	ad6cb8619504423bc3435a67abd0c180ba0d19808350b7d630b95ccbe3e58851	published annex key
+derivatives/rCPS/sub-SP03/ses-SleepDeprived/sub-SP03_ses-SleepDeprived_desc-ArtIF_stat-rCPS_statmap.json	302	18321dd5efd895e59602cb7583952d40a47efd7b4844a49329a797241e388492	published git blob (1.0.0 = 1.0.1)
+derivatives/rCPS/sub-SP03/ses-SleepDeprived/sub-SP03_ses-SleepDeprived_desc-ArtIF_stat-rCPS_statmap.nii.gz	7059097	92bd9e5b1a9a2d0bf1ba057e06134d09f1ad6886359177cdd37b0f0a5b05c084	published annex key
+derivatives/rCPS/sub-SP05/ses-Asleep/sub-SP05_ses-Asleep_desc-ArtIF_stat-rCPS_statmap.json	302	18321dd5efd895e59602cb7583952d40a47efd7b4844a49329a797241e388492	published git blob (1.0.0 = 1.0.1)
+derivatives/rCPS/sub-SP05/ses-Asleep/sub-SP05_ses-Asleep_desc-ArtIF_stat-rCPS_statmap.nii.gz	6840332	377e4cc93215776517308bae54d9f472e232af82a81c35efc6b68e4e20104b2e	published annex key
+derivatives/rCPS/sub-SP05/ses-Awake/sub-SP05_ses-Awake_desc-ArtIF_stat-rCPS_statmap.json	302	18321dd5efd895e59602cb7583952d40a47efd7b4844a49329a797241e388492	published git blob (1.0.0 = 1.0.1)
+derivatives/rCPS/sub-SP05/ses-Awake/sub-SP05_ses-Awake_desc-ArtIF_stat-rCPS_statmap.nii.gz	6884341	3907329b673a51affd0eb9b1573c88b7fa45ad6147640426d74592cb6230f033	published annex key
+derivatives/rCPS/sub-SP05/ses-SleepDeprived/sub-SP05_ses-SleepDeprived_desc-ArtIF_stat-rCPS_statmap.json	302	18321dd5efd895e59602cb7583952d40a47efd7b4844a49329a797241e388492	published git blob (1.0.0 = 1.0.1)
+derivatives/rCPS/sub-SP05/ses-SleepDeprived/sub-SP05_ses-SleepDeprived_desc-ArtIF_stat-rCPS_statmap.nii.gz	6813452	95c9d1d9417613d8b5d68cc10412c4f3d6358f3888cb38be1eef545c514f2dd8	published annex key
+derivatives/rCPS/sub-SP06/ses-Asleep/sub-SP06_ses-Asleep_desc-ArtIF_stat-rCPS_statmap.json	302	18321dd5efd895e59602cb7583952d40a47efd7b4844a49329a797241e388492	published git blob (1.0.0 = 1.0.1)
+derivatives/rCPS/sub-SP06/ses-Asleep/sub-SP06_ses-Asleep_desc-ArtIF_stat-rCPS_statmap.nii.gz	4513299	2daea43a6a2e3dd1aa5a1ffa1b9a5b9303708c88db6da8e9eb44c714a9af4278	published annex key
+derivatives/rCPS/sub-SP06/ses-Awake/sub-SP06_ses-Awake_desc-ArtIF_stat-rCPS_statmap.json	302	18321dd5efd895e59602cb7583952d40a47efd7b4844a49329a797241e388492	published git blob (1.0.0 = 1.0.1)
+derivatives/rCPS/sub-SP06/ses-Awake/sub-SP06_ses-Awake_desc-ArtIF_stat-rCPS_statmap.nii.gz	4511620	b54fbec4aa257fb55998ca3357a29da33503848752a9a38b177eee04767ef73f	published annex key
+derivatives/rCPS/sub-SP06/ses-SleepDeprived/sub-SP06_ses-SleepDeprived_desc-ArtIF_stat-rCPS_statmap.json	302	18321dd5efd895e59602cb7583952d40a47efd7b4844a49329a797241e388492	published git blob (1.0.0 = 1.0.1)
+derivatives/rCPS/sub-SP06/ses-SleepDeprived/sub-SP06_ses-SleepDeprived_desc-ArtIF_stat-rCPS_statmap.nii.gz	4520478	d8d29bed169d68cb8d933c91bd2ebe0b2fc1cb1564216fd9e4446639c3a5a002	published annex key
+derivatives/rCPS/sub-SP09/ses-Asleep/sub-SP09_ses-Asleep_desc-ArtIF_stat-rCPS_statmap.json	302	18321dd5efd895e59602cb7583952d40a47efd7b4844a49329a797241e388492	published git blob (1.0.0 = 1.0.1)
+derivatives/rCPS/sub-SP09/ses-Asleep/sub-SP09_ses-Asleep_desc-ArtIF_stat-rCPS_statmap.nii.gz	6070635	3c78fe233d97d7d7a01b846a50579320951cf5aa6278d4a91ba901b33fb3e88e	published annex key
+derivatives/rCPS/sub-SP09/ses-Awake/sub-SP09_ses-Awake_desc-ArtIF_stat-rCPS_statmap.json	302	18321dd5efd895e59602cb7583952d40a47efd7b4844a49329a797241e388492	published git blob (1.0.0 = 1.0.1)
+derivatives/rCPS/sub-SP09/ses-Awake/sub-SP09_ses-Awake_desc-ArtIF_stat-rCPS_statmap.nii.gz	6105217	d14d5ff9f207ab74b77fc3bbd49d75ea6e5995f6cdb4a650201d323ad0dd7f12	published annex key
+derivatives/rCPS/sub-SP09/ses-SleepDeprived/sub-SP09_ses-SleepDeprived_desc-ArtIF_stat-rCPS_statmap.json	302	18321dd5efd895e59602cb7583952d40a47efd7b4844a49329a797241e388492	published git blob (1.0.0 = 1.0.1)
+derivatives/rCPS/sub-SP09/ses-SleepDeprived/sub-SP09_ses-SleepDeprived_desc-ArtIF_stat-rCPS_statmap.nii.gz	6051137	044d44efdec4c59408b8856364f1a8a028d6a5899614763bbaa299a53a2e87a7	published annex key
+derivatives/rCPS/sub-SP10/ses-Asleep/sub-SP10_ses-Asleep_desc-ArtIF_stat-rCPS_statmap.json	302	18321dd5efd895e59602cb7583952d40a47efd7b4844a49329a797241e388492	published git blob (1.0.0 = 1.0.1)
+derivatives/rCPS/sub-SP10/ses-Asleep/sub-SP10_ses-Asleep_desc-ArtIF_stat-rCPS_statmap.nii.gz	4877299	ca9d64732e447f5cdc7cf3679537d0e95db25b25287dff043c92d0a80d173468	published annex key
+derivatives/rCPS/sub-SP10/ses-Awake/sub-SP10_ses-Awake_desc-ArtIF_stat-rCPS_statmap.json	302	18321dd5efd895e59602cb7583952d40a47efd7b4844a49329a797241e388492	published git blob (1.0.0 = 1.0.1)
+derivatives/rCPS/sub-SP10/ses-Awake/sub-SP10_ses-Awake_desc-ArtIF_stat-rCPS_statmap.nii.gz	4877600	0efc3daf80288160305dc23a5be58c85fd3376462fed958730b97e74a36da6e2	published annex key
+derivatives/rCPS/sub-SP10/ses-SleepDeprived/sub-SP10_ses-SleepDeprived_desc-ArtIF_stat-rCPS_statmap.json	302	18321dd5efd895e59602cb7583952d40a47efd7b4844a49329a797241e388492	published git blob (1.0.0 = 1.0.1)
+derivatives/rCPS/sub-SP10/ses-SleepDeprived/sub-SP10_ses-SleepDeprived_desc-ArtIF_stat-rCPS_statmap.nii.gz	4871305	49a2e2d928557411489ccdea597fe8135aefe44d914778a582dfa2eec5cb6c2d	published annex key
+derivatives/rCPS/sub-SP11/ses-Asleep/sub-SP11_ses-Asleep_desc-ArtIF_stat-rCPS_statmap.json	302	18321dd5efd895e59602cb7583952d40a47efd7b4844a49329a797241e388492	published git blob (1.0.0 = 1.0.1)
+derivatives/rCPS/sub-SP11/ses-Asleep/sub-SP11_ses-Asleep_desc-ArtIF_stat-rCPS_statmap.nii.gz	7272296	9f5f1df1668d915035bd9b70df8ac2ebc708c1b85b99b1e8b9598d1c8a79e716	published annex key
+derivatives/rCPS/sub-SP11/ses-Awake/sub-SP11_ses-Awake_desc-ArtIF_stat-rCPS_statmap.json	302	18321dd5efd895e59602cb7583952d40a47efd7b4844a49329a797241e388492	published git blob (1.0.0 = 1.0.1)
+derivatives/rCPS/sub-SP11/ses-Awake/sub-SP11_ses-Awake_desc-ArtIF_stat-rCPS_statmap.nii.gz	7281144	2e7c11bc6b518bbccaec3094782adf376a3053359db4f74aa7658992ff847bdd	published annex key
+derivatives/rCPS/sub-SP11/ses-SleepDeprived/sub-SP11_ses-SleepDeprived_desc-ArtIF_stat-rCPS_statmap.json	302	18321dd5efd895e59602cb7583952d40a47efd7b4844a49329a797241e388492	published git blob (1.0.0 = 1.0.1)
+derivatives/rCPS/sub-SP11/ses-SleepDeprived/sub-SP11_ses-SleepDeprived_desc-ArtIF_stat-rCPS_statmap.nii.gz	7191783	6f58c037939e27423d744e3340b00feca3d4c1dc163e88d1007898658bf5f6ef	published annex key
+derivatives/rCPS/sub-SP12/ses-Asleep/sub-SP12_ses-Asleep_desc-ArtIF_stat-rCPS_statmap.json	302	18321dd5efd895e59602cb7583952d40a47efd7b4844a49329a797241e388492	published git blob (1.0.0 = 1.0.1)
+derivatives/rCPS/sub-SP12/ses-Asleep/sub-SP12_ses-Asleep_desc-ArtIF_stat-rCPS_statmap.nii.gz	6498170	d8dd59cd317b1c0db5a2b4f65d9d59c4f9b04fbee457bf54e0bb6b8de7e2b886	published annex key
+derivatives/rCPS/sub-SP12/ses-Awake/sub-SP12_ses-Awake_desc-ArtIF_stat-rCPS_statmap.json	302	18321dd5efd895e59602cb7583952d40a47efd7b4844a49329a797241e388492	published git blob (1.0.0 = 1.0.1)
+derivatives/rCPS/sub-SP12/ses-Awake/sub-SP12_ses-Awake_desc-ArtIF_stat-rCPS_statmap.nii.gz	6485888	3c58efa15b9a62db2424b6991244d774f66b8a2e4409bc7804a0286dd473e58c	published annex key
+derivatives/rCPS/sub-SP12/ses-SleepDeprived/sub-SP12_ses-SleepDeprived_desc-ArtIF_stat-rCPS_statmap.json	302	18321dd5efd895e59602cb7583952d40a47efd7b4844a49329a797241e388492	published git blob (1.0.0 = 1.0.1)
+derivatives/rCPS/sub-SP12/ses-SleepDeprived/sub-SP12_ses-SleepDeprived_desc-ArtIF_stat-rCPS_statmap.nii.gz	6386018	9c172cf131f7967d88e29a402ff21af28105017ac1ede840a4db981331977fe7	published annex key
+derivatives/rCPS/sub-SP14/ses-Asleep/sub-SP14_ses-Asleep_desc-ArtIF_stat-rCPS_statmap.json	302	18321dd5efd895e59602cb7583952d40a47efd7b4844a49329a797241e388492	published git blob (1.0.0 = 1.0.1)
+derivatives/rCPS/sub-SP14/ses-Asleep/sub-SP14_ses-Asleep_desc-ArtIF_stat-rCPS_statmap.nii.gz	5262211	225686f3be867bc9adc77d7b68a1ed9fd657885935e3c432745eadb412c38d6f	published annex key
+derivatives/rCPS/sub-SP14/ses-Awake/sub-SP14_ses-Awake_desc-ArtIF_stat-rCPS_statmap.json	302	18321dd5efd895e59602cb7583952d40a47efd7b4844a49329a797241e388492	published git blob (1.0.0 = 1.0.1)
+derivatives/rCPS/sub-SP14/ses-Awake/sub-SP14_ses-Awake_desc-ArtIF_stat-rCPS_statmap.nii.gz	5349022	748a911183c506416765c27070597cbd891404d5cef094c8ac8a07c7e3ec8e0c	published annex key
+derivatives/rCPS/sub-SP14/ses-SleepDeprived/sub-SP14_ses-SleepDeprived_desc-ArtIF_stat-rCPS_statmap.json	302	18321dd5efd895e59602cb7583952d40a47efd7b4844a49329a797241e388492	published git blob (1.0.0 = 1.0.1)
+derivatives/rCPS/sub-SP14/ses-SleepDeprived/sub-SP14_ses-SleepDeprived_desc-ArtIF_stat-rCPS_statmap.nii.gz	5299422	ae5989642327c4181f63fdaaaa4a282dc732e27a676f5e273ea2aa3d58ffc65c	published annex key
+derivatives/rCPS/sub-SP15/ses-Asleep/sub-SP15_ses-Asleep_desc-ArtIF_stat-rCPS_statmap.json	302	18321dd5efd895e59602cb7583952d40a47efd7b4844a49329a797241e388492	published git blob (1.0.0 = 1.0.1)
+derivatives/rCPS/sub-SP15/ses-Asleep/sub-SP15_ses-Asleep_desc-ArtIF_stat-rCPS_statmap.nii.gz	7278314	f2e1ded405e470eb816e4e630b693ef3457f2d9deebecd402711ad5c4e50c019	published annex key
+derivatives/rCPS/sub-SP15/ses-Awake/sub-SP15_ses-Awake_desc-ArtIF_stat-rCPS_statmap.json	302	18321dd5efd895e59602cb7583952d40a47efd7b4844a49329a797241e388492	published git blob (1.0.0 = 1.0.1)
+derivatives/rCPS/sub-SP15/ses-Awake/sub-SP15_ses-Awake_desc-ArtIF_stat-rCPS_statmap.nii.gz	7333019	1d4405eac6820247309b1a6f55ea02dd04df421d45ed24169847c986b86d453a	published annex key
+derivatives/rCPS/sub-SP15/ses-SleepDeprived/sub-SP15_ses-SleepDeprived_desc-ArtIF_stat-rCPS_statmap.json	302	18321dd5efd895e59602cb7583952d40a47efd7b4844a49329a797241e388492	published git blob (1.0.0 = 1.0.1)
+derivatives/rCPS/sub-SP15/ses-SleepDeprived/sub-SP15_ses-SleepDeprived_desc-ArtIF_stat-rCPS_statmap.nii.gz	7358609	26b300f2499bbd143aa84bbc9cc6b21bc0160f0de2d24515c4de4ce6c8ad1860	published annex key
+derivatives/rCPS/sub-SP16/ses-Asleep/sub-SP16_ses-Asleep_desc-ArtIF_stat-rCPS_statmap.json	302	18321dd5efd895e59602cb7583952d40a47efd7b4844a49329a797241e388492	published git blob (1.0.0 = 1.0.1)
+derivatives/rCPS/sub-SP16/ses-Asleep/sub-SP16_ses-Asleep_desc-ArtIF_stat-rCPS_statmap.nii.gz	5557331	c42065a35c8417585814563797a478821a03c4a120cae42dc12f847b918baf5b	published annex key
+derivatives/rCPS/sub-SP16/ses-Awake/sub-SP16_ses-Awake_desc-ArtIF_stat-rCPS_statmap.json	302	18321dd5efd895e59602cb7583952d40a47efd7b4844a49329a797241e388492	published git blob (1.0.0 = 1.0.1)
+derivatives/rCPS/sub-SP16/ses-Awake/sub-SP16_ses-Awake_desc-ArtIF_stat-rCPS_statmap.nii.gz	5550864	c401a1952aa7912248be0f70a04fbdc10c5aaa1941bd7aa35759203a052928a1	published annex key
+derivatives/rCPS/sub-SP16/ses-SleepDeprived/sub-SP16_ses-SleepDeprived_desc-ArtIF_stat-rCPS_statmap.json	302	18321dd5efd895e59602cb7583952d40a47efd7b4844a49329a797241e388492	published git blob (1.0.0 = 1.0.1)
+derivatives/rCPS/sub-SP16/ses-SleepDeprived/sub-SP16_ses-SleepDeprived_desc-ArtIF_stat-rCPS_statmap.nii.gz	5547733	ba73612d0fc9a0454e7a1ec28e6762b0fc6e1fe74d1073331051c5ad6d0ca8f4	published annex key
+derivatives/rCPS/sub-SP18/ses-Asleep/sub-SP18_ses-Asleep_desc-ArtIF_stat-rCPS_statmap.json	302	18321dd5efd895e59602cb7583952d40a47efd7b4844a49329a797241e388492	published git blob (1.0.0 = 1.0.1)
+derivatives/rCPS/sub-SP18/ses-Asleep/sub-SP18_ses-Asleep_desc-ArtIF_stat-rCPS_statmap.nii.gz	5561755	cef883133bdb7f4b16e8e74fb7d06a11cde1cdb512e080e20b302db7e8d2044a	published annex key
+derivatives/rCPS/sub-SP18/ses-Awake/sub-SP18_ses-Awake_desc-ArtIF_stat-rCPS_statmap.json	302	18321dd5efd895e59602cb7583952d40a47efd7b4844a49329a797241e388492	published git blob (1.0.0 = 1.0.1)
+derivatives/rCPS/sub-SP18/ses-Awake/sub-SP18_ses-Awake_desc-ArtIF_stat-rCPS_statmap.nii.gz	5542212	9881a94ebe4947e195afd9168c27a18989507411c33f74fa060c7f8c0ca20493	published annex key
+derivatives/rCPS/sub-SP18/ses-SleepDeprived/sub-SP18_ses-SleepDeprived_desc-ArtIF_stat-rCPS_statmap.json	302	18321dd5efd895e59602cb7583952d40a47efd7b4844a49329a797241e388492	published git blob (1.0.0 = 1.0.1)
+derivatives/rCPS/sub-SP18/ses-SleepDeprived/sub-SP18_ses-SleepDeprived_desc-ArtIF_stat-rCPS_statmap.nii.gz	5574245	7353d534dccb6928c82a9e503dae99c574a48e93201bc6a27b6884e24f3c5544	published annex key
+derivatives/rCPS/sub-SP20/ses-Asleep/sub-SP20_ses-Asleep_desc-ArtIF_stat-rCPS_statmap.json	302	18321dd5efd895e59602cb7583952d40a47efd7b4844a49329a797241e388492	published git blob (1.0.0 = 1.0.1)
+derivatives/rCPS/sub-SP20/ses-Asleep/sub-SP20_ses-Asleep_desc-ArtIF_stat-rCPS_statmap.nii.gz	5535638	1c0766d60239b632b4b0a8ce4ba4540b8c9e1484fcea32d2795d6dfb1115b3e6	published annex key
+derivatives/rCPS/sub-SP20/ses-Awake/sub-SP20_ses-Awake_desc-ArtIF_stat-rCPS_statmap.json	302	18321dd5efd895e59602cb7583952d40a47efd7b4844a49329a797241e388492	published git blob (1.0.0 = 1.0.1)
+derivatives/rCPS/sub-SP20/ses-Awake/sub-SP20_ses-Awake_desc-ArtIF_stat-rCPS_statmap.nii.gz	5647168	a554616d66bb4164d1c0052309f24e97303f7655bfe6c6839f5a19587a0a34d5	published annex key
+derivatives/rCPS/sub-SP20/ses-SleepDeprived/sub-SP20_ses-SleepDeprived_desc-ArtIF_stat-rCPS_statmap.json	302	18321dd5efd895e59602cb7583952d40a47efd7b4844a49329a797241e388492	published git blob (1.0.0 = 1.0.1)
+derivatives/rCPS/sub-SP20/ses-SleepDeprived/sub-SP20_ses-SleepDeprived_desc-ArtIF_stat-rCPS_statmap.nii.gz	5492539	6744a8ba7774a0188503daa4aebb28c2b7febffe2116fa146ba3e0392f57c871	published annex key
+derivatives/rCPS/sub-SP21/ses-Asleep/sub-SP21_ses-Asleep_desc-ArtIF_stat-rCPS_statmap.json	302	18321dd5efd895e59602cb7583952d40a47efd7b4844a49329a797241e388492	published git blob (1.0.0 = 1.0.1)
+derivatives/rCPS/sub-SP21/ses-Asleep/sub-SP21_ses-Asleep_desc-ArtIF_stat-rCPS_statmap.nii.gz	5570731	04ae2f3ec0d42c2721c6fc5c8e42f4841d1e2a7c4853dfd6ad77ef9781773095	published annex key
+derivatives/rCPS/sub-SP21/ses-Awake/sub-SP21_ses-Awake_desc-ArtIF_stat-rCPS_statmap.json	302	18321dd5efd895e59602cb7583952d40a47efd7b4844a49329a797241e388492	published git blob (1.0.0 = 1.0.1)
+derivatives/rCPS/sub-SP21/ses-Awake/sub-SP21_ses-Awake_desc-ArtIF_stat-rCPS_statmap.nii.gz	5585659	dc34c2e480e1c2e2677982e62bc0be8bd82728d1e5bab914445221e2939e9064	published annex key
+derivatives/rCPS/sub-SP21/ses-SleepDeprived/sub-SP21_ses-SleepDeprived_desc-ArtIF_stat-rCPS_statmap.json	302	18321dd5efd895e59602cb7583952d40a47efd7b4844a49329a797241e388492	published git blob (1.0.0 = 1.0.1)
+derivatives/rCPS/sub-SP21/ses-SleepDeprived/sub-SP21_ses-SleepDeprived_desc-ArtIF_stat-rCPS_statmap.nii.gz	5596120	44cc8ca3999eec6529d2fb77c25384581445905fd55bab87470a661467dd05ea	published annex key
+derivatives/rCPS/sub-SP22/ses-Asleep/sub-SP22_ses-Asleep_desc-ArtIF_stat-rCPS_statmap.json	302	18321dd5efd895e59602cb7583952d40a47efd7b4844a49329a797241e388492	published git blob (1.0.0 = 1.0.1)
+derivatives/rCPS/sub-SP22/ses-Asleep/sub-SP22_ses-Asleep_desc-ArtIF_stat-rCPS_statmap.nii.gz	6561374	abbc38113189ad06ac1369f57f5f16120179aec6fd3029421bfef8c4e456fcf9	published annex key
+derivatives/rCPS/sub-SP22/ses-Awake/sub-SP22_ses-Awake_desc-ArtIF_stat-rCPS_statmap.json	302	18321dd5efd895e59602cb7583952d40a47efd7b4844a49329a797241e388492	published git blob (1.0.0 = 1.0.1)
+derivatives/rCPS/sub-SP22/ses-Awake/sub-SP22_ses-Awake_desc-ArtIF_stat-rCPS_statmap.nii.gz	6529329	370a09237dc89895833b5c0c6adde10355e46991a06373a5b9a4e56ff986588e	published annex key
+derivatives/rCPS/sub-SP22/ses-SleepDeprived/sub-SP22_ses-SleepDeprived_desc-ArtIF_stat-rCPS_statmap.json	302	18321dd5efd895e59602cb7583952d40a47efd7b4844a49329a797241e388492	published git blob (1.0.0 = 1.0.1)
+derivatives/rCPS/sub-SP22/ses-SleepDeprived/sub-SP22_ses-SleepDeprived_desc-ArtIF_stat-rCPS_statmap.nii.gz	6539115	06c154befd2fd8308086f59c41967bae6eaabcfc9096017ca1a488307eb8cb52	published annex key
+derivatives/rCPS/sub-SP23/ses-Asleep/sub-SP23_ses-Asleep_desc-ArtIF_stat-rCPS_statmap.json	302	18321dd5efd895e59602cb7583952d40a47efd7b4844a49329a797241e388492	published git blob (1.0.0 = 1.0.1)
+derivatives/rCPS/sub-SP23/ses-Asleep/sub-SP23_ses-Asleep_desc-ArtIF_stat-rCPS_statmap.nii.gz	6037327	3fbaf80c3eebb354c9dc5a9034bd4763a9dad26a07acd33bce5038d54e092c98	published annex key
+derivatives/rCPS/sub-SP23/ses-Awake/sub-SP23_ses-Awake_desc-ArtIF_stat-rCPS_statmap.json	302	18321dd5efd895e59602cb7583952d40a47efd7b4844a49329a797241e388492	published git blob (1.0.0 = 1.0.1)
+derivatives/rCPS/sub-SP23/ses-Awake/sub-SP23_ses-Awake_desc-ArtIF_stat-rCPS_statmap.nii.gz	6061584	b9f5cedaf695b51c132585b2f5bd223507e4a11036b6a82662bb83c2ab24016c	published annex key
+derivatives/rCPS/sub-SP23/ses-SleepDeprived/sub-SP23_ses-SleepDeprived_desc-ArtIF_stat-rCPS_statmap.json	302	18321dd5efd895e59602cb7583952d40a47efd7b4844a49329a797241e388492	published git blob (1.0.0 = 1.0.1)
+derivatives/rCPS/sub-SP23/ses-SleepDeprived/sub-SP23_ses-SleepDeprived_desc-ArtIF_stat-rCPS_statmap.nii.gz	5979464	01ec756cdbf8cb2f5c4e688a71be6f0d29442adb7c1c0f59958fcdf68e9b116e	published annex key
+derivatives/rCPS/sub-SP26/ses-Asleep/sub-SP26_ses-Asleep_desc-ArtIF_stat-rCPS_statmap.json	302	18321dd5efd895e59602cb7583952d40a47efd7b4844a49329a797241e388492	published git blob (1.0.0 = 1.0.1)
+derivatives/rCPS/sub-SP26/ses-Asleep/sub-SP26_ses-Asleep_desc-ArtIF_stat-rCPS_statmap.nii.gz	6416545	5e76dbc67169f19f6f8d442d5bdb153858279d050ff2abb765732220f7310c1b	published annex key
+derivatives/rCPS/sub-SP26/ses-Awake/sub-SP26_ses-Awake_desc-ArtIF_stat-rCPS_statmap.json	302	18321dd5efd895e59602cb7583952d40a47efd7b4844a49329a797241e388492	published git blob (1.0.0 = 1.0.1)
+derivatives/rCPS/sub-SP26/ses-Awake/sub-SP26_ses-Awake_desc-ArtIF_stat-rCPS_statmap.nii.gz	6449432	42d2f43ae567b93640701794185b7501e5763642033043923a63a53afc700bf7	published annex key
+derivatives/rCPS/sub-SP26/ses-SleepDeprived/sub-SP26_ses-SleepDeprived_desc-ArtIF_stat-rCPS_statmap.json	302	18321dd5efd895e59602cb7583952d40a47efd7b4844a49329a797241e388492	published git blob (1.0.0 = 1.0.1)
+derivatives/rCPS/sub-SP26/ses-SleepDeprived/sub-SP26_ses-SleepDeprived_desc-ArtIF_stat-rCPS_statmap.nii.gz	6325065	e399102e2b140ce5ccdfa6f4e6c59918dc11f85f01a136f213d9a060ff07db90	published annex key
+derivatives/rCPS/sub-SP28/ses-Asleep/sub-SP28_ses-Asleep_desc-ArtIF_stat-rCPS_statmap.json	302	18321dd5efd895e59602cb7583952d40a47efd7b4844a49329a797241e388492	published git blob (1.0.0 = 1.0.1)
+derivatives/rCPS/sub-SP28/ses-Asleep/sub-SP28_ses-Asleep_desc-ArtIF_stat-rCPS_statmap.nii.gz	5693596	b34b4e4d101ba9e356f0d232daabfadde79bbc1f96405f5b9efb5670118ec8a5	published annex key
+derivatives/rCPS/sub-SP28/ses-Awake/sub-SP28_ses-Awake_desc-ArtIF_stat-rCPS_statmap.json	302	18321dd5efd895e59602cb7583952d40a47efd7b4844a49329a797241e388492	published git blob (1.0.0 = 1.0.1)
+derivatives/rCPS/sub-SP28/ses-Awake/sub-SP28_ses-Awake_desc-ArtIF_stat-rCPS_statmap.nii.gz	5748973	6948740b57e41c0d5ba6b6c853bec1b97b1f0a40c8635c81aaf069afea8fe94f	published annex key
+derivatives/rCPS/sub-SP28/ses-SleepDeprived/sub-SP28_ses-SleepDeprived_desc-ArtIF_stat-rCPS_statmap.json	302	18321dd5efd895e59602cb7583952d40a47efd7b4844a49329a797241e388492	published git blob (1.0.0 = 1.0.1)
+derivatives/rCPS/sub-SP28/ses-SleepDeprived/sub-SP28_ses-SleepDeprived_desc-ArtIF_stat-rCPS_statmap.nii.gz	5659242	131d71a884704a57c21f976197ffadd0af1138785f0a97f314b0b64e01e13795	published annex key
+derivatives/freesurfer/dataset_description.json	330	ff21fb5651d2dc5cbb0f2a4b3c27be3f428a7ac04497152fc639d0a1889fa5b4	published git blob (1.0.0 = 1.0.1)
+derivatives/freesurfer/sub-SP02/stats/lh.aparc.stats	6648	e6942b07f474080b665dfa4d2142b4f8729edc243eb921d6a6b247af2951e008	published annex key
+derivatives/freesurfer/sub-SP03/stats/lh.aparc.stats	6647	8a8cd3d56f2bdfc5ee3128ac43ba5c80f613414060678bd16269ff5004ce241e	published annex key
+derivatives/freesurfer/sub-SP05/stats/lh.aparc.stats	6646	547d450d53ab670c5de1f7ddc376f048576dbc52a0affd9c8fdb90becb8cf553	published annex key
+derivatives/freesurfer/sub-SP06/stats/lh.aparc.stats	6648	ae4e3dbc03e76365c053a05d99ffb2b78184458c83943f7cf3deb9389eeaf0ab	published annex key
+derivatives/freesurfer/sub-SP09/stats/lh.aparc.stats	6647	74dc049b004c959dbc711d516a06d6183e81bae2212c7e0e58287fa23cc896c1	published annex key
+derivatives/freesurfer/sub-SP10/stats/lh.aparc.stats	6648	b1297aa34c1b7e4023b023c3ffbc35ba19ab783e3bb203b76d6a1a872eef7111	published annex key
+derivatives/freesurfer/sub-SP11/stats/lh.aparc.stats	6647	645a94f1e374a53c32687edf124595c5c276b8faec0615c83bdf1d5913c68295	published annex key
+derivatives/freesurfer/sub-SP12/stats/lh.aparc.stats	6647	5e810118cefdea8a386d8a7c342bc7308c41cc7885aa0773970cf803add3acc9	published annex key
+derivatives/freesurfer/sub-SP14/stats/lh.aparc.stats	6648	6c40a7ab1805372aa4ab7f6dd475c7a01206b0631024ee632a9e04c0f597005b	published annex key
+derivatives/freesurfer/sub-SP15/stats/lh.aparc.stats	6647	d76927612d56481d943b6d980a6b5862273f8b9fb383ca0a170c197766f20bb9	published annex key
+derivatives/freesurfer/sub-SP16/stats/lh.aparc.stats	6648	cbf7a531b92b8335ba74966d96e13a8990ae45d07ba52b0cbb54b832edaf77d1	published annex key
+derivatives/freesurfer/sub-SP18/stats/lh.aparc.stats	6648	a1d431f66f5cba0dcd441b0067477d4f9b7e2feb0cfba279790d10e3afc49375	published annex key
+derivatives/freesurfer/sub-SP20/stats/lh.aparc.stats	6648	5119e990c32c6bb5d3de3c1dc16cbab7279c9becff4940f2fad1d0f888cd8d34	published annex key
+derivatives/freesurfer/sub-SP21/stats/lh.aparc.stats	6647	ec3921666688ab23112677025bc9dfd3d611afb73705d2556ad2e0d8c72220fc	published annex key
+derivatives/freesurfer/sub-SP22/stats/lh.aparc.stats	6647	bdbb39dbbf8767b0c87689ed86226accb4ea964210dcba0a17d19b8034c3e1d8	published annex key
+derivatives/freesurfer/sub-SP23/stats/lh.aparc.stats	6647	c3ed92121a4beb8aaae6b5ad0ae6cee600f8e9bb9fb23d63801a5eb859ab1863	published annex key
+derivatives/freesurfer/sub-SP26/stats/lh.aparc.stats	6647	8baf18d937e5a42f601241e3c8c213840a74752903b4d3b299d69ce7559ac8e7	published annex key
+derivatives/freesurfer/sub-SP28/stats/lh.aparc.stats	6647	d80b307fa14f19ec33fde5c0d63420a7bc4657e24d45c964481d0c8c3c3f1cab	published annex key
+derivatives/freesurfer/sub-SP02/stats/rh.aparc.stats	6648	aa48c7e2382952767abb7acedab1b590a799ffbe4aa28d1a3fae7c45bbfc1430	published annex key
+derivatives/freesurfer/sub-SP03/stats/rh.aparc.stats	6647	6ee95a03b04d5fa60a48eba70dc40a8bd5bfbd394445c010731b8b7ea02184db	published annex key
+derivatives/freesurfer/sub-SP05/stats/rh.aparc.stats	6647	51c47c7e094621a3c104461456b7eb3948ec717bfef8b27947752e2e9d187dba	published annex key
+derivatives/freesurfer/sub-SP06/stats/rh.aparc.stats	6648	93acac43b39392d0c407f6183f47941b6d365f1e7cd97750c751949d23a940a8	published annex key
+derivatives/freesurfer/sub-SP09/stats/rh.aparc.stats	6647	b813977a22b740e4727c8cb5dbb2ce8982ab6ac3a00a82668dba20e7f27aedab	published annex key
+derivatives/freesurfer/sub-SP10/stats/rh.aparc.stats	6648	c5ae919333984a039a7b4560b87b1804a4b196472028408dff863fa2e165bb69	published annex key
+derivatives/freesurfer/sub-SP11/stats/rh.aparc.stats	6647	7172fd1ee89a5078685c3f07a7e0cec548ac54228c9a7b712cf94d49d960803e	published annex key
+derivatives/freesurfer/sub-SP12/stats/rh.aparc.stats	6647	e957417232f590beac1c7a838f50dee5cf897cf4a89d9984a402163ceae8990f	published annex key
+derivatives/freesurfer/sub-SP14/stats/rh.aparc.stats	6647	df4f7d3f6a28d679e1a20e9a5ee12a4c44d8bcb026ae756b92d9e39dbf4471c0	published annex key
+derivatives/freesurfer/sub-SP15/stats/rh.aparc.stats	6647	7fe981e35a5fb2ce34d863c33be13a29d73ab86667c6cb51a2fcdd31552c325a	published annex key
+derivatives/freesurfer/sub-SP16/stats/rh.aparc.stats	6648	5f678393019ce0caf755632f4c43b21ca0d616f883c8942e78e2af238b0673f7	published annex key
+derivatives/freesurfer/sub-SP18/stats/rh.aparc.stats	6648	25cc9a89f38267ba60e57a6719b08510f05d897eb2819196110c87fce182acc2	published annex key
+derivatives/freesurfer/sub-SP20/stats/rh.aparc.stats	6647	4f2c632672850c58bde5a255157508dae43caf7d3a644fab2c0e3f8f7598f538	published annex key
+derivatives/freesurfer/sub-SP21/stats/rh.aparc.stats	6648	2504eb8d825e9196fd5b647f1762dc28fc565102b544b5a58df8ba5ff1aae372	published annex key
+derivatives/freesurfer/sub-SP22/stats/rh.aparc.stats	6647	b989f6fd606d417d1700bf780ba375ecc7525d8c69d8b1f137094bac42898a03	published annex key
+derivatives/freesurfer/sub-SP23/stats/rh.aparc.stats	6647	cdd93aebac3aa61f99e9234fda5428d9beb81db1f2d28e41bc4144dc94799c26	published annex key
+derivatives/freesurfer/sub-SP26/stats/rh.aparc.stats	6647	7d9957fb046381158eca7388bd19539c2dcaa673f38d88139a4d5f769304bf4c	published annex key
+derivatives/freesurfer/sub-SP28/stats/rh.aparc.stats	6647	3a7c45d2eb74b9b65f2e43ef9b38bb7a669e6d5807017f0f109e7224449c0e68	published annex key
+derivatives/freesurfer/sub-SP02/stats/aseg.stats	9636	286d0827b79187c513e037766d1790e67dcaa38a51a5a3239956c0630df7fda8	published annex key
+derivatives/freesurfer/sub-SP03/stats/aseg.stats	9639	9ef8c8a43eae18d8d78fdd1d382f08b2bce668967d7650200bdb471d7d8548a3	published annex key
+derivatives/freesurfer/sub-SP05/stats/aseg.stats	9638	2a95793c28b43cfd799e905c50c62b84f2ac919cc1a0a5d577be76fb95daf25a	published annex key
+derivatives/freesurfer/sub-SP06/stats/aseg.stats	9637	994b550a9591889423246c54d5e230a31983737f4bbdf48b45ab82cd8914649f	published annex key
+derivatives/freesurfer/sub-SP09/stats/aseg.stats	9638	fe6ae6b5f46bb9fa783c15702571a3887ea32e65edff4a9adad1a9b4a7087930	published annex key
+derivatives/freesurfer/sub-SP10/stats/aseg.stats	9637	b96b1be1404c22a5a82bdd08b0b5355a3d5d732adaaafd3664e113642d1c38c8	published annex key
+derivatives/freesurfer/sub-SP11/stats/aseg.stats	9638	3fa84d0291a4554c76788ba7d8ff5e240eac64249972674e97789a99c1255115	published annex key
+derivatives/freesurfer/sub-SP12/stats/aseg.stats	9637	8877799af140a01a7b37d6f27d0f2d935aa74f7001c8d98965b67569de8a109f	published annex key
+derivatives/freesurfer/sub-SP14/stats/aseg.stats	9637	aa8267fc7c6dbbde58c41741582a0b10ecbf89b77c915bb5da66e69c4d113b75	published annex key
+derivatives/freesurfer/sub-SP15/stats/aseg.stats	9639	0f8ca0797b84c4cdf826fb07eac4166bf7c3ba6e8ec1d18ad07de98972e44be7	published annex key
+derivatives/freesurfer/sub-SP16/stats/aseg.stats	9637	9a757d12842dd6b639317b6c06e2cae4ca9f9580ff970921e9352b41b19336dd	published annex key
+derivatives/freesurfer/sub-SP18/stats/aseg.stats	9637	b8a34a7b1fa29cd2eb970e1629c324656393575178a1c2b013f4be57d97d8caa	published annex key
+derivatives/freesurfer/sub-SP20/stats/aseg.stats	9637	d0cc8053440881da380d54e9072f4d2015e4a71328e1258b89a91288544b2b8c	published annex key
+derivatives/freesurfer/sub-SP21/stats/aseg.stats	9637	d26b0842a05983982c5de5534c1f1d05961d6b2eb2af90e545d8c4131e31e50e	published annex key
+derivatives/freesurfer/sub-SP22/stats/aseg.stats	9636	08f70f390d4ecc5ad6c0c530ea7f1cc58a8f8fb2437b9c173fa1a8e80d004083	published annex key
+derivatives/freesurfer/sub-SP23/stats/aseg.stats	9637	c6e26492ca16a6ae6b400de3af2dfaffbda2fa04b074c25f37204a4d37276b77	published annex key
+derivatives/freesurfer/sub-SP26/stats/aseg.stats	9637	c870f661341690dc152398978fbc2a4eda4ddc98d06e1445fc8c893453e83b5a	published annex key
+derivatives/freesurfer/sub-SP28/stats/aseg.stats	9637	f791264607c73c25db2350fdabfe050ae2188d7acbaa8a3d699c14a9ad9f9e74	published annex key
+derivatives/freesurfer/sub-SP02/mri/aparc+aseg.mgz	405951	ed97af83e712a96c655654132328d6e29c1593744363732f3f1676245aeb3d34	published annex key
+derivatives/freesurfer/sub-SP03/mri/aparc+aseg.mgz	546493	49177fa288a1a4da3d397d5cfa9c36bfe7929216e1ecdf009307f033d4ee1e1e	published annex key
+derivatives/freesurfer/sub-SP05/mri/aparc+aseg.mgz	547798	1ab2c5116c0e60feb9de5c94c8da979995adb88cb7935b8a99cb42f92b8cfa2e	published annex key
+derivatives/freesurfer/sub-SP06/mri/aparc+aseg.mgz	410859	fcabf9c3c1a9766431f8460b1b27e86c46cfe62ae9ef3db5dda0555ff64c7034	published annex key
+derivatives/freesurfer/sub-SP09/mri/aparc+aseg.mgz	498358	6db41991ff0715d0ee3b9cca83c353780855a012a9e64e238658eaec3168a275	published annex key
+derivatives/freesurfer/sub-SP10/mri/aparc+aseg.mgz	410321	496382cef5c15691e7a056571130aba6136f00ebc2923b1be238b62fbf34e537	published annex key
+derivatives/freesurfer/sub-SP11/mri/aparc+aseg.mgz	567681	a873d74df1cd24e0d31abf8d78e973751f044ae6c9e4b97a3b92b14a3ec6599b	published annex key
+derivatives/freesurfer/sub-SP12/mri/aparc+aseg.mgz	485084	dd62d998b730bbeaecb9c83307a76cdfa42cf5f14fe83b24ea300119c27e3504	published annex key
+derivatives/freesurfer/sub-SP14/mri/aparc+aseg.mgz	443260	9672623ad5983144bfdf955ec712e3b3741159646068b711f8f30f4f4eda3efa	published annex key
+derivatives/freesurfer/sub-SP15/mri/aparc+aseg.mgz	555843	289b3c53c86a229be1d85b69f62a67ced6a3dfd0981746e26bb55b540ff117ae	published annex key
+derivatives/freesurfer/sub-SP16/mri/aparc+aseg.mgz	440438	ed13f71697e530520570ec3a9ab622c2af99ab4c75d2d7c4a1d47ddb4eaf0e43	published annex key
+derivatives/freesurfer/sub-SP18/mri/aparc+aseg.mgz	441625	1b2bbdfe699b5856dc8004dce0c78370a7b2204559ce525af73ee45db1dbf058	published annex key
+derivatives/freesurfer/sub-SP20/mri/aparc+aseg.mgz	456549	70ffa740fc03cddc5436caff2518c4d2e82d2a15d40e50efd18194f4b4b8768e	published annex key
+derivatives/freesurfer/sub-SP21/mri/aparc+aseg.mgz	451560	6a6b5b219de179071e8eabb5b087ac0712ea48012b5528bc1dbf0f11f590bb4b	published annex key
+derivatives/freesurfer/sub-SP22/mri/aparc+aseg.mgz	484270	42941083b4f96e84287069f1858139a52e573579ebdc5edcd08a70e20b975632	published annex key
+derivatives/freesurfer/sub-SP23/mri/aparc+aseg.mgz	469434	3e279923dda20b66ffe1d6a3ae09c85210ee1e1ba2200f7115bd74463af8102c	published annex key
+derivatives/freesurfer/sub-SP26/mri/aparc+aseg.mgz	505008	3fd9dcaffd2a62532de36f2e32f251f676fa30c62cfc44fd7ec5fce8e3c8b927	published annex key
+derivatives/freesurfer/sub-SP28/mri/aparc+aseg.mgz	459232	e55ca164e8ff02d077c5fde9809c324f4cf087265f304181ed341e6138de0f59	published annex key
+derivatives/freesurfer/sub-SP02/mri/aseg.mgz	349439	a6882d89a179331e8d6745ead9f5c64dc814c029265d0fdf4335f66cffee58fc	published annex key
+derivatives/freesurfer/sub-SP03/mri/aseg.mgz	470757	aa12713273d6f7f86eca2d2ae4001c8c2ed6b4459ebb874d51cfa185c739dc11	published annex key
+derivatives/freesurfer/sub-SP05/mri/aseg.mgz	475116	f9e68b32c76f400ed0aa419dc5fe70d96eb7ee1ff2391b78eface64aeeb74d1e	published annex key
+derivatives/freesurfer/sub-SP06/mri/aseg.mgz	350455	9281e066a5aa5884927aaaa977d04f8285d98da48007f2bf182ce1044c082df5	published annex key
+derivatives/freesurfer/sub-SP09/mri/aseg.mgz	430596	2c0cb3a4ac8f36fdf9532cbb96bdf3e80d5e6a03e7310ba8eae20afcbbff7c16	published annex key
+derivatives/freesurfer/sub-SP10/mri/aseg.mgz	354704	3cf02f55e1768dd940d2fd966885edf26821467fd84711ee445dce610e6653a5	published annex key
+derivatives/freesurfer/sub-SP11/mri/aseg.mgz	488980	e6660dff52703aaa68276dfb8ba577d5fbeec22d8f31acacb721360d731d597a	published annex key
+derivatives/freesurfer/sub-SP12/mri/aseg.mgz	417698	796800e524fcac0e58dbaf338fd0af64d071d5ec66400d0f6232d8b91c344cd2	published annex key
+derivatives/freesurfer/sub-SP14/mri/aseg.mgz	382217	382483a44cb354669158f76dc348afc9ccd4b58e4dfd01757d252963e0fcc5f3	published annex key
+derivatives/freesurfer/sub-SP15/mri/aseg.mgz	481446	a171c506646ad85a8228727b481d311eb8db29822cb3129ee9e6ef016eabbfc7	published annex key
+derivatives/freesurfer/sub-SP16/mri/aseg.mgz	384149	d434b8d424b76b6959d073f1d25e5b527c70f19453b8fe70da0f0289d083a4f4	published annex key
+derivatives/freesurfer/sub-SP18/mri/aseg.mgz	382746	2438ddd10ae5eddfa34e78fde805d19a0d18296dc50c8e599831b88c5b042fb9	published annex key
+derivatives/freesurfer/sub-SP20/mri/aseg.mgz	393390	dca57ec0da06936f08771ef5562fa55bd7e1eebca00393aeb178e6f0799586d5	published annex key
+derivatives/freesurfer/sub-SP21/mri/aseg.mgz	392332	8295d7b08c8cc5701898b8ff48244ff9c6711be5112c5b5ee43c51505ad6da31	published annex key
+derivatives/freesurfer/sub-SP22/mri/aseg.mgz	417762	7b863b52dd6e78ce6eb32a71ed66e650b910df79cc46613799eca4ff207c96b5	published annex key
+derivatives/freesurfer/sub-SP23/mri/aseg.mgz	405268	fcac93b1955ba696af70a89eeebfcb82736bb2203a4a8fb41bcf34210b534da5	published annex key
+derivatives/freesurfer/sub-SP26/mri/aseg.mgz	435817	c047b7d4bea527eac1325c06340021d8a165c863646a34f9ea7295b5896e84f5	published annex key
+derivatives/freesurfer/sub-SP28/mri/aseg.mgz	398843	91d52c4f5f8588492b6b975141ca351ef2d3f39eded0532acad89e99e32b8988	published annex key
+derivatives/freesurfer/sub-SP02/mri/orig.mgz	8289711	2e74b6df274e1f60fecdaebe557d8bac4287e1bcc0e52e0c6161cdbe7076ab56	published annex key
+derivatives/freesurfer/sub-SP03/mri/orig.mgz	7683897	7cdc734bf15cb6c5127da8959332be29422fef1b7138b6fae43346f312b8aa12	published annex key
+derivatives/freesurfer/sub-SP05/mri/orig.mgz	6764181	d4ebc0be226aa1e392aa999c12873a2b88c2db0ac1b7b86c88b0295939b72462	published annex key
+derivatives/freesurfer/sub-SP06/mri/orig.mgz	7872871	f54eda1648601af662261d3afeef481cebff5ee4a2eba192c4b9ce6949c0438b	published annex key
+derivatives/freesurfer/sub-SP09/mri/orig.mgz	6018167	30b5668ae229b69773ed5a18c247cb2ce19859a9da5ea53cff11df6be26469c0	published annex key
+derivatives/freesurfer/sub-SP10/mri/orig.mgz	7708007	d90d6dfe9ef139fab6422fc6d7da7e4ad54d865456d2aa3e1c9f51523cf3d589	published annex key
+derivatives/freesurfer/sub-SP11/mri/orig.mgz	7022614	6a56ea5bf23445fc9495d7f9acf8c296b5218a532f16860e08424991925bbb1d	published annex key
+derivatives/freesurfer/sub-SP12/mri/orig.mgz	6137097	d7901e051ee6218979057874ec2a747bf3a30e03a0d0d2baeff6d189ab52b98f	published annex key
+derivatives/freesurfer/sub-SP14/mri/orig.mgz	6092349	8a6519df129c4cb15351e7c3dccf567d1e9f6e90e6982d4859e381c33a72605f	published annex key
+derivatives/freesurfer/sub-SP15/mri/orig.mgz	8527004	3cae1a322d19f3429e2d6feb5082fae7b9f7b066f9cff346cc759613c35dc8e2	published annex key
+derivatives/freesurfer/sub-SP16/mri/orig.mgz	6040534	d57e62c5bf555983d8361108b71f7d8189d60dbe2b605c6246d895df3ccea32a	published annex key
+derivatives/freesurfer/sub-SP18/mri/orig.mgz	5659548	c951cdadf89d003596fc9115c54e5c4e4d62e608df01c80344f76dcb9a80bfce	published annex key
+derivatives/freesurfer/sub-SP20/mri/orig.mgz	7307421	b9908b9269bd304f548531f3c1a8f685c32f80de2ec976db6394e8d8b4f333d4	published annex key
+derivatives/freesurfer/sub-SP21/mri/orig.mgz	6351881	3b40af1b10fe055b4746a317bb44e911d430e03a55253f03dc8658bac5454be6	published annex key
+derivatives/freesurfer/sub-SP22/mri/orig.mgz	5553801	ed8eddfd83730b31d4cc959e9179c8b9831b3ad6af23a58a6ad602193c9ab9bd	published annex key
+derivatives/freesurfer/sub-SP23/mri/orig.mgz	5109512	8f0900ae538057075fe31ba0935050703342b9017bc288a0043585d37b1c8fae	published annex key
+derivatives/freesurfer/sub-SP26/mri/orig.mgz	6098096	5311eb0ea21e0db4036fc63639d44b5a6e67447a8929ff0b15fad9375953e454	published annex key
+derivatives/freesurfer/sub-SP28/mri/orig.mgz	6077969	42681f34a4f6a609a419c626cf7d949e3383867ab91d8bb59c53846e08ac794b	published annex key
+derivatives/freesurfer/sub-SP02/mri/rawavg.mgz	30144437	7227f2b17b9c9eb766afdfefadf392c288d4a207545150eeb985734ef5401e72	published annex key
+derivatives/freesurfer/sub-SP03/mri/rawavg.mgz	28686180	095dbfddbad6f32b50da91c598bc9687b935ba38712222d31b6c9a8ed168daa6	published annex key
+derivatives/freesurfer/sub-SP05/mri/rawavg.mgz	26051775	9a7dd99134950e462e26f39bb0ff27a882e620217bc1299afd5953f9e9e548b3	published annex key
+derivatives/freesurfer/sub-SP06/mri/rawavg.mgz	28936392	2f944efa613cc25896b80015368b0ff6d110db542311f80b3d98d2abb2e0902c	published annex key
+derivatives/freesurfer/sub-SP09/mri/rawavg.mgz	19369246	0ca12319755b5701ae8f4370640b1f9256e55209deada94c968b5920cd389b7a	published annex key
+derivatives/freesurfer/sub-SP10/mri/rawavg.mgz	28594371	b4ac5de77f9a38bddb959e11d07e772039f0d68ebe694bd95f621a73dc17daf8	published annex key
+derivatives/freesurfer/sub-SP11/mri/rawavg.mgz	24356317	d6e6607c5a93c3c0037dc431f7daa063751680eac25d06d83318d31eafb09c9c	published annex key
+derivatives/freesurfer/sub-SP12/mri/rawavg.mgz	23309408	280dfcedd6570048f65368bccb09b2bcaa63ceac61f5c3fde48bb77807c6c161	published annex key
+derivatives/freesurfer/sub-SP14/mri/rawavg.mgz	21071231	37c1b421fe3b47006bd12156046f5722d6802d1b8041273249d7777e97d12170	published annex key
+derivatives/freesurfer/sub-SP15/mri/rawavg.mgz	32009231	561ccb751a5e527d97699a2d55959ad2a2ee0e6ca120f72e56e3f3d28acd4a1a	published annex key
+derivatives/freesurfer/sub-SP16/mri/rawavg.mgz	20923122	2348f744a08e5889170e3a8f5582bbe14c06ab9dbabddc77dbea7e96327a08eb	published annex key
+derivatives/freesurfer/sub-SP18/mri/rawavg.mgz	19589389	e51c0723f2fe3a89eeefff2d0f87bf511bb004f70f514b6a70757a3fc76565c9	published annex key
+derivatives/freesurfer/sub-SP20/mri/rawavg.mgz	26556539	8b52d99a1c0930919c6dea2e493caa57d0f605a9650e32f80d355659ce998507	published annex key
+derivatives/freesurfer/sub-SP21/mri/rawavg.mgz	21210318	83a8b3ed767965331dddf31a58116accb8ca78f50386a2ee8be2dab86f374f65	published annex key
+derivatives/freesurfer/sub-SP22/mri/rawavg.mgz	19440114	7385a2916651c7302430a7e2361bbe9c6d59961c9917ba465995c37651e47965	published annex key
+derivatives/freesurfer/sub-SP23/mri/rawavg.mgz	18980449	2091d4a03e6f4bcdf164f20a45a41944e9eb2b8087adb6b9c5757baca3fa0856	published annex key
+derivatives/freesurfer/sub-SP26/mri/rawavg.mgz	21986381	3e2dd4fe695eff5011420d1c44b514eccf4cbc327ce60532f16d51d432182659	published annex key
+derivatives/freesurfer/sub-SP28/mri/rawavg.mgz	20955487	bbea4c525b2d08b2cff8a6a897961f986b79bc7f22082c4d9d10bfa288040c79	published annex key
+derivatives/freesurfer/sub-SP02/mri/brainmask.mgz	1326175	b13d1cb761c16c7bf3a9738b2185b6023049c090b3ef3a94775f542d4486efc1	published annex key
+derivatives/freesurfer/sub-SP03/mri/brainmask.mgz	2109146	d89877523670323936a62c13a2180323b90fb58c0a6286fd0c5c77ad49c8081b	published annex key
+derivatives/freesurfer/sub-SP05/mri/brainmask.mgz	2221111	99a4d15e20d70c317593b03f8f792a152a44effc0bcbc699950458352c8f5983	published annex key
+derivatives/freesurfer/sub-SP06/mri/brainmask.mgz	1322328	93d5f9101677fb530b45e90a6efbb234c0dc69e715b250fceeaa616a1f739fb5	published annex key
+derivatives/freesurfer/sub-SP09/mri/brainmask.mgz	1732234	2284a2508d236d5a74ec9b10e5757e6b520a22e1e2d16f1f85009634e729f819	published annex key
+derivatives/freesurfer/sub-SP10/mri/brainmask.mgz	1415106	b820806fc7fddbd3eb25ff377bea26d161e411b0b6a876da72bdb8484b9c3d8f	published annex key
+derivatives/freesurfer/sub-SP11/mri/brainmask.mgz	2045222	77174a6abb7c648909fc6054c07579228dab2aa5c593cd6ea9f69fc3e81cf4d1	published annex key
+derivatives/freesurfer/sub-SP12/mri/brainmask.mgz	1799958	3fd4cc9f594ad6224ee84948384d9ad9d7732fee1830b2951b667b252c29573f	published annex key
+derivatives/freesurfer/sub-SP14/mri/brainmask.mgz	1353423	ca5fae52475d08845e46911868cfce6038a77e1516a65d840977d166d27f3f17	published annex key
+derivatives/freesurfer/sub-SP15/mri/brainmask.mgz	1995101	fbac411b1c28d4007c9e77ba329b295c2fbaec8482780ebfad21868d5ad02533	published annex key
+derivatives/freesurfer/sub-SP16/mri/brainmask.mgz	1509103	d5c0f4aa8a8735bb62038fafb9f94b5cf1b06ea142e3acc7aa37aff209a143ca	published annex key
+derivatives/freesurfer/sub-SP18/mri/brainmask.mgz	1506010	afa72c27b9a38c9d2b33daa17f70dc23e73ca85b2121512e3da75f286555966b	published annex key
+derivatives/freesurfer/sub-SP20/mri/brainmask.mgz	1516368	a67aed11f1c8d0b6c35253fa630dbfb3127cd7ad7359551775a92e47b53070da	published annex key
+derivatives/freesurfer/sub-SP21/mri/brainmask.mgz	1548726	78f3952b47dac881f2b9ca0bdd81544e1b2fab5257c4117f92c04863cb8c5380	published annex key
+derivatives/freesurfer/sub-SP22/mri/brainmask.mgz	1650834	d44013e17a9420408c0c2eb317e879f779657d5938feeecb120fa6bcba52912e	published annex key
+derivatives/freesurfer/sub-SP23/mri/brainmask.mgz	1590612	7f17b3322cc2123f7a31f1d5794dd5f82679821b3bd92cf7233aa06a4e416973	published annex key
+derivatives/freesurfer/sub-SP26/mri/brainmask.mgz	1766763	75505c56d84d89aa9be08cfa42a061f1884b384ec58b71f7f3b26a41eccfae27	published annex key
+derivatives/freesurfer/sub-SP28/mri/brainmask.mgz	1668591	45bd998970140babda3a1a7a631eb20471f3ba5fbd77a48525db3159d9260584	published annex key
+derivatives/freesurfer/sub-SP02/mri/T1.mgz	6571487	2e714f6d57ef9f3e1fd20c295396e4e28c9721a3bc8dc37791952f9ce0fbab58	published annex key
+derivatives/freesurfer/sub-SP03/mri/T1.mgz	6550932	6232827506c573574a8ff24d75d168d83ce790775fde35e02111ccc90cc47386	published annex key
+derivatives/freesurfer/sub-SP05/mri/T1.mgz	5823974	f8d372f266a2534bf85ecd4921422a15969462abd1ac4e9f34a109255fe0021d	published annex key
+derivatives/freesurfer/sub-SP06/mri/T1.mgz	5150736	9c11aa7faf3f003b3610b4e539c6742e51ddf4ef419aee7b56ed9abd674f8f54	published annex key
+derivatives/freesurfer/sub-SP09/mri/T1.mgz	5178700	78f6b78d4a5100b6f961d0ddcee7ce8063eab0ace11e0788831aa7194bbdf028	published annex key
+derivatives/freesurfer/sub-SP10/mri/T1.mgz	6101333	f6358c6a689dbce83f29b0add789c9b7e48b85f65a55af1a2efc83b8ab3fb3b3	published annex key
+derivatives/freesurfer/sub-SP11/mri/T1.mgz	5764309	1e6366e7be6e9c5d718af95b3c9ffdd71d9cf8fb50575287dbcdb319dde8e249	published annex key
+derivatives/freesurfer/sub-SP12/mri/T1.mgz	5084304	dab6de4e55b2fc75c9feeaa68cc49462513f238e6b6eb1989e7f6d1466436b6e	published annex key
+derivatives/freesurfer/sub-SP14/mri/T1.mgz	5301928	5a6a499044f9a49f430dcb02d978f59c308349e3e32f08da44aeeca156069a54	published annex key
+derivatives/freesurfer/sub-SP15/mri/T1.mgz	7563460	487416658a591af37add49a05b2aa721bf2bebd0b752ab74bd58a5bc4337a431	published annex key
+derivatives/freesurfer/sub-SP16/mri/T1.mgz	4524605	002f3dd838116d0caf26fa1eb16d9c81606ed3415d59b9b2130654fb903a1428	published annex key
+derivatives/freesurfer/sub-SP18/mri/T1.mgz	4035880	4a2d2d8cf1d90e41e70f109dbddcb855e2e5096d27871357f05252202596dc09	published annex key
+derivatives/freesurfer/sub-SP20/mri/T1.mgz	5627742	8f894c60d29ab3ef91b3788c2845a1c97e0d8f9c2af29c5cc783a481a5dcf520	published annex key
+derivatives/freesurfer/sub-SP21/mri/T1.mgz	5097563	1a06b2048e2294fa8a82fbfa62918980b5f71f747be80c2b68ecf22e0952663f	published annex key
+derivatives/freesurfer/sub-SP22/mri/T1.mgz	4656947	5f954114c8ab41caf64d16a3b2540826d818ef1e28d632533fdd37b890c66c57	published annex key
+derivatives/freesurfer/sub-SP23/mri/T1.mgz	4023314	3385024c56120f1e8f0d5af7fb24cafb13c94bd48dd0faaf7e3364a59b45d1ee	published annex key
+derivatives/freesurfer/sub-SP26/mri/T1.mgz	4747652	ed545e188a66aa0de1fb7d643a01abba184999eecf40a8f7fb7a36ff21162fb6	published annex key
+derivatives/freesurfer/sub-SP28/mri/T1.mgz	4811037	5ea815b5ef71e053e8c2513371b4b4a05a568dd02d058dea305ecf689ae4bab4	published annex key
+derivatives/freesurfer/sub-SP02/scripts/recon-all.done	652	1e401fb17e13a82bdbbf7b5f1484fb778e9698d9afaea3c0dd1ba56cd473c536	published annex key
+derivatives/freesurfer/sub-SP03/scripts/recon-all.done	652	b70718d5fd607c2e695d9a264a0e2fc2d9d564c22938a4815f19dd24656ca182	published annex key
+derivatives/freesurfer/sub-SP05/scripts/recon-all.done	652	6456c398876c7dbac532c00e0279fdc15cd70764a23bba0e348ae3616e7a6e98	published annex key
+derivatives/freesurfer/sub-SP06/scripts/recon-all.done	652	09d1b5ed6d6b0bb3b1b812162719bd04d839fde1fb2063c407fcfd02d58f14f4	published annex key
+derivatives/freesurfer/sub-SP09/scripts/recon-all.done	652	d9a21c846b467d8140deb7a189aec7b579e785314043f333286393ad4bda2cf9	published annex key
+derivatives/freesurfer/sub-SP10/scripts/recon-all.done	652	615de7a05085f798099f6df1c9228a5f500851cd741d3f52c7ea4d16e0ad5146	published annex key
+derivatives/freesurfer/sub-SP11/scripts/recon-all.done	652	7b5437a61c04093dd7c79b9a0710a2cff073f40a01cd1d97bdb4365eff683e8d	published annex key
+derivatives/freesurfer/sub-SP12/scripts/recon-all.done	652	838669a9451a43de9379920746eb7319e156e85211fc3c3d9912594e223b09df	published annex key
+derivatives/freesurfer/sub-SP14/scripts/recon-all.done	652	3d71be76702d6e909b3dda3b91deca93738999a623bc1bbc46de4f60f3396b4d	published annex key
+derivatives/freesurfer/sub-SP15/scripts/recon-all.done	652	c6797978d1a1619b6eb82b4296816df18ea517a75c67d729d7dd9ba64dd859cc	published annex key
+derivatives/freesurfer/sub-SP16/scripts/recon-all.done	652	68dd6781dc178a9f56fb04b81f226a6229b2ab94e425e569637e311838bc33b8	published annex key
+derivatives/freesurfer/sub-SP18/scripts/recon-all.done	652	5f720561dd8637deea5c4f60cd1ddc89c117de689ddde9533616c95c02eb4a6b	published annex key
+derivatives/freesurfer/sub-SP20/scripts/recon-all.done	652	e7db99b38cad5bdbf563cb3ad80dde29306ae6d604ac6695b8a340a125053766	published annex key
+derivatives/freesurfer/sub-SP21/scripts/recon-all.done	652	819ac16f055aeb2578100f9a96e8f3cec405cc7710a629d7a86a6050d0ec4bcd	published annex key
+derivatives/freesurfer/sub-SP22/scripts/recon-all.done	652	abc5f88a582a990e7cbe21c9e302889a7935cbd029063e2d3d7bc6716050150c	published annex key
+derivatives/freesurfer/sub-SP23/scripts/recon-all.done	652	8ad6f9724cdad756a4a376e855e7ed45b86cee217c7b341add1723e60f6b228c	published annex key
+derivatives/freesurfer/sub-SP26/scripts/recon-all.done	652	e69a1776e9384f222444a409d3dcba5be9da056c2e0f69e751cae7828d19b7b8	published annex key
+derivatives/freesurfer/sub-SP28/scripts/recon-all.done	652	d13f7e478b05999218d84167e2d8941620bec3a7c5ce92a986696b69757e4644	published annex key
+derivatives/freesurfer/sub-SP02/scripts/build-stamp.txt	47	04272d9b639d600d0bb839a6bcb94337f3adb9536d49068a38360d0d01d85213	published annex key
+derivatives/freesurfer/sub-SP03/scripts/build-stamp.txt	47	04272d9b639d600d0bb839a6bcb94337f3adb9536d49068a38360d0d01d85213	published annex key
+derivatives/freesurfer/sub-SP05/scripts/build-stamp.txt	47	04272d9b639d600d0bb839a6bcb94337f3adb9536d49068a38360d0d01d85213	published annex key
+derivatives/freesurfer/sub-SP06/scripts/build-stamp.txt	47	04272d9b639d600d0bb839a6bcb94337f3adb9536d49068a38360d0d01d85213	published annex key
+derivatives/freesurfer/sub-SP09/scripts/build-stamp.txt	47	04272d9b639d600d0bb839a6bcb94337f3adb9536d49068a38360d0d01d85213	published annex key
+derivatives/freesurfer/sub-SP10/scripts/build-stamp.txt	47	04272d9b639d600d0bb839a6bcb94337f3adb9536d49068a38360d0d01d85213	published annex key
+derivatives/freesurfer/sub-SP11/scripts/build-stamp.txt	47	04272d9b639d600d0bb839a6bcb94337f3adb9536d49068a38360d0d01d85213	published annex key
+derivatives/freesurfer/sub-SP12/scripts/build-stamp.txt	47	04272d9b639d600d0bb839a6bcb94337f3adb9536d49068a38360d0d01d85213	published annex key
+derivatives/freesurfer/sub-SP14/scripts/build-stamp.txt	47	04272d9b639d600d0bb839a6bcb94337f3adb9536d49068a38360d0d01d85213	published annex key
+derivatives/freesurfer/sub-SP15/scripts/build-stamp.txt	47	04272d9b639d600d0bb839a6bcb94337f3adb9536d49068a38360d0d01d85213	published annex key
+derivatives/freesurfer/sub-SP16/scripts/build-stamp.txt	47	04272d9b639d600d0bb839a6bcb94337f3adb9536d49068a38360d0d01d85213	published annex key
+derivatives/freesurfer/sub-SP18/scripts/build-stamp.txt	47	04272d9b639d600d0bb839a6bcb94337f3adb9536d49068a38360d0d01d85213	published annex key
+derivatives/freesurfer/sub-SP20/scripts/build-stamp.txt	47	04272d9b639d600d0bb839a6bcb94337f3adb9536d49068a38360d0d01d85213	published annex key
+derivatives/freesurfer/sub-SP21/scripts/build-stamp.txt	47	04272d9b639d600d0bb839a6bcb94337f3adb9536d49068a38360d0d01d85213	published annex key
+derivatives/freesurfer/sub-SP22/scripts/build-stamp.txt	47	04272d9b639d600d0bb839a6bcb94337f3adb9536d49068a38360d0d01d85213	published annex key
+derivatives/freesurfer/sub-SP23/scripts/build-stamp.txt	47	04272d9b639d600d0bb839a6bcb94337f3adb9536d49068a38360d0d01d85213	published annex key
+derivatives/freesurfer/sub-SP26/scripts/build-stamp.txt	47	04272d9b639d600d0bb839a6bcb94337f3adb9536d49068a38360d0d01d85213	published annex key
+derivatives/freesurfer/sub-SP28/scripts/build-stamp.txt	47	04272d9b639d600d0bb839a6bcb94337f3adb9536d49068a38360d0d01d85213	published annex key
+derivatives/freesurfer/sub-SP02/scripts/recon-all.cmd	57269	f4c2b236e490bb1cc6c8b1a2c73d62f168b258284cdcfe0c77f60bc49c47968e	published annex key
+derivatives/freesurfer/sub-SP03/scripts/recon-all.cmd	57269	ec5633175866e1ffbadc2736e4f9e70a55fe5e9cf6bb9f0597d0253f29427694	published annex key
+derivatives/freesurfer/sub-SP05/scripts/recon-all.cmd	57269	69576335e5c8f47a7ae5136f98bebc1d85ced0f004f537c7621fc405ed50aa6a	published annex key
+derivatives/freesurfer/sub-SP06/scripts/recon-all.cmd	57269	132c7b74819191e2e5352223ca529ed564857976fb386cf68edff7f9dfb95b55	published annex key
+derivatives/freesurfer/sub-SP09/scripts/recon-all.cmd	57269	6808276790aa13013191b8594d89605234c0891fa96a4342beb2785b63c6833a	published annex key
+derivatives/freesurfer/sub-SP10/scripts/recon-all.cmd	57269	8aaca963c11f4207b6a1db02a4ef003c05583bb6b753f028f6e28dafc272115a	published annex key
+derivatives/freesurfer/sub-SP11/scripts/recon-all.cmd	57269	e34649409a52fde721b426429739f94a12423895a8debcab83147bc0e04a26be	published annex key
+derivatives/freesurfer/sub-SP12/scripts/recon-all.cmd	57269	b0d1f31772e7397775f1a9c997d47545048f1b76e8a2706c4e362047fd51e69e	published annex key
+derivatives/freesurfer/sub-SP14/scripts/recon-all.cmd	57269	ff7eb797e26fad09d17280034ec8d1f0b652a3014b5864ae559e62841747264c	published annex key
+derivatives/freesurfer/sub-SP15/scripts/recon-all.cmd	57269	5dfd1845476de75f57fb62051a7ce009d42b6d649b095d452ba4136921c2edb4	published annex key
+derivatives/freesurfer/sub-SP16/scripts/recon-all.cmd	57269	9de37d7fe57db38b01d486a58d1cb3eb06fff3cd662a4dffc91fdde4cb70629e	published annex key
+derivatives/freesurfer/sub-SP18/scripts/recon-all.cmd	57269	4e769e10decb3547376b3172c9d5a3cf46e82e5c7356ce4214d6d7321a3e371d	published annex key
+derivatives/freesurfer/sub-SP20/scripts/recon-all.cmd	57269	b910e35dfc53b7828f595ed70052fcb076e00fec4a4a92a7af98a433623c0390	published annex key
+derivatives/freesurfer/sub-SP21/scripts/recon-all.cmd	57269	299da1bfae364deffe6cdf9098caac167e7cab7ee9948ff534f036edc7ee85ed	published annex key
+derivatives/freesurfer/sub-SP22/scripts/recon-all.cmd	57269	bfe9cd91175d9a615985f9ee7d2d7607e5ed6735f8535119391a872f8c76c2ed	published annex key
+derivatives/freesurfer/sub-SP23/scripts/recon-all.cmd	57269	5433410c32aa4ee8f14079e7b82a87d2bdda3f9887b0d18a33ebdaede20d30f9	published annex key
+derivatives/freesurfer/sub-SP26/scripts/recon-all.cmd	57269	db7087cddf50535eff22a78b8db0ada7ebcc38c5d119ace960307a92a7aaf24a	published annex key
+derivatives/freesurfer/sub-SP28/scripts/recon-all.cmd	57269	98b4ce5496b546b0243e15bd5489f8a469f3449f7bf34e717c94c7a70fb5ee93	published annex key
+derivatives/rcps-modified-petprep/dataset_description.json	393	f71e98c9ee730a88d491a97a5c12a48ec94b616c3e5c4f20b0efbc4898a797b3	published git blob (1.0.0 = 1.0.1)
+derivatives/rcps-modified-petprep/sub-SP02/ses-Asleep/pet/sub-SP02_ses-Asleep_from-pet_to-T1w_reg.lta	1837	376fd8abbeffb6f0553c83a58fca634791faecad8c81f163a876a74303acb214	published annex key
+derivatives/rcps-modified-petprep/sub-SP02/ses-Awake/pet/sub-SP02_ses-Awake_from-pet_to-T1w_reg.lta	1833	e3af18928bed4324e599d772ba861ed562f48525706b9b36a5e65e432b086393	published annex key
+derivatives/rcps-modified-petprep/sub-SP02/ses-SleepDeprived/pet/sub-SP02_ses-SleepDeprived_from-pet_to-T1w_reg.lta	1865	c2cf8355f4de2b9e1dc8b0370abd3d8154adaaa01a750835fea8a4cd3536dd5a	published annex key
+derivatives/rcps-modified-petprep/sub-SP03/ses-Asleep/pet/sub-SP03_ses-Asleep_from-pet_to-T1w_reg.lta	1837	ff9e18601a58d7607ef62dbc027095294ebfc431f29c12610c80742cb0e6e937	published annex key
+derivatives/rcps-modified-petprep/sub-SP03/ses-Awake/pet/sub-SP03_ses-Awake_from-pet_to-T1w_reg.lta	1833	a6a22eb95c872e9fea7e2c99a25897b9a38e34ac7226a26ab24becb88003d993	published annex key
+derivatives/rcps-modified-petprep/sub-SP03/ses-SleepDeprived/pet/sub-SP03_ses-SleepDeprived_from-pet_to-T1w_reg.lta	1865	d35a7b5732789cc0f970f7312dc737abfcea31b013b89f3548ad8043836f5a82	published annex key
+derivatives/rcps-modified-petprep/sub-SP05/ses-Asleep/pet/sub-SP05_ses-Asleep_from-pet_to-T1w_reg.lta	1837	a496e2da68efd3d71678201e440727a8606553fdda85b59be1e1b863aede3b12	published annex key
+derivatives/rcps-modified-petprep/sub-SP05/ses-Awake/pet/sub-SP05_ses-Awake_from-pet_to-T1w_reg.lta	1833	7e8b61f0962c30612806a34287c2f8f5785ef518db7fd97ed61233b71e9fee2f	published annex key
+derivatives/rcps-modified-petprep/sub-SP05/ses-SleepDeprived/pet/sub-SP05_ses-SleepDeprived_from-pet_to-T1w_reg.lta	1865	8ede129d490a2ec5a582947969da2f43c5af667d2b1838682cb20477db616f2d	published annex key
+derivatives/rcps-modified-petprep/sub-SP06/ses-Asleep/pet/sub-SP06_ses-Asleep_from-pet_to-T1w_reg.lta	1837	1326db0285a3a08fc1002ba081d54d056619b7df860bf984b59878bb29e192d9	published annex key
+derivatives/rcps-modified-petprep/sub-SP06/ses-Awake/pet/sub-SP06_ses-Awake_from-pet_to-T1w_reg.lta	1833	3b5c3e4e265e959d144edf169079ae44dff33d96d65ffb04d8db3a9f9209cdae	published annex key
+derivatives/rcps-modified-petprep/sub-SP06/ses-SleepDeprived/pet/sub-SP06_ses-SleepDeprived_from-pet_to-T1w_reg.lta	1865	57ce4fd8c43161194fb3542d789ac5d9e094dc7b5796c42f2588c6bab5609968	published annex key
+derivatives/rcps-modified-petprep/sub-SP09/ses-Asleep/pet/sub-SP09_ses-Asleep_from-pet_to-T1w_reg.lta	1837	746304648c09e6ec2f19d1d1fe4ea9e8829b591f4fa01bfa20f86da854006219	published annex key
+derivatives/rcps-modified-petprep/sub-SP09/ses-Awake/pet/sub-SP09_ses-Awake_from-pet_to-T1w_reg.lta	1833	dd6872a1515777ecf3f1800dd8161615ad27c4cad0b01698b56156b5552fcc1d	published annex key
+derivatives/rcps-modified-petprep/sub-SP09/ses-SleepDeprived/pet/sub-SP09_ses-SleepDeprived_from-pet_to-T1w_reg.lta	1865	b97c61b4f42f4d23cd071dfcfd7a9757ee7b5c5427fe22ff397bf37363617808	published annex key
+derivatives/rcps-modified-petprep/sub-SP10/ses-Asleep/pet/sub-SP10_ses-Asleep_from-pet_to-T1w_reg.lta	1837	e858a06c0d287c42fa8ec10c77b33594abdd53baa4f6970c93d5dd98fc1eb185	published annex key
+derivatives/rcps-modified-petprep/sub-SP10/ses-Awake/pet/sub-SP10_ses-Awake_from-pet_to-T1w_reg.lta	1833	e8d0f89517868b4896910109284acf7b204c0da80be9605d7effc3814f8e79a7	published annex key
+derivatives/rcps-modified-petprep/sub-SP10/ses-SleepDeprived/pet/sub-SP10_ses-SleepDeprived_from-pet_to-T1w_reg.lta	1865	2fb542d2017c8336b61d127e933fbc46473a37c044c5c72a752ec2c457266c1f	published annex key
+derivatives/rcps-modified-petprep/sub-SP11/ses-Asleep/pet/sub-SP11_ses-Asleep_from-pet_to-T1w_reg.lta	1837	22de079e5e3ef04c4a2aab7aa1a27e20565a7197691fb3fcf1cfd58d891dbf59	published annex key
+derivatives/rcps-modified-petprep/sub-SP11/ses-Awake/pet/sub-SP11_ses-Awake_from-pet_to-T1w_reg.lta	1834	579f5ea068c6a618110504ff698415b15c61bc6dd9e81dc8d9d141593413aaba	published annex key
+derivatives/rcps-modified-petprep/sub-SP11/ses-SleepDeprived/pet/sub-SP11_ses-SleepDeprived_from-pet_to-T1w_reg.lta	1865	0d6395777feb0e37ad6bbf0c7cced3c1d960292d3eaaa1bd0110379706a079da	published annex key
+derivatives/rcps-modified-petprep/sub-SP12/ses-Asleep/pet/sub-SP12_ses-Asleep_from-pet_to-T1w_reg.lta	1837	0f6f2a8a92af431394980ad86ba7fa43722b6eee86f967b18ef68e603be6c9f4	published annex key
+derivatives/rcps-modified-petprep/sub-SP12/ses-Awake/pet/sub-SP12_ses-Awake_from-pet_to-T1w_reg.lta	1833	b52ac0a9cfe8f06ef7002771ba32c9db7d3a44f59c364d2ecdfff2bc2b6d02a7	published annex key
+derivatives/rcps-modified-petprep/sub-SP12/ses-SleepDeprived/pet/sub-SP12_ses-SleepDeprived_from-pet_to-T1w_reg.lta	1865	052c724ba814e01e15df985ee10864de4cd33cc948fbbe60181360a0ccefd2d9	published annex key
+derivatives/rcps-modified-petprep/sub-SP14/ses-Asleep/pet/sub-SP14_ses-Asleep_from-pet_to-T1w_reg.lta	1837	88a1218821bf239c1ce555e2180f14deb86a3270a3e681ca4e8a8ae569df562b	published annex key
+derivatives/rcps-modified-petprep/sub-SP14/ses-Awake/pet/sub-SP14_ses-Awake_from-pet_to-T1w_reg.lta	1833	a2aee7804f2f553e68eb0302b272a6a12b3ba7999ac627d659a9d83f545e86cd	published annex key
+derivatives/rcps-modified-petprep/sub-SP14/ses-SleepDeprived/pet/sub-SP14_ses-SleepDeprived_from-pet_to-T1w_reg.lta	1865	4472338b792bc22e4c7fd6585804f393241256a40c75f52ccbbaf74dca3741af	published annex key
+derivatives/rcps-modified-petprep/sub-SP15/ses-Asleep/pet/sub-SP15_ses-Asleep_from-pet_to-T1w_reg.lta	1837	50d6b8d035b8103baffa797f87740034fdc0d8ab1748df5ab8f90da97c32d287	published annex key
+derivatives/rcps-modified-petprep/sub-SP15/ses-Awake/pet/sub-SP15_ses-Awake_from-pet_to-T1w_reg.lta	1833	5041382dca6ed09e36b95fd8a14c6fee5117cc33d38cdba677f076712f6343da	published annex key
+derivatives/rcps-modified-petprep/sub-SP15/ses-SleepDeprived/pet/sub-SP15_ses-SleepDeprived_from-pet_to-T1w_reg.lta	1865	c47edcefdca1365861c2f1ac4f408858355fc22af6d2a95ef1ce66c7de310349	published annex key
+derivatives/rcps-modified-petprep/sub-SP16/ses-Asleep/pet/sub-SP16_ses-Asleep_from-pet_to-T1w_reg.lta	1837	cf3917df413b0862e1418948ac7ce924d87195015061b497918e6e44d701b599	published annex key
+derivatives/rcps-modified-petprep/sub-SP16/ses-Awake/pet/sub-SP16_ses-Awake_from-pet_to-T1w_reg.lta	1833	f05f4acf02c4d3740ad84056c7c116357b8ba0924e4ae716438fe1f1b419b0a6	published annex key
+derivatives/rcps-modified-petprep/sub-SP16/ses-SleepDeprived/pet/sub-SP16_ses-SleepDeprived_from-pet_to-T1w_reg.lta	1865	e5a7e1d8d922c9a29d52fecac038ae88f8a733ef7050819dcfdaf4f01d85105c	published annex key
+derivatives/rcps-modified-petprep/sub-SP18/ses-Asleep/pet/sub-SP18_ses-Asleep_from-pet_to-T1w_reg.lta	1837	dbeb53b49cd9b4c07ff59add97ef4a23570075c4162dfe979e8bb42a2e1a8fa7	published annex key
+derivatives/rcps-modified-petprep/sub-SP18/ses-Awake/pet/sub-SP18_ses-Awake_from-pet_to-T1w_reg.lta	1833	7649c10a166398dcce37fd9ed71b9c81582403713630ff3eeec90d968d9b2110	published annex key
+derivatives/rcps-modified-petprep/sub-SP18/ses-SleepDeprived/pet/sub-SP18_ses-SleepDeprived_from-pet_to-T1w_reg.lta	1865	7abc9c24bc24160aac1de3896cbb91db6a0c08aa0e4bf5ffc4f3a5593d7b2d2b	published annex key
+derivatives/rcps-modified-petprep/sub-SP20/ses-Asleep/pet/sub-SP20_ses-Asleep_from-pet_to-T1w_reg.lta	1837	d43f74b42a2c9ab995448fa075a920fd8a2470ef025b92ad1523dfc312930f35	published annex key
+derivatives/rcps-modified-petprep/sub-SP20/ses-Awake/pet/sub-SP20_ses-Awake_from-pet_to-T1w_reg.lta	1833	cbc19f918905be22a40a605e8430b2083ef49d249d101785b7438501c859db6e	published annex key
+derivatives/rcps-modified-petprep/sub-SP20/ses-SleepDeprived/pet/sub-SP20_ses-SleepDeprived_from-pet_to-T1w_reg.lta	1865	6372c5037a483817beb0ab09b9a66b2b56f036761eb5fc8d6c58288cbf7289aa	published annex key
+derivatives/rcps-modified-petprep/sub-SP21/ses-Asleep/pet/sub-SP21_ses-Asleep_from-pet_to-T1w_reg.lta	1837	ee415a556564bb539d8b97296fdbe5a239e37abfecda63993d3a7d07a1ae6f82	published annex key
+derivatives/rcps-modified-petprep/sub-SP21/ses-Awake/pet/sub-SP21_ses-Awake_from-pet_to-T1w_reg.lta	1833	c5ca8b6ea8fb032ab3b4113906b96dcd46cc2e8eebc27590a17794d2f4a0a3f2	published annex key
+derivatives/rcps-modified-petprep/sub-SP21/ses-SleepDeprived/pet/sub-SP21_ses-SleepDeprived_from-pet_to-T1w_reg.lta	1865	34a3afde54953e4a350d0e3841a2703582e8aa4667debd25a4610f9f19ac2649	published annex key
+derivatives/rcps-modified-petprep/sub-SP22/ses-Asleep/pet/sub-SP22_ses-Asleep_from-pet_to-T1w_reg.lta	1837	94d6616081a5c9081e61a7a4aa501e9b1be367c8f7acab08def8dafceee920f5	published annex key
+derivatives/rcps-modified-petprep/sub-SP22/ses-Awake/pet/sub-SP22_ses-Awake_from-pet_to-T1w_reg.lta	1833	2b4d205df9c63caa29b84d39b87af4eddc96eed9e984c3a6809f411b41abc8ad	published annex key
+derivatives/rcps-modified-petprep/sub-SP22/ses-SleepDeprived/pet/sub-SP22_ses-SleepDeprived_from-pet_to-T1w_reg.lta	1865	8ad53bab98a17d6f26e7b29a96a5d7be47226a134f3a05ff355db1290687f191	published annex key
+derivatives/rcps-modified-petprep/sub-SP23/ses-Asleep/pet/sub-SP23_ses-Asleep_from-pet_to-T1w_reg.lta	1837	100d8f4f5437fcf9542022beaaab813bb51e209971c2cef7297d6148430f7060	published annex key
+derivatives/rcps-modified-petprep/sub-SP23/ses-Awake/pet/sub-SP23_ses-Awake_from-pet_to-T1w_reg.lta	1833	e0ac130c05917ba00c514d1ecea4835868e1319162c1f03d635e8b263c46a71d	published annex key
+derivatives/rcps-modified-petprep/sub-SP23/ses-SleepDeprived/pet/sub-SP23_ses-SleepDeprived_from-pet_to-T1w_reg.lta	1865	8f9b840ae45b8c6802bab00fc1ceb04b4813a23fb97107662d53bbeedbe5f690	published annex key
+derivatives/rcps-modified-petprep/sub-SP26/ses-Asleep/pet/sub-SP26_ses-Asleep_from-pet_to-T1w_reg.lta	1837	996d194336f854d0633002f0017cd2565279f3b99e7f9c0b86c912e6de868b5e	published annex key
+derivatives/rcps-modified-petprep/sub-SP26/ses-Awake/pet/sub-SP26_ses-Awake_from-pet_to-T1w_reg.lta	1833	686891a89535b5e61aaa52b5cacffd1691b309eb17aed270ac3f993b9278361c	published annex key
+derivatives/rcps-modified-petprep/sub-SP26/ses-SleepDeprived/pet/sub-SP26_ses-SleepDeprived_from-pet_to-T1w_reg.lta	1865	6eed1a9d28235703e41b03c30bd615e3b64d8cecec3b821d226f05fe87b92d74	published annex key
+derivatives/rcps-modified-petprep/sub-SP28/ses-Asleep/pet/sub-SP28_ses-Asleep_from-pet_to-T1w_reg.lta	1837	506742cc5565d9e63c7b39e3a43c0d5ebefd40d99ae023f86eec66152c9cb96e	published annex key
+derivatives/rcps-modified-petprep/sub-SP28/ses-Awake/pet/sub-SP28_ses-Awake_from-pet_to-T1w_reg.lta	1833	531e4033cef8e75656f71dc08b22271393a5815d30c7c33a76054ecab8095c07	published annex key
+derivatives/rcps-modified-petprep/sub-SP28/ses-SleepDeprived/pet/sub-SP28_ses-SleepDeprived_from-pet_to-T1w_reg.lta	1865	fda0f2b5af851bb7368f79076b35d379cd66c854a94872cf9caff411bcedeebf	published annex key

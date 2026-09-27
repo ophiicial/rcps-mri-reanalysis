@@ -1,0 +1,22 @@
+# Template for machine-specific paths. Do NOT put real paths in this file.
+# Copy it to configs/paths.local.yaml (git-ignored) and fill in the values for your machine.
+# Relative paths are resolved against the repository root.
+
+# Root of the canonical OpenNeuro ds004733 BIDS dataset (must contain participants.tsv,
+# dataset_description.json, sub-*/ and derivatives/). Treated as read-only.
+bids_root: "<PATH_TO_ds004733_BIDS_ROOT>"
+
+# Derivative locations, relative to bids_root. Change these only if your copy is laid out differently.
+derivatives:
+  freesurfer: "derivatives/freesurfer"
+  rcps: "derivatives/rCPS"
+  petprep: "derivatives/rcps-modified-petprep"
+
+# Root for run-specific output directories (outputs/<YYYYMMDD-HHMMSS>_<run-name>_<shortsha>/).
+outputs_root: "outputs"
+
+# ---- Optional, QC / provenance only (never used as analysis inputs) -------------------------------
+# Other local copies of the dataset to compare against bids_root (e.g. a derivatives-only copy).
+comparison_roots: []            # e.g. ["<PATH_TO_OTHER_COPY>"]
+# Historical FinalTry repository (read-only), used only for the historical-registration comparison.
+historical_finaltry: null       # e.g. "<PATH_TO_FinalTry>"
