@@ -1,0 +1,9 @@
+{
+  "include": ["src", "tests"],
+  "extraPaths": ["src"],
+  "pythonVersion": "3.12",
+  "typeCheckingMode": "standard",
+  "enableTypeIgnoreComments": false,
+  "reportUnnecessaryTypeIgnoreComment": "error",
+  "reportPossiblyUnboundVariable": "error"
+}

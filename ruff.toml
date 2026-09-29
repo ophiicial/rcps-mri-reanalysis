@@ -1,0 +1,5 @@
+target-version = "py312"
+src = ["src", "tests"]
+
+[lint]
+select = ["F", "B006", "B008", "B905", "NPY"]

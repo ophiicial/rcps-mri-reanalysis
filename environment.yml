@@ -11,3 +11,5 @@ dependencies:
   - pyyaml
   - pytest
   - nibabel   # NIfTI/MGZ I/O for imaging QC and ROI extraction
+  - pyright   # static analysis / LSP only; never imported by analysis code
+  - ruff      # lint only (no formatter); never imported by analysis code
