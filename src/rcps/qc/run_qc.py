@@ -33,7 +33,7 @@ def _tsv(rows, path: Path):
     path.parent.mkdir(parents=True, exist_ok=True)
     df = pd.DataFrame(rows)
     for col in df.columns:
-        if df[col].map(lambda v: isinstance(v, (list, dict))).any():
+        if df[col].map(lambda v: isinstance(v, (list, dict))).any():  # pyright: ignore[reportGeneralTypeIssues] -- pandas types Series.any() as Series | bool; a Series returns bool
             df[col] = df[col].map(lambda v: json.dumps(v, default=_json_default) if isinstance(v, (list, dict)) else v)
     df.to_csv(path, sep="\t", index=False)
     return df

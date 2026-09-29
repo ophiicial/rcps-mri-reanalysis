@@ -8,8 +8,8 @@ from __future__ import annotations
 import argparse
 import sys
 from concurrent.futures import ProcessPoolExecutor
+from typing import cast
 
-import nibabel as nib
 import numpy as np
 import pandas as pd
 from scipy import ndimage
@@ -28,13 +28,13 @@ DIST_BINS_MM = [(0, 2), (2, 5), (5, 10), (10, 999)]
 
 def one_scan(args) -> dict:
     subject, cond, P = args
-    img = nib.load(spatial.rcps_map(P.rcps, subject, cond))
+    img = spatial.load_spatial_image(spatial.rcps_map(P.rcps, subject, cond))
     d = np.asarray(img.dataobj, np.float32)
-    ap = nib.load(P.freesurfer / subject / "mri" / "aparc+aseg.mgz")
-    bm = nib.load(P.freesurfer / subject / "mri" / "brainmask.mgz")
+    ap = spatial.load_spatial_image(P.freesurfer / subject / "mri" / "aparc+aseg.mgz")
+    bm = spatial.load_spatial_image(P.freesurfer / subject / "mri" / "brainmask.mgz")
     lab = labels.resample_labels_nn(np.asarray(ap.dataobj).astype(np.int32), ap.affine, d.shape, img.affine)
     B = labels.resample_labels_nn((np.asarray(bm.dataobj) > 0).astype(np.uint8), bm.affine, d.shape, img.affine) > 0
-    mm_img = nib.load(P.petprep / subject / f"ses-{cond}" / "pet" / f"{subject}_ses-{cond}_desc-mc_mean.nii.gz")
+    mm_img = spatial.load_spatial_image(P.petprep / subject / f"ses-{cond}" / "pet" / f"{subject}_ses-{cond}_desc-mc_mean.nii.gz")
     m = np.asarray(mm_img.dataobj, np.float32)
     ctx = np.isin(lab, list(labels.dk_cortical_labels()))
     z = d == 0
@@ -52,7 +52,7 @@ def one_scan(args) -> dict:
          "ctx_pos_0p2_0p22_n": int(((cv >= 0.2) & (cv < 0.22)).sum())}
     dist = ndimage.distance_transform_edt(B)  # mm (1 mm voxels) to the nearest non-brain voxel
     for lo, hi in DIST_BINS_MM:
-        sel = B & (dist > lo) & (dist <= hi)
+        sel = B & (dist > lo) & (dist <= hi)  # pyright: ignore[reportOperatorIssue] -- scipy types EDT output as optional/tuple; default flags return an ndarray
         r[f"zero_frac_dist_{lo}_{hi}mm"] = float(z[sel].mean())
     for ax in range(3):  # block structure: in-brain positive voxels equal to their +1 neighbour
         a = np.take(d, range(d.shape[ax] - 1), axis=ax)
@@ -69,7 +69,7 @@ def one_scan(args) -> dict:
     r["ctx_zero_frac_pet_middle80"] = float((cv[(mc > q[0]) & (mc < q[1])] == 0).mean())
     r["ctx_zero_frac_pet_top10"] = float((cv[mc >= q[1]] == 0).mean())
     # zero-cluster structure in cortex
-    cc, n = ndimage.label(z & ctx)
+    cc, n = cast(tuple[np.ndarray, int], ndimage.label(z & ctx))
     sizes = np.bincount(cc.ravel())[1:]
     r["ctx_zero_clusters"] = int(n)
     r["ctx_zero_frac_in_clusters_ge100"] = float(sizes[sizes >= 100].sum() / max(sizes.sum(), 1))
@@ -79,9 +79,9 @@ def one_scan(args) -> dict:
 
 def cross_condition(args) -> dict:
     subject, P = args
-    zs = {c: np.asarray(nib.load(spatial.rcps_map(P.rcps, subject, c)).dataobj, np.float32) == 0 for c in CONDS}
-    bm = nib.load(P.freesurfer / subject / "mri" / "brainmask.mgz")
-    ref = nib.load(spatial.rcps_map(P.rcps, subject, CONDS[0]))
+    zs = {c: np.asarray(spatial.load_spatial_image(spatial.rcps_map(P.rcps, subject, c)).dataobj, np.float32) == 0 for c in CONDS}
+    bm = spatial.load_spatial_image(P.freesurfer / subject / "mri" / "brainmask.mgz")
+    ref = spatial.load_spatial_image(spatial.rcps_map(P.rcps, subject, CONDS[0]))
     B = labels.resample_labels_nn((np.asarray(bm.dataobj) > 0).astype(np.uint8), bm.affine, ref.shape, ref.affine) > 0
     out = {"subject": subject}
     for a, b in (("Awake", "SleepDeprived"), ("Awake", "Asleep"), ("SleepDeprived", "Asleep")):

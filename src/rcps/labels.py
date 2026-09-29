@@ -38,7 +38,7 @@ def resample_labels_nn(label_data: np.ndarray, label_affine: np.ndarray,
     """
     T = np.eye(4) if world_transform is None else world_transform
     vox2vox = np.linalg.inv(label_affine) @ T @ target_affine
-    out = ndimage.affine_transform(label_data, vox2vox[:3, :3], offset=vox2vox[:3, 3],
+    out = ndimage.affine_transform(label_data, vox2vox[:3, :3], offset=vox2vox[:3, 3],  # pyright: ignore[reportArgumentType] -- scipy types offset as float; a per-axis sequence is documented
                                    output_shape=tuple(target_shape[:3]), order=0, mode="constant", cval=0,
                                    prefilter=False)
     return out.astype(label_data.dtype, copy=False)
@@ -49,7 +49,7 @@ def roi_centroids_world(label_img: np.ndarray, affine: np.ndarray, codes) -> dic
     cents = {}
     idx = np.array(list(codes))
     com = ndimage.center_of_mass(np.ones_like(label_img, dtype=np.uint8), label_img, idx)
-    for code, c in zip(idx, com):
+    for code, c in zip(idx, com, strict=True):
         c = np.asarray(c, float)
         cents[int(code)] = (affine @ np.r_[c, 1.0])[:3] if np.all(np.isfinite(c)) else np.full(3, np.nan)
     return cents
@@ -59,7 +59,7 @@ def left_right_check(centroids: dict[int, np.ndarray], x_axis_sign: float = 1.0)
     """For each homologous DK pair, check lh centroid is on the left (smaller RAS x) of the rh centroid."""
     rows = []
     for idx, name in DK_INDEX.items():
-        lh, rh = centroids.get(1000 + idx), centroids.get(2000 + idx)
+        lh, rh = centroids[1000 + idx], centroids[2000 + idx]
         ok = bool(np.isfinite(lh).all() and np.isfinite(rh).all() and (lh[0] - rh[0]) * x_axis_sign < 0)
         rows.append({"roi": name, "lh_x": float(lh[0]), "rh_x": float(rh[0]), "lh_left_of_rh": ok})
     return rows

@@ -4,7 +4,7 @@ import numpy as np
 import pytest
 
 from rcps import fsgeom, labels, runrecord, similarity
-from rcps.config import REPO_ROOT, load_paths
+from rcps.config import load_paths
 
 RCPS_AFFINE = np.array([[0, 1, 0, 30], [-1, 0, 0, 226], [0, 0, 1, 0], [0, 0, 0, 1]], float)
 
@@ -58,6 +58,15 @@ def test_left_right_check_detects_flip():
     flipped = {k: v * np.array([-1, 1, 1]) for k, v in good.items()}
     assert all(r["lh_left_of_rh"] for r in labels.left_right_check(good))
     assert not any(r["lh_left_of_rh"] for r in labels.left_right_check(flipped))
+
+
+@pytest.mark.parametrize("missing", [1001, 2035])
+def test_left_right_check_missing_centroid_raises_key_error(missing):
+    cents = {1000 + i: np.array([-30.0, 0, 0]) for i in labels.DK_INDEX} | {2000 + i: np.array([30.0, 0, 0]) for i in labels.DK_INDEX}
+    del cents[missing]
+    with pytest.raises(KeyError) as excinfo:
+        labels.left_right_check(cents)
+    assert excinfo.value.args == (missing,)
 
 
 def test_dk_label_set_has_68_rois_without_unknown_or_cc():

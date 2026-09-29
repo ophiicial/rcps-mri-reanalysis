@@ -211,4 +211,4 @@ def select_lambda(lambdas, candidate_scores) -> float:
     baseline_score = scores[penalties.index(np.inf)]
     tolerance = TIE_RELATIVE_TOLERANCE * baseline_score
     tied = scores - scores.min() <= tolerance  # exact equality when baseline_score=0
-    return max(lam for lam, keep in zip(penalties, tied) if keep)
+    return max(lam for lam, keep in zip(penalties, tied, strict=True) if keep)

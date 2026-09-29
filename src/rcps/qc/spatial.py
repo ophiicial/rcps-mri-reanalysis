@@ -8,6 +8,7 @@ from __future__ import annotations
 import glob
 import re
 from pathlib import Path
+from typing import Any, Protocol, cast
 
 import nibabel as nib
 import numpy as np
@@ -16,6 +17,21 @@ from scipy import ndimage, optimize
 from .. import fsgeom, labels, similarity
 
 AXES = ("tx", "ty", "tz", "rx", "ry", "rz")
+
+
+class LoadedImage(Protocol):
+    """Typing view of a NIfTI/MGH image loaded from file: its affine comes from the header, never None."""
+    affine: np.ndarray
+    dataobj: Any
+    shape: tuple[int, ...]
+    header: Any
+
+    def get_data_dtype(self) -> np.dtype: ...
+
+
+def load_spatial_image(path) -> LoadedImage:
+    """``nib.load`` typed for NIfTI/MGH inputs (typing only; no runtime check)."""
+    return cast(LoadedImage, nib.load(path))
 
 
 def rcps_map(rcps_dir: Path, subject: str, cond: str) -> Path:
@@ -81,11 +97,14 @@ def audit_subject(subject: str, paths, cfg: dict, conditions: list[str],
                   label_out: Path) -> dict:
     fs_subj = paths.freesurfer / subject
     t1_path = paths.bids_root / subject / "ses-MRI" / "anat" / f"{subject}_ses-MRI_T1w.nii.gz"
-    t1 = nib.load(t1_path)
-    raw = nib.load(fs_subj / "mri" / "rawavg.mgz")
-    orig = nib.load(fs_subj / "mri" / "orig.mgz")
-    aparc_img = nib.load(fs_subj / "mri" / "aparc+aseg.mgz")
-    bm_img = nib.load(fs_subj / "mri" / "brainmask.mgz")
+    t1_img = nib.load(t1_path)
+    if not isinstance(t1_img, nib.Nifti1Image):  # qform/sform checks below are NIfTI-specific
+        raise TypeError(f"{t1_path}: expected a NIfTI T1w image, got {type(t1_img).__name__}")
+    t1 = cast(LoadedImage, t1_img)
+    raw = load_spatial_image(fs_subj / "mri" / "rawavg.mgz")
+    orig = load_spatial_image(fs_subj / "mri" / "orig.mgz")
+    aparc_img = load_spatial_image(fs_subj / "mri" / "aparc+aseg.mgz")
+    bm_img = load_spatial_image(fs_subj / "mri" / "brainmask.mgz")
     aparc = np.asarray(aparc_img.dataobj).astype(np.int32)
     t1_data = np.asarray(t1.dataobj, dtype=np.float32)
     res = {"subject": subject, "geometry": [], "affine_checks": [], "roi_counts": [], "label_integrity": [],
@@ -98,7 +117,7 @@ def audit_subject(subject: str, paths, cfg: dict, conditions: list[str],
     rimgs = {}
     for c in conditions:
         p = rcps_map(paths.rcps, subject, c)
-        img = nib.load(p)
+        img = load_spatial_image(p)
         d = np.asarray(img.dataobj, dtype=np.float32)
         g = image_geometry(img, "rCPS")
         g.update(finite_frac=float(np.isfinite(d).mean()), nonzero_frac=float((d != 0).mean()),
@@ -161,7 +180,7 @@ def audit_subject(subject: str, paths, cfg: dict, conditions: list[str],
     # ---------------- C2-C4: NN labels into each rCPS grid, integrity, left-right
     dk = labels.dk_cortical_labels()
     tc = cfg["tissue_classes"]
-    native_counts = dict(zip(*np.unique(aparc, return_counts=True)))
+    native_counts = dict(zip(*np.unique(aparc, return_counts=True), strict=True))
     tissue_native = tissue_class_volume(aparc, tc)
     cache = {}
     for c in conditions:
@@ -272,7 +291,7 @@ def _alignment_rows(res, subject, c, problems, centre, ctx_world, sim):
             opt = optimize.minimize(lambda x: -prob(fsgeom.rigid_matrix(*x, centre=centre)), np.zeros(6),
                                     method="Powell", bounds=bounds, options={"xtol": 0.05, "ftol": 1e-6, "maxfev": 600})
             disp = fsgeom.displacement_stats(fsgeom.rigid_matrix(*opt.x, centre=centre), ctx_world)
-            row.update({f"opt_{ax}": float(v) for ax, v in zip(AXES, opt.x)})
+            row.update({f"opt_{ax}": float(v) for ax, v in zip(AXES, opt.x, strict=True)})
             row.update(opt_nmi=float(-opt.fun), opt_gain=float(-opt.fun - base), opt_nfev=int(opt.nfev),
                        opt_cortex_disp_mean_mm=disp["mean_mm"], opt_cortex_disp_max_mm=disp["max_mm"])
         res["alignment"].append(row)
@@ -281,11 +300,11 @@ def _alignment_rows(res, subject, c, problems, centre, ctx_world, sim):
 def historical_subject(subject: str, paths, cfg: dict, conditions: list[str], historical_root: Path) -> dict:
     """C7 (run only after the baseline pass): evaluate the historical bbregister transforms with the SAME criteria."""
     fs_subj = paths.freesurfer / subject
-    t1 = nib.load(paths.bids_root / subject / "ses-MRI" / "anat" / f"{subject}_ses-MRI_T1w.nii.gz")
+    t1 = load_spatial_image(paths.bids_root / subject / "ses-MRI" / "anat" / f"{subject}_ses-MRI_T1w.nii.gz")
     t1_data = np.asarray(t1.dataobj, dtype=np.float32)
-    aparc_img = nib.load(fs_subj / "mri" / "aparc+aseg.mgz")
+    aparc_img = load_spatial_image(fs_subj / "mri" / "aparc+aseg.mgz")
     aparc = np.asarray(aparc_img.dataobj).astype(np.int32)
-    bm_img = nib.load(fs_subj / "mri" / "brainmask.mgz")
+    bm_img = load_spatial_image(fs_subj / "mri" / "brainmask.mgz")
     bm_bin = np.asarray(bm_img.dataobj) > 0
     centre = (bm_img.affine @ np.r_[np.argwhere(bm_bin).mean(0), 1])[:3]
     tissue_native = tissue_class_volume(aparc, cfg["tissue_classes"])
@@ -299,7 +318,7 @@ def historical_subject(subject: str, paths, cfg: dict, conditions: list[str], hi
             continue
         lta = fsgeom.read_lta(hp)
         H = fsgeom.lta_ras2ras(lta)
-        img = nib.load(rp)
+        img = load_spatial_image(rp)
         d = np.asarray(img.dataobj, dtype=np.float32)
         lab = labels.resample_labels_nn(aparc, aparc_img.affine, img.shape, img.affine)
         bm = labels.resample_labels_nn(bm_bin.astype(np.uint8), bm_img.affine, img.shape, img.affine) > 0

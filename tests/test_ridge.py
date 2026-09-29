@@ -325,4 +325,4 @@ def test_selection_rejects_invalid_candidate_sets(penalties, message):
 
 def test_selection_rejects_scores_without_explicit_lambdas():
     with pytest.raises(TypeError):
-        select_lambda(np.ones(len(LAMBDA_GRID)))
+        select_lambda(np.ones(len(LAMBDA_GRID)))  # pyright: ignore[reportCallIssue] -- deliberately omits candidate_scores to assert TypeError

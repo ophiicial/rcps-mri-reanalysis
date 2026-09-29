@@ -10,7 +10,6 @@ import argparse
 import sys
 from concurrent.futures import ProcessPoolExecutor
 
-import nibabel as nib
 import numpy as np
 import pandas as pd
 
@@ -28,14 +27,14 @@ CONDS = ["Awake", "SleepDeprived", "Asleep"]
 def one_scan(args) -> dict:
     s, c, P, cfg = args
     fs = P.freesurfer / s
-    t1 = nib.load(P.bids_root / s / "ses-MRI" / "anat" / f"{s}_ses-MRI_T1w.nii.gz")
+    t1 = spatial.load_spatial_image(P.bids_root / s / "ses-MRI" / "anat" / f"{s}_ses-MRI_T1w.nii.gz")
     t1d = np.asarray(t1.dataobj, np.float32)
-    ap = nib.load(fs / "mri" / "aparc+aseg.mgz")
+    ap = spatial.load_spatial_image(fs / "mri" / "aparc+aseg.mgz")
     aparc = np.asarray(ap.dataobj).astype(np.int32)
-    bm_img = nib.load(fs / "mri" / "brainmask.mgz")
+    bm_img = spatial.load_spatial_image(fs / "mri" / "brainmask.mgz")
     bmb = np.asarray(bm_img.dataobj) > 0
     centre = (bm_img.affine @ np.r_[np.argwhere(bmb).mean(0), 1])[:3]
-    img = nib.load(spatial.rcps_map(P.rcps, s, c))
+    img = spatial.load_spatial_image(spatial.rcps_map(P.rcps, s, c))
     d = np.asarray(img.dataobj, np.float32)
     lab = labels.resample_labels_nn(aparc, ap.affine, d.shape, img.affine)
     bm = labels.resample_labels_nn(bmb.astype(np.uint8), bm_img.affine, d.shape, img.affine) > 0

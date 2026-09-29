@@ -134,9 +134,9 @@ def test_finite_positive_lambda_outer_refit(monkeypatch):
     calls = []
 
     class SpyRidge(ridge.Ridge):
-        def fit(self, design, target):
-            calls.append((design.shape[0], self.alpha))
-            return super().fit(design, target)
+        def fit(self, X, y, sample_weight=None):
+            calls.append((X.shape[0], self.alpha))
+            return super().fit(X, y, sample_weight)
 
     monkeypatch.setattr(ridge, "Ridge", SpyRidge)
     folds = primary_loso(ids, x, y)
@@ -169,7 +169,7 @@ def test_inputs_snapshotted_read_only(panel):
 
     mutated = nested_loso(ids, x, y, on_inner_fit=mutate_caller)
     assert len(mutated) == len(reference)
-    for a, b in zip(reference, mutated):
+    for a, b in zip(reference, mutated, strict=True):
         assert a.subject_id == b.subject_id
         np.testing.assert_array_equal(a.inner_losses, b.inner_losses)
         assert a.selected_lambda == b.selected_lambda
@@ -196,7 +196,7 @@ def test_outer_leakage(panel, evaluated, perturb):
     original_inner = [d for d in evaluated[1] if d.outer_index == 0]
     changed_inner = [d for d in captured if d.outer_index == 0]
     assert len(original_inner) == len(changed_inner) == 17 * 7
-    for a, b in zip(original_inner, changed_inner):
+    for a, b in zip(original_inner, changed_inner, strict=True):
         assert_fit_equal(a.fit, b.fit)
     np.testing.assert_array_equal(changed.baseline_prediction, original.baseline_prediction)
     if perturb == "y":
@@ -219,7 +219,7 @@ def test_inner_leakage(panel, evaluated, perturb):
     original = [d for d in evaluated[1] if d.outer_index == 0 and d.validation_index == 1]
     changed = [d for d in captured if d.outer_index == 0 and d.validation_index == 1]
     assert len(original) == len(changed) == 7
-    for a, b in zip(original, changed):
+    for a, b in zip(original, changed, strict=True):
         assert_fit_equal(a.fit, b.fit)
         if perturb == "y":
             np.testing.assert_array_equal(a.prediction, b.prediction)
@@ -306,8 +306,9 @@ def test_input_validation(panel, bad):
     elif bad == "empty_features":
         x = x[..., :0]
     elif bad == "masked":
-        x = np.ma.array(x, mask=False)
-        x.mask[0, 0, 0] = True
+        mask = np.zeros(x.shape, dtype=bool)
+        mask[0, 0, 0] = True
+        x = np.ma.array(x, mask=mask)
     else:
         ids, x, y = ids[:2], x[:2], y[:2]
     with pytest.raises(ValueError):
