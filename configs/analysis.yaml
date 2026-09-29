@@ -1,0 +1,186 @@
+# AUTHORITATIVE machine-readable statistical specification (frozen 2026-09-28; docs/analysis_plan.md v3.0).
+# Must agree exactly with docs/analysis_plan.md. Changes only by dated amendment (analysis_plan §14).
+# No machine-specific paths. Infinity is written as the string "inf" and must be validated explicitly by code.
+spec_version: "3.0"
+frozen_on: "2026-09-28"
+
+dataset:
+  canonical_config: configs/canonical_dataset.yaml     # ds004733 v1.0.1, tag 1.0.1, commit badd0108...
+  require_verified: true                               # rcps.qc.verify_canonical --require-git must PASS
+
+cohort:
+  primary:
+    roster: participants_tsv_v1.0.1
+    n: 18
+    subjects: [sub-SP02, sub-SP03, sub-SP05, sub-SP06, sub-SP09, sub-SP10, sub-SP11, sub-SP12, sub-SP14,
+               sub-SP15, sub-SP16, sub-SP18, sub-SP20, sub-SP21, sub-SP22, sub-SP23, sub-SP26, sub-SP28]
+  qc_exclusions: []
+
+rois:
+  atlas: desikan_killiany_aparc
+  n: 68
+  exclude_codes: [1000, 1004, 2000, 2004]
+  categorical_mapping: dk_cortical_labels_order        # codes 0..67 = rcps.labels.dk_cortical_labels() order
+
+target:
+  source: derivatives/rCPS                             # relative to bids_root
+  conditions: [Awake, SleepDeprived, Asleep]
+  require_all_conditions: true
+  condition_aggregation: equal_weight_mean
+  roi_value: mean_all_label_voxels
+  zero_handling: include_exact_zeros                   # primary: as supplied
+  record_per_roi_condition: [n_voxels, n_zero, zero_fraction]
+  nonfinite_or_negative_voxels: fail
+  units: nmol/g/min
+
+spatial:
+  registration: none
+  labels: aparc+aseg
+  label_resampling: nearest_neighbour_scanner_ras_header
+
+features:
+  primary:
+    - {name: thickness, source: ThickAvg, transform: none, units: mm}
+    - {name: ln_area, source: SurfArea, transform: ln_over_1mm2, require_positive: true}
+  nonfinite: fail                                      # no deletion, no imputation
+  pet_derived_features_allowed: false
+
+ridge:
+  form: roi_fixed_effects_plus_shared_ridge_slopes     # alpha_r unpenalised; centred implementation
+  centring: within_roi_training_subject_mean
+  scaling:
+    type: pooled_per_feature
+    ddof: 0
+    denominator: mR                                    # m training subjects x 68 ROIs
+  zero_scale: omit_predictor_zero_contribution_record_event
+  outcome: residualise_on_training_roi_mean
+  objective: "(1/(mR)) * sum (u - z'b)^2 + lambda * ||b||^2"
+  intercept: false
+  lambda_grid: [0, 0.01, 0.1, 1, 10, 100, "inf"]
+  adaptive_refinement: false
+  solver:
+    finite_positive: {library: sklearn.linear_model.Ridge, alpha: "m*68*lambda", fit_intercept: false, solver: svd}
+    zero: {method: numpy.linalg.lstsq, rcond: null, solution: minimum_norm, record: numerical_rank}
+    inf: {method: bypass, slopes: zero, predictions: training_roi_means}
+  tie_rule:
+    tolerance: "S(lambda) - S_min <= 1e-12 * S_inf"
+    relative_tolerance: 1.0e-12
+    if_S_inf_zero: exact_equality
+    prefer: largest_lambda                             # inf is largest
+
+cv:
+  outer: {scheme: subject_loso, folds_primary: 18, train_subjects_primary: 17}
+  inner: {scheme: subject_loso_within_outer_training, folds_primary: 17, train_subjects_primary: 16}
+  inner_loss: per_subject_mean_squared_error_over_68_rois
+  selection_score: arithmetic_mean_of_subject_mse     # never row-pooled, never R^2
+  refit_on_outer_training: true
+  inner_validation_outcomes:
+    may_affect: [candidate_scores, hyperparameter_selection]   # selection only via the candidate scores
+    may_not_affect: [fitted_preprocessing, candidate_model_fits_within_split]
+
+primary_effect:
+  per_subject: "D_s = MSE_s(roi_only_baseline) - MSE_s(roi_plus_mri)"
+  statistic: "T = mean_s D_s"
+  positive_means: lower_held_out_mse_with_mri
+  descriptive_only: [r2, delta_r2, mae, rmse, global_mean_reference, level_pattern_decomposition]
+  r2_zero_target_variance: undefined_na               # no finite-value substitution
+
+permutation:
+  type: restricted_whole_subject_mri_block
+  strata:                                              # fixed, from acquisition metadata only; order is significant
+    - {name: wave1_siemens_3T_flash, subjects: [sub-SP02, sub-SP06, sub-SP10]}
+    - {name: wave1_philips_1p5T_ffe, subjects: [sub-SP03, sub-SP05, sub-SP11, sub-SP12, sub-SP15]}
+    - {name: wave1_philips_3T_ffe, subjects: [sub-SP09, sub-SP14]}
+    - {name: wave2_philips_3T_tfe, subjects: [sub-SP16, sub-SP18, sub-SP20, sub-SP21, sub-SP22, sub-SP23, sub-SP26, sub-SP28]}
+  group_size: 58060800                                 # 3! * 5! * 2! * 8!
+  features_move_together: true
+  preserve_roi_correspondence: true
+  fixed: [outcomes, outcome_subject_ids, strata, outer_folds, inner_folds, lambda_grid]
+  one_global_assignment_per_replicate: true
+  recompute: [feature_centring, pooled_scaling, zero_variance_handling, inner_tuning, outer_refit, mri_predictions]
+  cacheable: [outcome_data, outcome_roi_training_means, roi_only_predictions_and_losses, folds, lambda_grid, duplicate_assignment_results]
+  never_reuse: [observed_preprocessing, observed_selected_lambdas, observed_mri_fits]
+  B: 9999
+  sampling: {independent: true, uniform_over_group: true, with_replacement: true}
+  identity_allowed: true
+  duplicates: {allowed: true, keep_multiplicity: true, cache_computation: true}
+  rng: {generator: numpy.random.PCG64, seed: 20260929, independent_of_model_rng: true}
+  construction: "subjects sorted lexicographically within stratum; strata in listed order; per replicate and stratum pi = rng.permutation(n); outcome stratum[i] receives MRI of stratum[pi[i]]"
+  pregenerate_full_list: true
+  save: [full_list_or_sha256_checksum, numpy_version, bit_generator]
+  alternative: upper_tail
+  exceedance: "T_b >= T_obs"                           # equality counts as exceedance
+  p_value: "(1 + K) / (B + 1)"
+  alpha: 0.05
+  decision_rule: "p <= 0.05"
+  report: [T_obs, K, B, p, clopper_pearson_95_exceedance_K_of_B, optional_mc_se_qhat_K_over_B, null_distribution]
+  no_selective_reruns: true
+  no_seed_change: true
+  no_B_increase_after_results: true
+  population_confidence_interval: none
+
+sensitivities:                                          # all descriptive, no p-values, own nested tuning
+  common: {p_values: false, own_nested_refit_and_tuning: true, reuse_primary_models_or_lambdas: false, comparator: training_roi_mean}
+  S1: {cohort: historical_v1.0.0_roster, exclude: [sub-SP06], n: 17, membership_change_only: true, outer_folds: 17, inner_folds: 16, inner_train_subjects: 15}
+  S2: {target_conditions: [Awake]}
+  S3: {target_conditions: [SleepDeprived]}
+  S4: {target_conditions: [Asleep]}
+  S5:
+    model: ridge_same_machinery_as_primary
+    features:
+      - {name: thickness, source: ThickAvg, transform: none}
+      - {name: ln_area, source: SurfArea, transform: ln_over_1mm2, require_positive: true}
+      - {name: ln_volume, source: GrayVol, transform: ln_over_1mm3, require_positive: true}
+      - {name: mean_curvature, source: MeanCurv, transform: none, require_finite: true}
+      - {name: gaussian_curvature, source: GausCurv, transform: none, require_finite: true}
+  S6:
+    model: sklearn.ensemble.HistGradientBoostingRegressor
+    inputs: {categorical: roi_identity_fixed_68_level_mapping, continuous: [thickness, ln_area], centring: false, scaling: false}
+    fixed_params: {loss: squared_error, learning_rate: 0.05, min_samples_leaf: 20, l2_regularization: 1.0,
+                   max_depth: null, max_bins: 255, early_stopping: false, random_state: 20260929}
+    no_feature_subsampling: true
+    no_monotonic_constraints: true
+    no_interaction_constraints: true
+    grid: {max_leaf_nodes: [3, 7], max_iter: [100, 300]}   # four candidates only
+    bins_fitted_on: training_only
+    selection: {cv: subject_loso_inner, score: equal_subject_mse}
+    tie_rule:
+      inherits: ridge.tie_rule                          # same frozen numerical rule, incl. exact equality if S_inf == 0
+      relative_tolerance: 1.0e-12
+      reference_scale_S_inf: inner_score_of_training_roi_mean_comparator
+      if_S_inf_zero: exact_equality
+      then_prefer: [fewer_leaves, fewer_iterations]
+    comparator: training_roi_mean
+    tuned_roi_only_hgbr_baseline: false
+  S7:
+    zero_handling: exclude_exact_zeros_within_each_roi_condition
+    near_zero_removed: false
+    record: [retained_voxel_count, zero_fraction]
+    condition_aggregation: equal_weight_mean
+    any_cell_with_zero_retained_voxels: not_estimable  # no zero substitution, no ROI deletion, no 2-condition mean
+
+descriptive_and_exploratory:                            # registered, no inference
+  D1: {content: [r2, delta_r2, mae, rmse], role: secondary_descriptive}
+  D2: {content: level_pattern_decomposition, role: secondary_descriptive}
+  X1: {content: per_roi_morphometry_rcps_correlations_across_subjects, role: exploratory_descriptive}
+  X2: {content: fitted_ridge_slope_distribution_across_outer_folds, role: exploratory_descriptive}
+
+deferred: [subcortical_analysis, pvc_pve_reprocessing]
+
+implementation_tests_required:
+  - no_outer_subject_leakage
+  - no_inner_validation_leakage_into_fitted_preprocessing_or_model
+  - inner_validation_affects_candidate_scores_only
+  - lambda_inf_equals_roi_only_predictions_exactly
+  - sklearn_alpha_conversion_matches_normalised_objective
+  - centred_equals_onehot_unpenalised_intercept
+  - zero_variance_predictor_behaviour
+  - fixed_roi_categorical_mapping
+  - e2_permutations_never_cross_strata
+  - mri_blocks_preserve_roi_correspondence
+  - identity_and_duplicate_permutation_handling
+  - deterministic_permutation_sequence_from_frozen_seed
+  - undefined_r2_behaviour
+  - s7_all_zero_cell_failure
+  - decomposition_and_delta_r2_identities
+  - null_calibration_and_planted_signal_power

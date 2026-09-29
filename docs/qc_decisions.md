@@ -40,7 +40,7 @@ before the formal rating pass.
 | Derivatives-only copy (`Research/…`) | All 381 derivative manifest files are byte-identical to the full copy. It lacks the BIDS metadata and raw T1w | `identical_in_PET-MRI` |
 | Source fingerprint | `source_manifest.tsv`: 444 files, manifest SHA-256 `844ac49f56f5d5cc289f1a8b16ab35ff97f07c60373dc5591f35f0b0ec1e0136` | `source_manifest.tsv` |
 
-## 2. Cohort (decided)
+## 2. Cohort (final)
 
 - **Primary cohort = the ds004733 v1.0.1 `participants.tsv` roster: N = 18** (SP02, 03, 05, **06**, 09, 10, 11, 12,
   14, 15, 16, 18, 20, 21, 22, 23, 26, 28). See `docs/analysis_plan.md` §3.
@@ -49,7 +49,7 @@ before the formal rating pass.
 - The v1.0.0 omission of SP06 stays documented as historical. No reason for it is inferred.
 - Table: `dataset/subject_eligibility.tsv`.
 
-## 3. Spatial handling (decided)
+## 3. Spatial handling (final)
 
 **Coordinate provenance, all 18 subjects:**
 
@@ -64,8 +64,10 @@ before the formal rating pass.
 **Evidence:**
 
 - **Header / orientation:** 54/54 scans pass R2, R3 and R10.
-- **Labels:** NN resampling is lossless (count ratio 1.000). All 68 DK ROIs are present in every scan; minimum 995
-  voxels.
+- **Labels:** nearest-neighbour label resampling preserved all 68 ROI labels and their voxel counts under the
+  verified header mapping (rCPS-grid count / native count = 1.000 for every ROI and scan); minimum 995 voxels.
+  Count agreement is not taken as proof of exact voxel-to-voxel correspondence, which was not independently
+  established.
 - **Left–right:** 34/34 pairs are correctly ordered in all scans. Header NMI exceeds mirrored-anatomy NMI for all 4
   metrics in 54/54 scans.
 - **Quantitative alignment** (primary metric `nmi_t1_interior`): every single-axis profile peaks within ±1 mm / ±1°.
@@ -166,8 +168,9 @@ for transparency.
 - **Limitation (carried into `analysis_plan.md` §2):** the primary target may contain mask/edge effects, possibly
   related to cortical geometry, so biological interpretation must remain narrow.
 - **No ROI is dropped for its zero fraction.** The maximum observed is 30% (entorhinal); no ROI × scan exceeds 50%.
-- **Optional action:** ask the dataset authors or curators how masked or invalid voxels are encoded. An
-  authoritative answer before freeze would be documented, and the rule revisited as a dated amendment.
+- **Optional action:** ask the dataset authors or curators how masked or invalid voxels are encoded. Any
+  authoritative answer would be documented here. A change to the rule would require a dated amendment to the frozen
+  analysis plan (`analysis_plan.md` §14) before affected results are inspected.
 
 *Superseded QC-stage recommendation* (not adopted): primary = exclude zeros, sensitivity = include. The argument was
 that including boundary zeros makes ROI means depend on ROI geometry. The investigators judged that excluding values
@@ -185,7 +188,7 @@ limitation above and by S7.
     threshold would therefore not target the relevant problem.
   - All 68 ROIs have ≥ 995 voxels (≈ 1 cm³) in every scan, far above any count at which a mean would be numerically
     unstable.
-  - No threshold is imposed. Partial-volume effects remain analysis-plan item T2.
+  - No threshold is imposed. PVC/PVE work is deferred future work (`analysis_plan.md` §13).
 - **R11 (quantitative alignment tolerance): kept as a descriptive metric, not an exclusion rule.**
   - The primary-metric optimum offsets (median 0.68 mm, max 2.08 mm mean cortical displacement) and the curators'
     independent transforms (median 1.65 mm) are all below the 4 mm assumed PSF FWHM.
@@ -377,7 +380,7 @@ Reference run `outputs/20260927-131732_qc_b4e9608/` compared with the pre-commit
 `historical_bbregister_comparison`. This covers:
 
 - 54/54 automated critical PASS;
-- lossless 68-ROI NN label mapping;
+- preservation of all 68 ROI labels and their voxel counts under NN label resampling;
 - header alignment near the local optimum;
 - historical `bbregister` worse on all prespecified metrics in 54/54;
 - identical zero-voxel fractions;
@@ -402,3 +405,48 @@ images. The 54/54 visual PASS rating (§4) therefore applies unchanged to the re
 - `run_qc`'s `run_metadata.json` does not natively record the dataset tag/commit, the verifier result or the
   config hashes. Those are in `logs/supplementary_provenance.json` for this run.
 - Both should be fixed in a follow-up commit.
+
+## 8. Acquisition provenance relevant to exchangeability
+
+This section is **factual metadata/provenance only**, from the ds004733 v1.0.1 T1w sidecars, `participants.tsv`,
+`sub-*_sessions.tsv`, the PET/blood sidecars and the published README/CHANGES (audit of 2026-09-28; no imaging
+values or outcomes were used). It makes no statistical claim. The decision to use these groups as permutation strata,
+and its justification, are in `analysis_plan.md` §11.
+
+**Recruitment waves** (from PET session dates, `acq_time`, month resolution):
+
+- **Wave 1** (2010-05 to 2011-04): SP02, SP03, SP05, SP06, SP09, SP10, SP11, SP12, SP14, SP15.
+- **Wave 2** (2014-07 to 2015-04): SP16, SP18, SP20, SP21, SP22, SP23, SP26, SP28.
+- The waves are separated by a gap of roughly three years. Height is recorded only in wave 2 (0 in wave 1).
+
+**Broad MRI acquisition families** (T1w sidecars):
+
+| Family | Subjects | Metadata basis |
+|---|---|---|
+| Wave 1: Siemens 3 T FLASH | SP02, SP06, SP10 | Siemens Verio, serial 40288, spoiled 3D FLASH (`SP\OSP`), flip angle 15° |
+| Wave 1: Philips 1.5 T FFE | SP03, SP05, SP11, SP12, SP15 | Philips Achieva 1.5 T, "3DFFE SAG CLEAR", flip angle 15°, identical recon/phase FOV. SP15 is on a different 1.5 T unit (MR5) |
+| Wave 1: Philips 3 T FFE | SP09, SP14 | Philips Achieva 3 T FFE, flip angle 15°, near-identical TR/TE. Different protocol names and scanner units |
+| Wave 2: Philips 3 T TFE | SP16, SP18, SP20, SP21, SP22, SP23, SP26, SP28 | Philips Achieva 3 T, "3D T1 TFE SAG 1 (WIP) SENSE", inversion-prepared (`MP`), flip angle 8°. Two scanner units (MR2: SP16–SP23; MR4: SP26, SP28) |
+
+**Facts recorded:**
+
+- The MRI sequence family changes at the wave boundary. Wave 1 uses FLASH/FFE-style spoiled gradient-echo
+  acquisitions with flip angle 15°; wave 2 uses TFE with flip angle 8°.
+- Physical scanner units do not by themselves define the families. Philips serial 17384 ran SP09 (FFE, wave 1) and
+  SP16–SP23 (TFE, wave 2); serial 17461 ran SP14 (FFE, wave 1) and SP26/SP28 (TFE, wave 2).
+- Scanner, vendor and field-strength heterogeneity exists **within wave 1** (Siemens 3 T, Philips 1.5 T and
+  Philips 3 T).
+- PET scanner and reconstruction metadata are otherwise homogeneous across all 54 sessions:
+  - Siemens HRRT, OSEM (30 subsets, 2 iterations), same sidecar resolution value, tracer and infusion;
+  - identical session timing and frame schedule, apart from minor frame-duration jitter;
+  - blood-sampling sidecars identical.
+  - PET-side factors not captured in metadata are not documented.
+- **SP06:** there is no `sub-SP06_sessions.tsv` in v1.0.0 or v1.0.1, so it has no date. Its wave-1 placement is
+  **inferred** from acquisition provenance.
+  - Shared with SP02/SP10: the scanner (serial 40288), field strength (3 T) and the broad FLASH family.
+  - Different: protocol name ("T1 SAG 3D" vs "T1 3D SAG"), excitation (`fl3d1` vs `fl3d1_ns`) and TR/TE (9.2/3.32
+    vs 5.1/1.76 ms).
+- **Relatedness:** no documented relatedness or repeated-subject structure was found within ds004733.
+  `participants.tsv` notes only that SP09 also took part in a different dataset (the propofol study, as "sub-S19").
+- The reasons for the protocol changes are not documented in the dataset. The MRI acquisition dates are not
+  recorded, and their timing relative to PET is unknown.
