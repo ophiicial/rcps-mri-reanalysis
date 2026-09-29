@@ -5,9 +5,18 @@ PET-MRI study on predicting regional cerebral protein synthesis (rCPS) from stru
 Status: **reconstruction / reanalysis**. The goal is a correct, reproducible analysis. It is **not** to recover
 the conclusion of the rejected 2025 manuscript.
 
+The target is continuous measured cortical ROI-mean rCPS from OpenNeuro ds004733 1.0.1.
+This is regression, not classification. Primary prediction asks whether thickness and
+ln(surface area) improve over training ROI means in held-out subjects.
+
+Authority: this manual + accepted methodology in `docs/`; paired machine-readable
+choices/facts in `configs/`; ECC memory is temporary session knowledge; source code is
+implementation, which may be under review. If docs/config disagree, flag the conflict
+and follow the frozen amendment procedure rather than choosing silently.
+
 ## 1. Scientific rules (non-negotiable)
 
-1. **The subject is the independent experimental unit.** ROI rows are not independent samples. With N ≈ 18,
+1. **The subject is the independent experimental unit.** ROI rows are not independent samples. With primary N = 18,
    every inferential statement is about subjects.
 2. **Subject grouping applies everywhere it is relevant:** train/test splitting, hyperparameter tuning,
    feature selection, preprocessing fitted on data (scalers, encoders, imputers), uncertainty estimation
@@ -78,3 +87,90 @@ the conclusion of the rejected 2025 manuscript.
   specific step.
 - When unsure whether a choice is scientific (it affects results) or mechanical, treat it as scientific: state
   it and ask.
+
+## 7. Read the right source first
+
+- `docs/study-design.md`: question, observational unit, target and scope.
+- `docs/dataset.md`: canonical release, identifiers, availability and acquisition provenance.
+- `docs/pipeline.md`: actual modules versus missing/planned stages.
+- `docs/data-contracts.md`: actual array/QC schemas and required future assembly checks.
+- `docs/modeling.md`: training-only preprocessing, nested LOSO and implementation status.
+- `docs/inference.md`: accepted null, exchangeability, permutation object and interpretation.
+- `docs/results-map.md`: generators, existing artifacts and invalidation dependencies.
+- `docs/analysis_plan.md` v3.0 + `configs/analysis.yaml`: frozen scientific specification.
+- `docs/qc_plan.md` + `docs/qc_decisions.md`: criteria, findings and dated QC decisions.
+- `docs/decisions/README.md`: accepted decision index and amendment policy.
+- `docs/audit-2026-09-29.md`: known gaps and unresolved discrepancies, not new policy.
+
+## 8. Accepted modeling and inference invariants
+
+- P1 has 18 subjects, 68 bilateral DK cortical ROIs, two MRI features.
+- Target averages Awake, SleepDeprived and Asleep equally; all three are required.
+- Include exact-zero voxels in primary ROI means; S7 is the specified sensitivity.
+- Keep supplied rCPS intensities on their grid; nearest-neighbour resample labels only.
+- Outer subject LOSO; inner subject LOSO entirely within outer training subjects.
+- Fit ROI means, feature scales and models separately in every inner/outer training split.
+- No global fitted preprocessing, imputation, feature selection or target-dependent filtering.
+- ROI baseline uses training subjects only; selection averages subject MSE equally.
+- Primary statistic is mean subject baseline MSE minus augmented MSE, not pooled R².
+- Whole-subject MRI blocks move together for the accepted permutation test.
+- Never independently shuffle ROI rows or feature columns for confirmatory inference.
+- Preserve ROI correspondence and fixed outcomes/folds in each global assignment.
+- Restrict assignments to `configs/analysis.yaml:permutation.strata` in its listed order.
+- Do not hard-code those subject lists in production code or create duplicate configs.
+- Regenerate all MRI-dependent fitted quantities and tuning for each assignment.
+- Preserve identity/duplicate multiplicity, seed and B exactly as frozen in config.
+- Inference is conditional on recruitment/acquisition structure, not scanner-independent biology.
+- P1 is the only confirmatory test; sensitivities and X1/X2 are descriptive.
+- See inference docs for donor IDs versus outcome IDs under the accepted global shuffle.
+
+## 9. Pipeline map and current boundaries
+
+| Module | Purpose |
+|---|---|
+| `rcps.qc.verify_canonical` | Hash/roster/git verification; writes a run record |
+| `rcps.qc.run_qc` | Dataset inventory, spatial checks, label counts, overlays |
+| `rcps.qc.investigate_zeros` | Zero-valued voxel diagnostics, not ROI-mean targets |
+| `rcps.qc.investigate_curator_reg` | Curator-transform comparison, not new registration |
+| `rcps.labels`, `rcps.fsgeom` | DK identities and coordinate/label utilities |
+| `rcps.analysis.ridge` | Fit/predict/score primitives on complete transformed panels |
+| `rcps.analysis.cv` | Nested LOSO; untracked at 2026-09-29 audit start, since committed (`18471e9`) |
+| `rcps.provenance`, `rcps.runrecord` | Provenance and non-reused output directories |
+
+There is no real-data model/permutation CLI, MRI parser, ROI-mean target assembler,
+correlation runner or final model-figure generator here yet. Do not invent paths or
+claim that a synthetic-tested primitive completes the scientific pipeline.
+
+## 10. Practical coding and testing
+
+- Environment specifies Python 3.12; use `pathlib` and the existing small-function style.
+- Run `python -m pytest -q tests`; tests insert `src` on the import path.
+- For module CLIs use `PYTHONPATH=src python -m ...`; there is no Makefile/package installer.
+- Prefer synthetic fixtures for modeling tests; do not load real outcomes to choose code/design.
+- Test no train/test subject overlap and held-out perturbation invariance of fitted state.
+- Test duplicate IDs and future subject × condition × ROI keys before merges/pivots.
+- Test deterministic behavior, semantic ROI alignment and expected output schemas.
+- Permutation work needs block/stratum integrity, identity/duplicate/cache multiplicity tests.
+- Config integrity tests are not a substitute for tests of operational permutations.
+- Meet `analysis_plan.md §15` before any real modeling run, including calibration/power checks.
+- Keep dependency additions deliberate; environment versions are not fully pinned.
+- Fail explicitly on missing subjects/ROIs and nonfinite features/targets; log exclusions.
+- Inspect git status first; preserve unrelated and pre-existing untracked user work.
+
+## 11. Documentation and completion
+
+Methodological changes require a dated amendment under `analysis_plan.md §14`, the
+matching config change, a decision record where useful, and affected contract/results
+map updates. Do this before inspecting affected results. Never erase historical text
+or silently promote an exploratory result to a scientific assumption.
+
+Before finishing, check:
+
+- Does this affect subject independence or introduce leakage?
+- Does this change exchangeability or the inferential population?
+- Are train-derived transformations isolated from held-out subjects?
+- Are whole-subject blocks, strata, seeds and schemas preserved?
+- Which existing outputs become stale, and are regeneration requirements recorded?
+- Do methodology, implementation status, config and docs still agree?
+- Were relevant tests run, and are remaining limitations stated?
+- Did raw/historical data remain untouched, with no unauthorized analysis or commit?

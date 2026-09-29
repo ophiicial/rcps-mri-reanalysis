@@ -450,3 +450,13 @@ and its justification, are in `analysis_plan.md` §11.
   `participants.tsv` notes only that SP09 also took part in a different dataset (the propofol study, as "sub-S19").
 - The reasons for the protocol changes are not documented in the dataset. The MRI acquisition dates are not
   recorded, and their timing relative to PET is unknown.
+
+## 9. Documentation audit clarification — 2026-09-29
+
+Section 7's missing-native-provenance note describes the reference run's code. Current
+QC callers now use `rcps.provenance`; the old run record is unchanged. The stale N17
+eligibility column names still exist. The separate zero/curator investigation runs
+remain dirty/nocommit evidence; no clean rerun was found, so their results require
+clean-tree regeneration before reporting under AGENTS.md. This does not silently
+reverse the accepted spatial/zero decisions. See [results-map.md](results-map.md)
+and [audit-2026-09-29.md](audit-2026-09-29.md).

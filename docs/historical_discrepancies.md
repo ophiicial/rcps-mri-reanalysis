@@ -27,3 +27,16 @@ submitted text (`FinalTry/article.md`, whose content is repeated in the resubmis
   (SD 0.3964), ΔR² 0.1159 (SD 0.3151, range −0.352 to 0.899).
 - Command: `python3 Regression_model.py --model hgbr --tune 20 --cv-mode loso` (seed 42 default, no log target, no
   ROI filter).
+
+## Audit clarification — 2026-09-29
+
+The local README co-registration claim in row 5 was subsequently verified against the
+published text (`qc_decisions.md §1`); the “unverified” wording records the earlier
+audit stage. The supplied-grid spatial decision is now accepted.
+
+Frozen eCjX `fit_and_evaluate` fits `Pipeline(pre, RandomizedSearchCV(estimator))`.
+The scaler/encoder therefore see the inner-validation subjects before inner tuning,
+although the outer held-out subject is excluded. The numerical impact is UNKNOWN.
+Historical permutation **importance** is feature-column shuffling over test rows,
+not a subject-block permutation test of the primary prediction-improvement statistic.
+See [the repository audit](audit-2026-09-29.md) for bounded findings.

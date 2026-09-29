@@ -11,6 +11,11 @@ overlay images, and a QC log. Final decisions (pass/fail per subject × conditio
 
 ## 1. Dataset provenance
 
+Historical planning text below retains the original v1.0.0/N=17 checks. The accepted
+canonical release/roster superseding those checks is v1.0.1/N=18 in
+`configs/canonical_dataset.yaml` and `qc_decisions.md §§1–2,6`. Do not implement the
+old roster requirement. Audit of current checks: [audit-2026-09-29.md](audit-2026-09-29.md).
+
 Known facts (read-only audit, 2026-09-27):
 
 - Two local copies exist.

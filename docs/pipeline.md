@@ -1,0 +1,37 @@
+# Pipeline: implemented versus specified
+
+Read [analysis_plan.md](analysis_plan.md) for accepted methodology. A plan statement
+that code “asserts” something is a requirement until the implementation exists.
+There is no Makefile, package installer, real-data modeling CLI, or end-to-end runner.
+Use `PYTHONPATH=src` for module CLIs. Tests add `src` via `tests/conftest.py`.
+
+| Stage | Actual module / function | Input → transformation → output | QC and downstream use |
+|---|---|---|---|
+| Canonical verification | `rcps.qc.verify_canonical` | Configured dataset + expected manifest → hashes/roster/git checks → `file_checks.tsv`, `summary.json`, run record | CLI exits nonzero on failure; required before reported analysis |
+| Dataset inventory | `rcps.qc.run_qc`, `rcps.qc.dataset` | Metadata, derivatives, published release via `gh api` → inventory/hash/eligibility tables | `dataset/` supports cohort/provenance decisions |
+| Spatial QC | `rcps.qc.spatial.audit_subject`, `rcps.labels.resample_labels_nn` | T1w, supplied rCPS, aparc+aseg → scanner-RAS nearest-neighbour labels, voxel counts, alignment diagnostics | `geometry/`, `labels/`, `alignment/`; supports spatial decisions, not target extraction |
+| QC figures | `rcps.qc.overlays` called by `run_qc` | Anatomy, labels, rCPS → multiplanar/small-ROI/contact-sheet PNGs | Visual QC, not manuscript model figures |
+| Historical registration comparison | `rcps.qc.spatial.historical_subject` via `run_qc` | Read-only historical LTAs → displacement/NMI comparisons and overlays | No new registration applied to analysis targets |
+| Curator transform comparison | `rcps.qc.investigate_curator_reg` | Curator LTAs + images → `curator_transform_comparison.tsv` | Investigation only |
+| Zero investigation | `rcps.qc.investigate_zeros` | Supplied maps/anatomy/mean PET → scan and cross-condition zero diagnostics | No ROI means or predictive analysis |
+| Ridge primitives | `rcps.analysis.ridge` | Already transformed complete training panels → fitted ROI means/scales/slopes and predictions | Synthetic tests; no extraction or provenance gate |
+| Nested LOSO | `rcps.analysis.cv` | Aligned IDs, X, Y → `OuterFold` objects and `LOSOSummary` | Committed (`18471e9`; untracked at audit start); no persistence/CLI |
+| ROI rCPS means, MRI parsing, merge | **Not implemented here** | Specified maps + aparc stats → complete aligned panels | Must validate keys, all conditions, finite values and exclusions |
+| Permutation, sensitivities, correlations, final figures/tables | **Not implemented here** | Frozen plan + validated panels → future run artifacts | Do not invent output filenames or claim completed inference |
+
+## Historical chain (read-only migration evidence)
+
+`FinalTry/Register_rCPS.py` invokes bbregister and cubic resampling;
+`Extract_rCPS_statistics.py` invokes segstats and CSV conversion.
+`Extract_MRI_statistics.py` produces FreeSurfer measure tables;
+`legacy/5.Merge_MRI_txt.py` creates `{subject}_fs_combined.csv`.
+`Combine_MRI_rCPS.py` inner-joins on `StructName`, writes condition-specific files,
+`ALL_subjects_combined.csv`, and condition-averaged `ALL_subjects_combined_avg.csv`.
+`Regression_model.py` consumes the latter; `Correlation_Analysis.py` computes per-ROI
+correlations across subjects after aggregation. These files are **not runnable stages
+of the reanalysis** and some current historical versions do not interoperate.
+
+The manuscript-run and importance-run snapshots are distinct; exact filenames and
+hashes are in frozen `PET-MRI-BrainSynthesis/provenance/manuscript_2025_2026/code/SOURCES.tsv`.
+See [historical_discrepancies.md](historical_discrepancies.md) and
+[results-map.md](results-map.md). No historical code was migrated by this audit.

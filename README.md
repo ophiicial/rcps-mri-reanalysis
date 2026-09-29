@@ -15,11 +15,11 @@ The dataset is **not** stored in or committed to this repository, and its locati
 - **Canonical source:** OpenNeuro **ds004733 release 1.0.1** (primary cohort N = 18).
 - **Location:** copy `configs/paths.example.yaml` to `configs/paths.local.yaml` (git-ignored) and set `bids_root`.
 - **Verification:** a copy must match `configs/ds004733_v1.0.1_expected_sha256.tsv`. Check it with
-  `python -m rcps.qc.verify_canonical --require-git`. Instructions for creating a clean DataLad copy are in
+  `PYTHONPATH=src python -m rcps.qc.verify_canonical --require-git`. Instructions for creating a clean DataLad copy are in
   `docs/qc_decisions.md` §6.
 - Original data are treated as read-only.
 
-## Pipeline stages (planned; see `docs/analysis_plan.md`, `docs/qc_plan.md`)
+## Pipeline stages (implemented status: [pipeline map](docs/pipeline.md))
 
 1. Canonical dataset verification and source fingerprinting
 2. PET–MRI spatial correspondence QC (method decided by QC evidence)
@@ -33,6 +33,12 @@ The dataset is **not** stored in or committed to this repository, and its locati
 
 See also `docs/historical_discrepancies.md`.
 
+The frozen methodology is [analysis_plan.md](docs/analysis_plan.md) plus
+[configs/analysis.yaml](configs/analysis.yaml). Start with the [study design](docs/study-design.md),
+[dataset](docs/dataset.md), [data contracts](docs/data-contracts.md), [modeling](docs/modeling.md),
+[inference](docs/inference.md), and [results map](docs/results-map.md).
+The [2026-09-29 audit](docs/audit-2026-09-29.md) separates implementation gaps from accepted decisions.
+
 ## Reproducibility principles
 
 - The subject is the unit of analysis. All splitting, tuning, preprocessing, and inference respect subject grouping.
@@ -41,7 +47,12 @@ See also `docs/historical_discrepancies.md`.
 - No silent exclusions of subjects, ROIs, or features.
 - Environment: `conda env create -f environment.yml`.
 
-## Running (current state: dataset/QC tooling only; no modelling code yet)
+## Running (QC tools and synthetic-tested modeling primitives)
+
+Ridge primitives and nested LOSO operate on supplied arrays; no real-data model or
+permutation CLI exists. The LOSO module/tests were untracked at the documentation audit start
+and have since been committed (`18471e9`).
+QC commands below require explicit authorization for a new scientific run.
 
 ```bash
 conda activate rcps-mri-reanalysis
