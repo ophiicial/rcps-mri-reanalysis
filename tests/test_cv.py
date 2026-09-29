@@ -1,4 +1,6 @@
 """Phase 2 synthetic orchestration tests; no real outcomes or inference."""
+import dataclasses
+
 import numpy as np
 import pytest
 
@@ -348,3 +350,16 @@ def test_no_input_mutation(panel):
     np.testing.assert_array_equal(y, y_before)
     assert not folds[0].inner_losses.flags.writeable
     assert not folds[0].ridge_prediction.flags.writeable
+
+
+def test_missing_lambda_zero_rank_fails_explicitly(panel, monkeypatch):
+    """Contract guard: a lambda=0 fit without a recorded rank must not be stored as a rank."""
+    ids, x, y = panel
+
+    def rank_dropping_fit(x_train, y_train, lambda_value):
+        fit = fit_ridge(x_train, y_train, lambda_value)
+        return dataclasses.replace(fit, numerical_rank=None) if fit.lambda_value == 0 else fit
+
+    monkeypatch.setattr("rcps.analysis.cv.fit_ridge", rank_dropping_fit)
+    with pytest.raises(RuntimeError, match="numerical rank"):
+        nested_loso(ids[:3], x[:3], y[:3])

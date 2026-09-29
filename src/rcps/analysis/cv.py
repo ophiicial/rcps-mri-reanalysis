@@ -113,6 +113,8 @@ def nested_loso(subject_ids, x, y, *, lambdas=LAMBDA_GRID,
                 losses[row, column] = loss
                 omitted[row, column] = fit.preprocessing.omitted
                 if lam == 0:
+                    if fit.numerical_rank is None:
+                        raise RuntimeError("lambda=0 fit did not record its numerical rank")
                     ranks[row] = fit.numerical_rank
                 if on_inner_fit is not None:
                     on_inner_fit(InnerFitDiagnostic(
