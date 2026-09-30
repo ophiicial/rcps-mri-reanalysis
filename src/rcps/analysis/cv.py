@@ -103,6 +103,7 @@ def nested_loso(subject_ids, x, y, *, lambdas=LAMBDA_GRID,
         training = tuple(i for i in range(len(ids)) if i != outer)
         losses = np.empty((len(training), len(penalties)))
         omitted = np.empty((len(training), len(penalties), x.shape[2]), dtype=bool)
+        # Every row is written: select_lambda above rejects any grid without lambda=0.
         ranks = np.empty(len(training), dtype=np.int64)
         for row, validation in enumerate(training):
             inner_training = tuple(i for i in training if i != validation)

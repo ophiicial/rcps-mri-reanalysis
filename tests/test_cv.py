@@ -335,6 +335,29 @@ def test_invalid_candidates_fail_before_fitting(panel, lambdas, monkeypatch):
         primary_loso(*panel, lambdas=lambdas)
 
 
+def test_grid_without_lambda_zero_fails_before_fitting(panel, monkeypatch):
+    """inner_rank is part of the contract, so a grid without lambda=0 must never run."""
+    ids, x, y = panel
+    no_zero = tuple(lam for lam in LAMBDA_GRID if lam != 0)
+    assert len(no_zero) == len(LAMBDA_GRID) - 1
+
+    def forbidden(*args, **kwargs):
+        raise AssertionError("validation must precede fitting")
+    monkeypatch.setattr("rcps.analysis.cv.fit_ridge", forbidden)
+    with pytest.raises(ValueError, match="missing lambdas"):
+        nested_loso(ids[:3], x[:3], y[:3], lambdas=no_zero)
+
+
+def test_frozen_grid_unchanged_and_every_inner_rank_recorded(panel):
+    ids, x, y = panel
+    assert LAMBDA_GRID == (0.0, 0.01, 0.1, 1.0, 10.0, 100.0, np.inf)  # frozen plan §7
+    for f in nested_loso(ids[:4], x[:4], y[:4]):
+        assert f.lambdas == LAMBDA_GRID and 0.0 in f.lambdas
+        for row, validation in enumerate(f.inner_validation_indices):
+            train = [i for i in f.training_indices if i != validation]
+            assert f.inner_rank[row] == fit_ridge(x[train], y[train], 0.0).numerical_rank
+
+
 def test_summary_rejects_incomplete_or_duplicate_folds(evaluated):
     folds, _ = evaluated
     for invalid in [(), folds[:-1], (*folds, folds[0])]:
