@@ -42,7 +42,8 @@ Frozen generator identity: sibling `code/SOURCES.tsv`.
 | `loso_metrics_by_subject.csv`, `test_predictions_loso.csv` | JUEp no-ROI-ID run | Stale relative to reported comparison; do not mix |
 | Correlation outputs cited by manuscript | Supporting run files not recovered | Manuscript magnitude claim remains unverifiable |
 
-Model/target/features/CV changes require regenerating all affected predictions,
+**Engineering/provenance policy (not frozen methodology):**
+model/target/features/CV changes require regenerating all affected predictions,
 metrics, fitted-slope summaries, nulls and dependent figures/tables in a future run.
 Permutation-only changes require regenerating the null, p-value/Monte Carlo uncertainty
 and inferential text; observed predictions may be retained only if model/data provenance
