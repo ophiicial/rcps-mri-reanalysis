@@ -86,6 +86,51 @@ count against fixed anchors.
 - `n_evaluations + n_cache_hits = B`.
 - No outcome-only intermediate is cached yet.
 
+## Synthetic calibration study (`rcps.analysis.calibration`)
+
+`PYTHONPATH=src python -m rcps.analysis.calibration --preset {quick,full} [--workers N]`.
+The module takes no panel, path or X/y input, and it never imports `rcps.panel`. Every artifact
+carries the label `SYNTHETIC SIMULATION - NOT REAL-DATA INFERENCE`.
+
+**Design.**
+- `Scenario` holds `name`, `beta`, `kappa`, `n_simulations` and `permutation_b`. The study B is labelled
+  per scenario; the production B = 9999 is not used.
+- `SimulationDesign` holds the scenarios, `master_seed`, `alpha` (read from the frozen config) and
+  `calibration_confidence`.
+- The presets are fixed in `PRESET_SIZES`.
+
+**Seeds.**
+- `SeedSequence(master_seed, spawn_key=(scenario, simulation))` spawns separate data and permutation streams,
+  so every simulation gets a fresh dataset and its own assignment list.
+- `study_scheme` takes the gated frozen scheme and substitutes the study B and seed. It therefore fails the
+  production gate by construction.
+
+**Output directory** `outputs/<ts>_calibration-synthetic-<preset>_<sha>/`:
+
+| File | Content |
+|---|---|
+| `simulation_design.json` | Scenarios, seeds, alpha, generator constants, production B marked as not used |
+| `null_results.tsv`, `power_results.tsv` | One row per simulated dataset: `scenario, sim_index, beta, kappa, permutation_seed, assignments_sha256, t_obs, k, b, p_value, reject (p <= alpha), n_evaluations, n_cache_hits, frac_outer_lambda_inf, median_outer_lambda, runtime_s` |
+| `summary.json` | Per scenario: counts, rejection rate, SE, a two-sided 95% Clopper–Pearson interval across datasets, and T_obs/p summaries. For nulls, `calibration_check` (below). `calibration_overall` requires every null scenario to pass |
+| `logs/run_metadata.json` | Standard run record plus frozen tag/commit; `real_data: null`. Written with `status: started` before simulating, then rewritten with `status: completed` |
+
+`simulation_design.json` is also written before simulation starts, so an interrupted run keeps its
+intended design.
+
+**Null calibration criterion.** This is an engineering false-positive-control check, **not** frozen
+methodology, and it was fixed before any full study.
+- For each null scenario, the one-sided 97.5% Clopper–Pearson upper bound of the across-dataset rejection
+  probability must be ≤ 0.075. That value is an engineering tolerance, not the nominal α = 0.05.
+- With two null scenarios, Bonferroni gives at least 95% simultaneous coverage.
+- A failure is reported as "calibration not demonstrated / possible excessive rejection".
+- Rejection rates below α do not fail. `pronounced_conservatism` flags a two-sided interval lying entirely
+  below the attainable level `floor(α(B+1))/(B+1)`, for investigation.
+- `load_paths()` is used only for `outputs_root`, but it still requires `bids_root` to be configured.
+  No dataset file is read.
+
+The across-dataset interval is about calibration frequency. It is distinct from the within-dataset
+permutation Clopper–Pearson interval and from any population interval.
+
 ## Existing QC tables
 
 All are tab-separated; QC identifiers use lowercase names. Source is

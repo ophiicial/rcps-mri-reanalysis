@@ -26,9 +26,24 @@ Strata are read from config; a separate strata file would duplicate them.
 around `nested_loso`, exceedance counting, the p-value and Monte Carlo uncertainty. Its
 contract is in [data-contracts.md](data-contracts.md). It is tested on synthetic panels
 only. **No real-data T_obs, null distribution or p-value has been computed**, and no
-permutation runner or CLI connects it to the canonical panel. Synthetic null-calibration
-and planted-signal checks exist as implementation sanity tests. A calibration/power
-study meeting plan §15 item 13 has not been run.
+permutation runner or CLI connects it to the canonical panel.
+
+Two kinds of synthetic check exist:
+- Sanity tests in `tests/test_permutation.py`. These are single datasets and make no statistical claim.
+- A repeated-simulation study, `rcps.analysis.calibration`. Its null and planted-signal scenarios each use many
+  independent synthetic datasets, and every dataset goes through the unchanged nested permutation stack.
+
+The study uses the frozen strata but a study-specific B and seed, and it cannot consume real data. Its
+null criterion is an engineering false-positive-control check, not frozen methodology: a one-sided 97.5%
+upper bound on the rejection rate must be ≤ 0.075.
+
+In the confounded null, shared stratum effects make X and y dependent across datasets, given only the
+stratum label. What holds is that, given the realized stratum effects, the subject-specific components are
+independent and subjects are exchangeable within strata. The joint distribution is therefore invariant to
+within-stratum block permutation.
+
+Only the `quick` preset has been run, as a benchmark. The sizes and B of the `full` preset are provisional
+and must be fixed before execution. **Plan §15 item 13 is not yet satisfied.**
 Historical `sklearn.inspection.permutation_importance` shuffles feature columns over
 held-out ROI rows to describe fitted-model importance. It is not the accepted
 whole-subject test and produces no corresponding confirmatory p-value.
