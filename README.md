@@ -49,9 +49,8 @@ The [2026-09-29 audit](docs/audit-2026-09-29.md) separates implementation gaps f
 
 ## Running (QC tools and synthetic-tested modeling primitives)
 
-Ridge primitives and nested LOSO operate on supplied arrays; no real-data model or
-permutation CLI exists. The LOSO module/tests were untracked at the documentation audit start
-and have since been committed (`18471e9`).
+Ridge primitives (`rcps.analysis.ridge`) and nested LOSO (`rcps.analysis.cv`) operate on
+supplied arrays and are tested on synthetic data only; no real-data model or permutation CLI exists.
 QC commands below require explicit authorization for a new scientific run.
 
 ```bash

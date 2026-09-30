@@ -15,7 +15,7 @@ Use `PYTHONPATH=src` for module CLIs. Tests add `src` via `tests/conftest.py`.
 | Curator transform comparison | `rcps.qc.investigate_curator_reg` | Curator LTAs + images → `curator_transform_comparison.tsv` | Investigation only |
 | Zero investigation | `rcps.qc.investigate_zeros` | Supplied maps/anatomy/mean PET → scan and cross-condition zero diagnostics | No ROI means or predictive analysis |
 | Ridge primitives | `rcps.analysis.ridge` | Already transformed complete training panels → fitted ROI means/scales/slopes and predictions | Synthetic tests; no extraction or provenance gate |
-| Nested LOSO | `rcps.analysis.cv` | Aligned IDs, X, Y → `OuterFold` objects and `LOSOSummary` | Committed (`18471e9`; untracked at audit start); no persistence/CLI |
+| Nested LOSO | `rcps.analysis.cv` | Aligned IDs, X, Y → `OuterFold` objects and `LOSOSummary` | Synthetic tests; no persistence/CLI |
 | ROI rCPS means, MRI parsing, merge | **Not implemented here** | Specified maps + aparc stats → complete aligned panels | Must validate keys, all conditions, finite values and exclusions |
 | Permutation, sensitivities, correlations, final figures/tables | **Not implemented here** | Frozen plan + validated panels → future run artifacts | Do not invent output filenames or claim completed inference |
 

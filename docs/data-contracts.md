@@ -20,9 +20,30 @@ completeness, feature provenance, or whether PET data entered X. Upstream constr
 must verify all of those. `primary_loso` intentionally accepts synthetic IDs.
 `nested_loso` rejects duplicate IDs and masked panels; primitives do not accept IDs.
 
-`OuterFold` holds held-out subject/index, training/inner-validation indices, candidate
-lambdas, inner losses `[N-1,7]`, scores `[7]`, selected lambda, fresh fit,
-ROI baseline/ridge predictions `[68]`, two MSEs and `d_s`.
+`OuterFold` (`rcps.analysis.cv`, frozen dataclass; arrays are read-only). Shapes use
+N subjects, n_λ candidates (7 for the frozen grid) and F features; primary shapes in brackets.
+
+| Field | Type / shape | Meaning |
+|---|---|---|
+| `held_out_index`, `subject_id` | int, str | Outer held-out subject (caller order) |
+| `training_indices`, `inner_validation_indices` | int tuples, length N-1 | Outer-training subjects; each is an inner validation subject once |
+| `lambdas` | float tuple, n_λ | Candidates in caller order; must be the complete frozen grid |
+| `inner_losses` | float `[N-1, n_λ]` [17, 7] | Inner validation subject × candidate MSE |
+| `inner_scores` | float `[n_λ]` [7] | Equal-subject mean of `inner_losses`, paired with `lambdas` |
+| `inner_omitted` | bool `[N-1, n_λ, F]` [17, 7, 2] | Zero-variance predictor omission event per inner validation subject × candidate × feature |
+| `inner_rank` | int64 `[N-1]` [17] | Numerical rank of each inner λ=0 fit |
+| `selected_lambda` | float | Tie-rule selection from `inner_scores` |
+| `fit` | `RidgeFit` | Fresh outer-training fit; carries its own `preprocessing.omitted` mask and `numerical_rank` (λ=0 only, else `None`) |
+| `baseline_prediction`, `ridge_prediction` | float `[68]` | Held-out subject predictions, nmol/g/min |
+| `baseline_mse`, `ridge_mse`, `d_s` | float | Held-out MSEs and their difference |
+
+`inner_omitted` and `inner_rank` are provenance/diagnostic arrays required by the plan's
+recording rules. They are **not reusable fitted state**: no inner preprocessing, means or
+coefficients are retained, and any later evaluation (including a permutation replicate)
+must refit every inner and outer model normally. `InnerFitDiagnostic` and the
+`on_inner_fit` callback are test/diagnostic hooks only and are not part of the production
+data contract.
+
 `LOSOSummary` holds IDs, `d_s`, `t`, mean baseline/ridge MSE. MSE, D and T have units
 (nmol/g/min)². These are in-memory dataclasses, not a committed CSV schema.
 
