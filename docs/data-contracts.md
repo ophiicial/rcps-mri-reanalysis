@@ -1,8 +1,8 @@
 # Data contracts
 
-Names below distinguish existing artifacts from future requirements. No reanalysis
-merged dataframe or serialized prediction schema exists yet. Never assume the legacy
-capitalized columns are the schema of a new analysis table.
+Names below distinguish existing artifacts from future requirements. The canonical
+primary panel (below) is implemented; no serialized prediction schema exists yet. Never
+assume the legacy capitalized columns are the schema of a new analysis table.
 
 ## Existing model API
 
@@ -80,15 +80,79 @@ No rCPS mean is present in that QC table. Manifest tables use `relpath`, `bytes`
 `sha256`; the run source manifest adds `mtime_epoch`, and expected manifest adds
 `verified_against`. Verification adds `status` (OK/MISSING/MISMATCH).
 
-## Required future assembly contract
+## Canonical primary panel (`rcps.panel`)
 
-Before a real-data runner is accepted: one condition-level observation per subject ×
-condition × cortical ROI; one primary target per subject × ROI after exactly three
-condition means are averaged equally. Validate duplicate keys before pivoting or
-joining, exact roster/ROI/condition coverage, positive areas, finite/nonnegative
-voxel targets, and one-to-one MRI correspondence. Log before/after counts and every
-exclusion; never use an inner join or `dropna` as an undocumented filter.
-Final serialized column names and filenames are **NOT YET IMPLEMENTED**.
+Built by `PYTHONPATH=src python -m rcps.panel.build` from the verified v1.0.1 copy only.
+The CLI refuses to run unless `verify_canonical --require-git` passes. Every input must be
+listed in `configs/ds004733_v1.0.1_expected_sha256.tsv` and is hash-checked when read
+(`rcps.panel.sources.CanonicalSources`). Unlisted files, absolute or `..` manifest paths,
+files whose resolved path (symlinks followed) leaves `bids_root`, and ambiguous rCPS maps
+fail. git-annex symlinks into the dataset's own `.git/annex` stay inside and are accepted. The builder implements only the v3.0 primary choices:
+`rcps.panel.spec.require_frozen_primary_contract` fails if `analysis.yaml` differs from them.
+The panel layer never imports `rcps.analysis`.
+
+| Input (dataset-relative) | Used for |
+|---|---|
+| `derivatives/freesurfer/<sub>/stats/{lh,rh}.aparc.stats` | `ThickAvg`, `SurfArea`; header must match subject, hemisphere, `?h.aparc.annot`, white surface, units mm / mm^2 |
+| `derivatives/freesurfer/<sub>/mri/aparc+aseg.mgz` | Labels, NN-resampled onto each rCPS grid (`rcps.labels.resample_labels_nn`) |
+| `derivatives/rCPS/<sub>/ses-<condition>/*_stat-rCPS_statmap.{nii.gz,json}` | Supplied rCPS values; sidecar units must be `nmol/g/min` |
+
+Order: subjects follow `analysis.yaml:cohort.primary.subjects`, checked for equality with
+`canonical_dataset.yaml:expected_participants` and, as a set, with `participants.tsv`.
+Order is never discovered from files. ROIs follow `dk_cortical_labels()`; conditions follow
+`analysis.yaml:target.conditions`. All tables are rebuilt in this key order, so input row
+order has no effect. Duplicate, missing or extra keys fail; nothing is joined, dropped, filled or imputed.
+
+**`panel/condition_roi_values.tsv`**: 3,672 rows, key `subject_id, condition, roi`.
+
+| Column | Type / units | Meaning |
+|---|---|---|
+| `rcps_roi_mean` | float, nmol/g/min | Mean of all label voxels on the supplied grid, exact zeros included |
+| `n_voxels`, `n_zero` | int voxels | Voxels averaged and exact-zero voxels among them |
+| `zero_fraction` | float | `n_zero / n_voxels` |
+| `source_relpath` | string | rCPS map used |
+
+Before extraction the whole supplied 3-D map must be finite and nonnegative (any voxel, labelled or not);
+exact zeros are valid. A label with no voxel fails. Counts must be integers with
+0 ≤ `n_zero` ≤ `n_voxels`, `n_voxels` > 0, and `zero_fraction` exactly `n_zero / n_voxels`.
+
+**`panel/long_table.tsv`**: 1,224 rows, key `subject_id, roi`. Rows are observations
+nested in 18 subjects, not independent samples.
+
+| Column | Type / units | Meaning |
+|---|---|---|
+| `subject_id`, `roi` | string | Canonical IDs (`sub-SPxx`, `ctx-{lh,rh}-<name>`) |
+| `roi_index`, `roi_code`, `hemisphere` | int, int, `lh`/`rh` | Position on the ROI axis (0–67), aparc+aseg code |
+| `thickness_mm` | float, mm | `ThickAvg`, untransformed; must be finite (no sign threshold) |
+| `area_mm2` | float, mm² | `SurfArea`, raw (must be > 0) |
+| `ln_area` | float | Natural log of `area_mm2 / 1 mm²` (not log1p) |
+| `rcps_awake`, `rcps_sleep_deprived`, `rcps_asleep` | float, nmol/g/min | Condition ROI means |
+| `rcps_mean` | float, nmol/g/min | Primary target: the three condition means summed in config order, divided by 3 |
+
+Validation recomputes `ln_area` and `rcps_mean` and requires exact equality. Read these
+TSVs with `rcps.panel.assemble.read_table_tsv`, which parses floats round-trip.
+pandas' default parser can change the last bit.
+
+**`CanonicalPanel`** (`panel_from_long_table`): frozen dataclass with read-only arrays.
+
+| Field | Value |
+|---|---|
+| `subject_ids`, `roi_names`, `roi_codes` | Axis labels in canonical order |
+| `feature_names` | `("thickness", "ln_area")`, the config feature names |
+| `conditions`, `target_definition` | Condition order and a text statement of the target rule |
+| `x` | float `[18, 68, 2]`: thickness, ln_area |
+| `y` | float `[18, 68]`: `rcps_mean` |
+
+The panel is not standardized; `rcps.analysis.ridge` fits all centring and scaling per split.
+
+**`panel/panel_manifest.json`** is deterministic: no timestamps, machine paths or repository
+state. It records the spec version, the frozen tag `analysis-plan-v3.0`, its commit and the tagged
+`analysis_plan.md`/`analysis.yaml` hashes (the build fails if the working copies differ), the dataset identity and
+expected-manifest hash, subject and ROI rosters with their hashes, conditions, feature and
+target definitions, spatial handling, dimensions, every source relpath with its SHA-256,
+and content hashes of `x`, `y` (float64 little-endian) and both TSVs.
+`panel/validity_summary.json` holds data-validity counts and ranges only. The run record
+(`logs/run_metadata.json`) adds repository state, the verifier result and config hashes.
 
 ## Historical CSVs (not new inputs)
 

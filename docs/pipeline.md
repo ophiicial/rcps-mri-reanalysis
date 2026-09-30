@@ -3,6 +3,7 @@
 Read [analysis_plan.md](analysis_plan.md) for accepted methodology. A plan statement
 that code “asserts” something is a requirement until the implementation exists.
 There is no Makefile, package installer, real-data modeling CLI, or end-to-end runner.
+The panel builder constructs inputs only; nothing yet passes the real panel to `rcps.analysis`.
 Use `PYTHONPATH=src` for module CLIs. Tests add `src` via `tests/conftest.py`.
 
 | Stage | Actual module / function | Input → transformation → output | QC and downstream use |
@@ -16,7 +17,7 @@ Use `PYTHONPATH=src` for module CLIs. Tests add `src` via `tests/conftest.py`.
 | Zero investigation | `rcps.qc.investigate_zeros` | Supplied maps/anatomy/mean PET → scan and cross-condition zero diagnostics | No ROI means or predictive analysis |
 | Ridge primitives | `rcps.analysis.ridge` | Already transformed complete training panels → fitted ROI means/scales/slopes and predictions | Synthetic tests; no extraction or provenance gate |
 | Nested LOSO | `rcps.analysis.cv` | Aligned IDs, X, Y → `OuterFold` objects and `LOSOSummary` | Synthetic tests; no persistence/CLI |
-| ROI rCPS means, MRI parsing, merge | **Not implemented here** | Specified maps + aparc stats → complete aligned panels | Must validate keys, all conditions, finite values and exclusions |
+| Canonical primary panel | `rcps.panel` (`build` CLI; `spec`, `sources`, `mri`, `rcps_roi`, `assemble`) | Verified v1.0.1 aparc.stats, aparc+aseg, supplied rCPS maps → condition ROI means, long table, `CanonicalPanel` X `[18,68,2]` / y `[18,68]`, manifest | Data validity only; see [data-contracts.md](data-contracts.md). Not connected to CV/modeling |
 | Permutation, sensitivities, correlations, final figures/tables | **Not implemented here** | Frozen plan + validated panels → future run artifacts | Do not invent output filenames or claim completed inference |
 
 ## Historical chain (read-only migration evidence)
