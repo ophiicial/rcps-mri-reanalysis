@@ -22,9 +22,13 @@ Strata are read from config; a separate strata file would duplicate them.
 
 ## Current implementation
 
-There is **no reanalysis permutation sampler, evaluator, p-value routine, or null
-output**. Config tests verify the frozen constants and strata partition; they do not
-test operational shuffling, caching or calibration. The plan §15 tests remain required.
+`rcps.analysis.permutation` implements the sampler, the whole-subject block evaluator
+around `nested_loso`, exceedance counting, the p-value and Monte Carlo uncertainty. Its
+contract is in [data-contracts.md](data-contracts.md). It is tested on synthetic panels
+only. **No real-data T_obs, null distribution or p-value has been computed**, and no
+permutation runner or CLI connects it to the canonical panel. Synthetic null-calibration
+and planted-signal checks exist as implementation sanity tests. A calibration/power
+study meeting plan §15 item 13 has not been run.
 Historical `sklearn.inspection.permutation_importance` shuffles feature columns over
 held-out ROI rows to describe fitted-model importance. It is not the accepted
 whole-subject test and produces no corresponding confirmatory p-value.

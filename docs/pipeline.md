@@ -18,7 +18,8 @@ Use `PYTHONPATH=src` for module CLIs. Tests add `src` via `tests/conftest.py`.
 | Ridge primitives | `rcps.analysis.ridge` | Already transformed complete training panels → fitted ROI means/scales/slopes and predictions | Synthetic tests; no extraction or provenance gate |
 | Nested LOSO | `rcps.analysis.cv` | Aligned IDs, X, Y → `OuterFold` objects and `LOSOSummary` | Synthetic tests; no persistence/CLI |
 | Canonical primary panel | `rcps.panel` (`build` CLI; `spec`, `sources`, `mri`, `rcps_roi`, `assemble`) | Verified v1.0.1 aparc.stats, aparc+aseg, supplied rCPS maps → condition ROI means, long table, `CanonicalPanel` X `[18,68,2]` / y `[18,68]`, manifest | Data validity only; see [data-contracts.md](data-contracts.md). Not connected to CV/modeling |
-| Permutation, sensitivities, correlations, final figures/tables | **Not implemented here** | Frozen plan + validated panels → future run artifacts | Do not invent output filenames or claim completed inference |
+| Permutation engine | `rcps.analysis.permutation` | Frozen strata/seed/B → pre-generated donor assignments; permuted X → `nested_loso` → T_b, K, p, Monte Carlo uncertainty | Synthetic tests only; no real-data run, CLI or persisted artifact |
+| Real-data P1 runner, sensitivities, correlations, final figures/tables | **Not implemented here** | Frozen plan + validated panels → future run artifacts | Do not invent output filenames or claim completed inference |
 
 ## Historical chain (read-only migration evidence)
 

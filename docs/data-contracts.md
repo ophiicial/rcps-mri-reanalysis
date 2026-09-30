@@ -47,6 +47,45 @@ data contract.
 `LOSOSummary` holds IDs, `d_s`, `t`, mean baseline/ridge MSE. MSE, D and T have units
 (nmol/g/min)². These are in-memory dataclasses, not a committed CSV schema.
 
+## Permutation engine (`rcps.analysis.permutation`)
+
+In-memory API only; nothing is persisted yet. The scheme comes from `analysis.yaml`
+(`load_scheme()`). Config validation fails if the strata do not partition
+`cohort.primary.subjects`, if the group size differs, or if a frozen contract field
+(type, sampling, exceedance, p-value, PCG64) departs from the implemented rule.
+`load_scheme(config)` also accepts synthetic test schemes. Any real-data entry point must use
+`frozen_scheme()` / `require_frozen_scheme()`, which requires equality with the scheme built from
+the tagged `analysis-plan-v3.0` config (commit `80d951f`) and checks B, seed, group size and strata
+count against fixed anchors.
+
+| Object | Content |
+|---|---|
+| `PermutationScheme` | `canonical_subjects` (cohort order), `strata_names`, `strata` (listed order, subjects sorted within each), `stratum_index`, `group_size`, `b`, `seed` |
+| `PermutationAssignments` | Read-only `donors` int64 `[B, N]`, `numpy_version`, `sha256` |
+| `PermutationResult` | `t_obs`, read-only `null` `[B]` in replicate order, `k`, `b`, `p_value`, `monte_carlo`, `assignments_sha256`, `numpy_version`, `n_evaluations`, `n_cache_hits` |
+| `MonteCarloUncertainty` | `q_hat = K/B`, `mc_se`, `clopper_pearson_95`; permutation-sampling uncertainty only |
+
+**Assignment representation.** `donors[b, i] = j` means that, in replicate b, outcome subject
+`canonical_subjects[i]` receives the complete `[68, F]` MRI block of `canonical_subjects[j]`.
+- Donor arrays must already have an integer dtype. Floats (even `2.0`), bools, objects and masked arrays are rejected before any coercion.
+- Each row must be a bijection on 0..N-1 that never crosses a stratum. Rows are validated at construction.
+- The checksum is SHA-256 of the scheme provenance JSON (subjects, strata, group size, B, seed, bit generator), followed by the little-endian int64 donor bytes.
+- `panel_donor_positions` maps a row onto any panel subject order by ID, so a panel does not need canonical order.
+- The frozen sequence is regression-pinned in `tests/test_permutation.py`.
+
+**Evaluation.**
+- Masked X or y are rejected at the permutation boundary.
+- `permute_mri` returns `x[donors]` and verifies that every block is intact.
+- y, subject IDs, the ROI axis, folds and the λ grid are never changed.
+- `permuted_folds` runs `nested_loso` on the permuted X, which recomputes every MRI-dependent quantity. No observed-data fit, scale, omission or λ is passed in.
+- T_obs uses the identity row through the same path.
+- `run_permutation_test` refuses an assignment list whose length differs from the scheme's B.
+
+**Cache semantics.** `evaluate_null` evaluates replicates in index order.
+- With `cache=True`, an exact duplicate row reuses the stored T_b, but still occupies its own position in `null`. K and the null therefore keep the full multiplicity; identity draws are kept.
+- `n_evaluations + n_cache_hits = B`.
+- No outcome-only intermediate is cached yet.
+
 ## Existing QC tables
 
 All are tab-separated; QC identifiers use lowercase names. Source is
