@@ -9,10 +9,21 @@ The target is continuous measured cortical ROI-mean rCPS from OpenNeuro ds004733
 This is regression, not classification. Primary prediction asks whether thickness and
 ln(surface area) improve over training ROI means in held-out subjects.
 
-Authority: this manual + accepted methodology in `docs/`; paired machine-readable
-choices/facts in `configs/`; ECC memory is temporary session knowledge; source code is
-implementation, which may be under review. If docs/config disagree, flag the conflict
-and follow the frozen amendment procedure rather than choosing silently.
+## 0. Authority
+
+1. **Frozen scientific specification (sole authority):** tag `analysis-plan-v3.0` (`80d951f`), i.e.
+   `docs/analysis_plan.md` v3.0 plus `configs/analysis.yaml`. Read them from the tag
+   (`git show analysis-plan-v3.0:<path>`) when checking a change. They change only by a dated amendment
+   (`analysis_plan.md §14`).
+2. **This manual:** operating rules for agents and humans. It does not define methodology.
+3. **Other `docs/` pages:** summaries, decision records, QC records and engineering documentation. Where they
+   restate the plan, the plan wins. `configs/` other than `analysis.yaml` hold paired machine-readable facts.
+4. **Source code:** implementation, which may be under review. It never defines methodology.
+5. **ECC, Claude, Codex, plugins, skills, hooks and agent memory:** workflow aids only. They cannot override the
+   frozen specification or this manual, and they never authorize an analysis run.
+
+If any source disagrees with the frozen specification, or implementation appears to require a methodology
+change, **stop and flag it** for a dated amendment. Never resolve it by a silent code or documentation choice.
 
 ## 1. Scientific rules (non-negotiable)
 
@@ -42,9 +53,9 @@ and follow the frozen amendment procedure rather than choosing silently.
 ## 2. Data rules
 
 - Raw and original data are **read-only**. Never modify, move, or write into the dataset directory.
-- Do not commit data. The dataset location is set **outside the repo** (environment variable or an untracked
-  local config; see README). `data/` is git-ignored.
-- **No machine-specific absolute paths in Python.** Paths come from config, the CLI, or the environment.
+- Do not commit data. The dataset location is set **outside the repo**, as `bids_root` in the untracked
+  `configs/paths.local.yaml` (see README). There is no environment-variable override. `data/` is git-ignored.
+- **No machine-specific absolute paths in Python.** Paths come from config or the CLI.
 
 ## 3. Outputs and run records
 
@@ -68,7 +79,9 @@ and follow the frozen amendment procedure rather than choosing silently.
 
 - The historical repositories `FinalTry` and `PET-MRI-BrainSynthesis` are **read-only migration sources**. Their
   local locations are machine-specific; `FinalTry` is set as `historical_finaltry` in `configs/paths.local.yaml`.
-  Never modify, clean, commit to, or run analyses inside them.
+  They are **always read-only**: never modify, clean, commit to, or run analyses inside them.
+- **Do not read them unless the user explicitly asks** for a provenance comparison. Cite the frozen record and
+  the existing `docs/` findings instead.
 - The frozen provenance record is in `PET-MRI-BrainSynthesis/provenance/manuscript_2025_2026/` (checksums,
   code snapshots, environments). Cite it; do not regenerate it.
 - Code migrated from historical sources is reviewed and changed deliberately, never copied as authoritative.
@@ -90,56 +103,37 @@ and follow the frozen amendment procedure rather than choosing silently.
 
 ## 7. Read the right source first
 
-- `docs/study-design.md`: question, observational unit, target and scope.
-- `docs/dataset.md`: canonical release, identifiers, availability and acquisition provenance.
-- `docs/pipeline.md`: actual modules versus missing/planned stages.
-- `docs/data-contracts.md`: actual array/QC schemas and required future assembly checks.
-- `docs/modeling.md`: training-only preprocessing, nested LOSO and implementation status.
-- `docs/inference.md`: accepted null, exchangeability, permutation object and interpretation.
-- `docs/results-map.md`: generators, existing artifacts and invalidation dependencies.
-- `docs/analysis_plan.md` v3.0 + `configs/analysis.yaml`: frozen scientific specification.
-- `docs/qc_plan.md` + `docs/qc_decisions.md`: criteria, findings and dated QC decisions.
-- `docs/decisions/README.md`: accepted decision index and amendment policy.
-- `docs/audit-2026-09-29.md`: known gaps and unresolved discrepancies, not new policy.
+1. `docs/analysis_plan.md` v3.0 + `configs/analysis.yaml` (tag `analysis-plan-v3.0`): frozen specification.
+2. `docs/study-design.md`: question, observational unit, target and scope (summary).
+3. `docs/dataset.md`: canonical release, identifiers, availability and acquisition provenance.
+4. `docs/pipeline.md`: implemented modules versus missing/planned stages.
+5. `docs/data-contracts.md`: actual array/QC schemas and required future assembly checks.
+6. `docs/modeling.md`, `docs/inference.md`: implementation status and boundaries (summaries of plan §§7–12).
+7. `docs/results-map.md`: generators, existing artifacts and invalidation dependencies.
+8. `docs/qc_plan.md` + `docs/qc_decisions.md`: criteria, findings and dated QC decisions.
+9. `docs/decisions/README.md`: accepted decision index and amendment policy.
+10. `docs/audit-2026-09-29.md`: dated record of known gaps and unresolved discrepancies, not policy.
 
-## 8. Accepted modeling and inference invariants
+## 8. Invariants most easily broken in code
 
-- P1 has 18 subjects, 68 bilateral DK cortical ROIs, two MRI features.
-- Target averages Awake, SleepDeprived and Asleep equally; all three are required.
-- Include exact-zero voxels in primary ROI means; S7 is the specified sensitivity.
-- Keep supplied rCPS intensities on their grid; nearest-neighbour resample labels only.
-- Outer subject LOSO; inner subject LOSO entirely within outer training subjects.
-- Fit ROI means, feature scales and models separately in every inner/outer training split.
-- No global fitted preprocessing, imputation, feature selection or target-dependent filtering.
-- ROI baseline uses training subjects only; selection averages subject MSE equally.
-- Primary statistic is mean subject baseline MSE minus augmented MSE, not pooled R².
-- Whole-subject MRI blocks move together for the accepted permutation test.
-- Never independently shuffle ROI rows or feature columns for confirmatory inference.
-- Preserve ROI correspondence and fixed outcomes/folds in each global assignment.
-- Restrict assignments to `configs/analysis.yaml:permutation.strata` in its listed order.
-- Do not hard-code those subject lists in production code or create duplicate configs.
-- Regenerate all MRI-dependent fitted quantities and tuning for each assignment.
-- Preserve identity/duplicate multiplicity, seed and B exactly as frozen in config.
-- Inference is conditional on recruitment/acquisition structure, not scanner-independent biology.
-- P1 is the only confirmatory test; sensitivities and X1/X2 are descriptive.
-- See inference docs for donor IDs versus outcome IDs under the accepted global shuffle.
+The frozen plan is authoritative for every value; cite its sections instead of copying numbers.
 
-## 9. Pipeline map and current boundaries
+- Outer and inner cross-validation are subject-level; inner folds lie entirely within outer training
+  subjects (§8). Every fitted quantity is refitted inside each inner and outer training split (§§7–8).
+- No global fitted preprocessing, imputation, feature selection or target-dependent filtering (§§6–8).
+- The primary statistic is the equal-subject mean of per-subject MSE differences, not pooled R² (§9).
+- Permutations move whole-subject MRI blocks within the strata of `configs/analysis.yaml:permutation.strata`,
+  in their listed order; never shuffle ROI rows or feature columns (§11). Read strata from config; do not
+  hard-code subject lists or create duplicate configs.
+- Each permutation replicate regenerates all MRI-dependent fitting and tuning; seed, B, sampling and
+  identity/duplicate handling are exactly as frozen (§11.3–11.4).
+- P1 is the only confirmatory test; everything else is descriptive or exploratory (§16).
 
-| Module | Purpose |
-|---|---|
-| `rcps.qc.verify_canonical` | Hash/roster/git verification; writes a run record |
-| `rcps.qc.run_qc` | Dataset inventory, spatial checks, label counts, overlays |
-| `rcps.qc.investigate_zeros` | Zero-valued voxel diagnostics, not ROI-mean targets |
-| `rcps.qc.investigate_curator_reg` | Curator-transform comparison, not new registration |
-| `rcps.labels`, `rcps.fsgeom` | DK identities and coordinate/label utilities |
-| `rcps.analysis.ridge` | Fit/predict/score primitives on complete transformed panels |
-| `rcps.analysis.cv` | Nested LOSO; untracked at 2026-09-29 audit start, since committed (`18471e9`) |
-| `rcps.provenance`, `rcps.runrecord` | Provenance and non-reused output directories |
+## 9. Current boundaries
 
-There is no real-data model/permutation CLI, MRI parser, ROI-mean target assembler,
-correlation runner or final model-figure generator here yet. Do not invent paths or
-claim that a synthetic-tested primitive completes the scientific pipeline.
+See `docs/pipeline.md` for the module map. There is no real-data model/permutation CLI, MRI parser, ROI-mean
+target assembler, correlation runner or final model-figure generator yet. Do not invent paths or claim that a
+synthetic-tested primitive completes the scientific pipeline.
 
 ## 10. Practical coding and testing
 
@@ -153,7 +147,6 @@ claim that a synthetic-tested primitive completes the scientific pipeline.
 - Permutation work needs block/stratum integrity, identity/duplicate/cache multiplicity tests.
 - Config integrity tests are not a substitute for tests of operational permutations.
 - Meet `analysis_plan.md §15` before any real modeling run, including calibration/power checks.
-- Keep dependency additions deliberate; environment versions are not fully pinned.
 - Fail explicitly on missing subjects/ROIs and nonfinite features/targets; log exclusions.
 - Inspect git status first; preserve unrelated and pre-existing untracked user work.
 
@@ -162,7 +155,8 @@ claim that a synthetic-tested primitive completes the scientific pipeline.
 Methodological changes require a dated amendment under `analysis_plan.md §14`, the
 matching config change, a decision record where useful, and affected contract/results
 map updates. Do this before inspecting affected results. Never erase historical text
-or silently promote an exploratory result to a scientific assumption.
+or silently promote an exploratory result to a scientific assumption. Summary docs
+point to plan sections rather than copying frozen values.
 
 Before finishing, check:
 
