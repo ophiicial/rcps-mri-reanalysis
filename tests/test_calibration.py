@@ -151,6 +151,24 @@ def test_presets_are_prespecified():
         preset("other")
 
 
+def test_full_preset_is_pinned():
+    # Final full design; any change here must be a deliberate, reviewed decision.
+    full = preset("full")
+    assert [(s.name, s.beta, s.kappa, s.n_simulations, s.permutation_b) for s in full.scenarios] == [
+        ("null", 0.0, 0.0, 500, 39),
+        ("null_stratum_confounded", 0.0, 0.8, 500, 39),
+        ("weak", 0.25, 0.0, 200, 99),
+        ("moderate", 0.5, 0.0, 200, 99),
+        ("strong", 1.0, 0.0, 200, 99),
+    ]
+    assert cal.PRESET_SIZES["full"] == (500, 39, 200, 99)
+    assert full.name == "full" and full.master_seed == 20261001 and full.alpha == 0.05
+    assert full.calibration_confidence == 0.95
+    assert full.calibration_upper_confidence == 0.975 and full.calibration_upper_tolerance == 0.075
+    assert frozen_scheme().b == 9999 and frozen_scheme().seed == 20260929
+    assert all(s.permutation_b != frozen_scheme().b for s in full.scenarios)
+
+
 # ------------------------------------------------------------------ orchestration (tiny, real engine)
 @pytest.fixture(scope="module")
 def serial():

@@ -97,7 +97,9 @@ carries the label `SYNTHETIC SIMULATION - NOT REAL-DATA INFERENCE`.
   per scenario; the production B = 9999 is not used.
 - `SimulationDesign` holds the scenarios, `master_seed`, `alpha` (read from the frozen config) and
   `calibration_confidence`.
-- The presets are fixed in `PRESET_SIZES`.
+- The presets are fixed in `PRESET_SIZES`. `full`: `null` and `null_stratum_confounded` use 500 datasets
+  at B = 39; `weak`, `moderate` and `strong` use 200 datasets at B = 99. `quick` uses 2 datasets at B = 19
+  for every scenario.
 
 **Seeds.**
 - `SeedSequence(master_seed, spawn_key=(scenario, simulation))` spawns separate data and permutation streams,

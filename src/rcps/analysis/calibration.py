@@ -134,12 +134,12 @@ NULLS = (("null", 0.0), ("null_stratum_confounded", 0.8))
 # Study sizes: (n_null, B_null, n_power, B_power). A Monte Carlo permutation p-value is valid for any B,
 # so null calibration can use a small B (B + 1 divisible by 1/alpha, so the attainable level equals alpha).
 # Power estimated with a study B may differ from power with the production B = 9999; no direction is assumed.
-# `full` is PROVISIONAL: the final full-study sizes and B must be reviewed and fixed before execution.
-PRESET_SIZES = {"quick": (2, 19, 2, 19), "full": (500, 19, 200, 99)}
+# `full` is final (fixed before execution): nulls 500 datasets at B = 39, power 200 datasets at B = 99.
+PRESET_SIZES = {"quick": (2, 19, 2, 19), "full": (500, 39, 200, 99)}
 
 
 def preset(name: str) -> SimulationDesign:
-    """Prespecified designs. `full` is a proposal until its size and runtime are reviewed."""
+    """Prespecified designs: `quick` is a smoke benchmark, `full` is the final calibration/power study."""
     if name not in PRESET_SIZES:
         raise ValueError(f"unknown preset {name!r}")
     n_null, b_null, n_power, b_power = PRESET_SIZES[name]

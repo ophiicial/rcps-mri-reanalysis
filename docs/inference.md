@@ -42,8 +42,10 @@ stratum label. What holds is that, given the realized stratum effects, the subje
 independent and subjects are exchangeable within strata. The joint distribution is therefore invariant to
 within-stratum block permutation.
 
-Only the `quick` preset has been run, as a benchmark. The sizes and B of the `full` preset are provisional
-and must be fixed before execution. **Plan §15 item 13 is not yet satisfied.**
+The `full` preset is fixed: both null scenarios use 500 datasets at study B = 39, and the weak, moderate
+and strong planted-signal scenarios (β = 0.25, 0.5, 1.0) use 200 datasets at study B = 99. Only the `quick`
+preset has been run, as a benchmark; the `full` study has not been run. **Plan §15 item 13 is not yet
+satisfied.**
 Historical `sklearn.inspection.permutation_importance` shuffles feature columns over
 held-out ROI rows to describe fitted-model importance. It is not the accepted
 whole-subject test and produces no corresponding confirmatory p-value.
