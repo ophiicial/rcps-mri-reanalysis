@@ -178,9 +178,10 @@ def test_observed_and_permutation_outputs(production, monkeypatch):
     def cheap_null(assignments, evaluate, **kwargs):
         assert assignments.scheme == perm.frozen_scheme()
         assert assignments.donors.shape == (9999, 18)
+        assert kwargs["workers"] in (1, 2)
         return np.full(9999, summary["T_obs"]), 1, 9998
     monkeypatch.setattr(perm, "evaluate_null", cheap_null)
-    perm_dir = runner.run_primary("permutation", observed_run=observed_dir)
+    perm_dir = runner.run_primary("permutation", observed_run=observed_dir, workers=2)
     result = json.loads((perm_dir / "summary.json").read_text())
     assert result["T_obs_hex"] == summary["T_obs_hex"]
     assert result["K"] == result["B"] == 9999 and result["p"] == 1
@@ -190,12 +191,15 @@ def test_observed_and_permutation_outputs(production, monkeypatch):
     assert result["assignment_sha256"] == perm.assignments_sha256(perm.frozen_scheme(), donors)
     assert result["numpy_version"] == np.__version__
     assert result["scheme"]["seed"] == 20260929 and result["scheme"]["bit_generator"] == "PCG64"
+    assert result["execution"] == {"workers": 2} and "workers" not in result["scheme"]
+    perm_metadata = json.loads((perm_dir / "logs/run_metadata.json").read_text())
+    assert perm_metadata["execution"] == {"workers": 2}
     assert perm_dir != observed_dir
 
     # Also enforce agreement with the engine's own observed statistic after it returns.
     engine = runner.run_permutation_test
-    def inconsistent_engine(*args):
-        value = engine(*args)
+    def inconsistent_engine(*args, **kwargs):
+        value = engine(*args, **kwargs)
         return replace(value, t_obs=float(np.nextafter(value.t_obs, np.inf)))
     monkeypatch.setattr(runner, "run_permutation_test", inconsistent_engine)
     with pytest.raises(ValueError, match="exact agreement"):
@@ -240,3 +244,25 @@ def test_invalid_build_provenance(artifact, failure):
     path.write_text(json.dumps(record))
     with pytest.raises(ValueError):
         runner.load_panel_artifact(artifact)
+
+
+@pytest.mark.parametrize("argv", [["observed", "--workers", "1"],
+                                  ["permutation", "--observed-run", "unused", "--workers", "0"],
+                                  ["permutation", "--observed-run", "unused", "--workers", "-2"]])
+def test_workers_cli_rejects_invalid_execution_options(argv, monkeypatch):
+    monkeypatch.setattr(runner, "run_primary", lambda *a, **k: pytest.fail("analysis reached"))
+    with pytest.raises(SystemExit) as exc:
+        runner.main(argv)
+    assert exc.value.code == 2
+
+
+def test_workers_cli_forwarding(monkeypatch, tmp_path):
+    calls = []
+    def run(mode, **kwargs):
+        calls.append((mode, kwargs))
+        return tmp_path
+    monkeypatch.setattr(runner, "run_primary", run)
+    runner.main(["permutation", "--observed-run", str(tmp_path), "--workers", "3"])
+    assert calls[0][0] == "permutation" and calls[0][1]["workers"] == 3
+    runner.main(["observed"])
+    assert calls[1][1]["workers"] is None

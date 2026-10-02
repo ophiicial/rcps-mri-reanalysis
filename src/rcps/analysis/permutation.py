@@ -1,6 +1,7 @@
 """Stratified whole-subject MRI-block permutation inference (analysis_plan §11; analysis.yaml:permutation).
 
-Assignments are pre-generated from the frozen strata and seed, then evaluated serially in replicate order.
+Assignments are pre-generated from the frozen strata and seed; results retain replicate order even
+when evaluation is distributed across spawned worker processes.
 One replicate is one global outcome-subject -> MRI-donor mapping, applied to X before nested LOSO; y,
 subject IDs, ROI axis and folds never change. Every MRI-dependent quantity is refitted by `nested_loso`.
 
@@ -14,8 +15,10 @@ from __future__ import annotations
 import hashlib
 import json
 import math
+import multiprocessing
 import subprocess
 from collections.abc import Callable, Sequence
+from concurrent.futures import ProcessPoolExecutor
 from dataclasses import dataclass
 
 import numpy as np
@@ -312,14 +315,68 @@ def monte_carlo_uncertainty(k: int, b: int, confidence: float = 0.95) -> MonteCa
 
 Evaluator = Callable[[np.ndarray], float]
 
+_WORKER_EVALUATOR: Evaluator | None = None
 
-def evaluate_null(assignments: PermutationAssignments, evaluate: Evaluator, *, cache: bool = True
+
+def validate_workers(workers: int) -> None:
+    if isinstance(workers, bool) or not isinstance(workers, int) or workers < 1:
+        raise ValueError("workers must be a positive integer")
+
+
+def _initialize_worker(evaluate: Evaluator) -> None:
+    # Transfer the panel/evaluator once per process, not once per assignment.
+    global _WORKER_EVALUATOR
+    _WORKER_EVALUATOR = evaluate
+
+
+def _evaluate_worker(row: np.ndarray) -> float:
+    if _WORKER_EVALUATOR is None:
+        raise RuntimeError("permutation worker was not initialized")
+    return _WORKER_EVALUATOR(row)
+
+
+@dataclass(frozen=True)
+class _PanelEvaluator:
+    """Picklable evaluation context; contains no RNG or assignment-generation operation."""
+    subject_ids: tuple[str, ...]
+    x: np.ndarray
+    y: np.ndarray
+    scheme: PermutationScheme
+    lambdas: tuple
+
+    def __call__(self, row: np.ndarray) -> float:
+        return replicate_statistic(self.subject_ids, self.x, self.y,
+                                   panel_donor_positions(self.scheme, self.subject_ids, row),
+                                   lambdas=self.lambdas)
+
+
+def evaluate_null(assignments: PermutationAssignments, evaluate: Evaluator, *, cache: bool = True, workers: int = 1
                   ) -> tuple[np.ndarray, int, int]:
     """Evaluate every pre-generated replicate in index order.
 
     `evaluate` maps a canonical donor row to T_b. With `cache`, an exact duplicate row reuses the stored
     T_b, but still occupies its own entry, so multiplicity in the null and in K is unchanged.
+    Parallel evaluation uses spawn and requires a picklable evaluator. Deduplication happens only in
+    the parent, in first-occurrence order; ordered map results are expanded to the original rows.
+    Workers receive fixed rows, never an RNG. Exceptions propagate without retry or serial fallback.
     """
+    validate_workers(workers)
+    if workers > 1:
+        rows = []
+        positions = []
+        unique: dict[bytes, int] = {}
+        for row in assignments.donors:
+            key = row.tobytes()
+            if cache and key in unique:
+                positions.append(unique[key])
+            else:
+                positions.append(len(rows))
+                unique[key] = len(rows)
+                rows.append(row)
+        with ProcessPoolExecutor(max_workers=workers, mp_context=multiprocessing.get_context("spawn"),
+                                 initializer=_initialize_worker, initargs=(evaluate,)) as pool:
+            values = np.array(list(pool.map(_evaluate_worker, rows)), dtype=np.float64)
+        return _readonly(values[positions]), len(rows), len(positions) - len(rows)
     null = np.empty(assignments.donors.shape[0])
     memo: dict[bytes, float] = {}
     evaluations = hits = 0
@@ -337,19 +394,18 @@ def evaluate_null(assignments: PermutationAssignments, evaluate: Evaluator, *, c
 
 
 def run_permutation_test(subject_ids, x, y, assignments: PermutationAssignments, *, lambdas=LAMBDA_GRID,
-                         cache: bool = True) -> PermutationResult:
+                         cache: bool = True, workers: int = 1) -> PermutationResult:
     """T_obs (identity assignment, same orchestration), the null over all B replicates, K, p and MC uncertainty."""
+    validate_workers(workers)
     _reject_masked(x=x, y=y)
     scheme = assignments.scheme
     if assignments.donors.shape[0] != scheme.b:
         raise ValueError(f"assignment list has {assignments.donors.shape[0]} replicates; the scheme fixes B={scheme.b}")
 
-    def evaluate(row) -> float:
-        return replicate_statistic(subject_ids, x, y, panel_donor_positions(scheme, subject_ids, row),
-                                   lambdas=lambdas)
+    evaluate = _PanelEvaluator(tuple(subject_ids), x, y, scheme, tuple(lambdas))
 
     t_obs = evaluate(identity_assignment(scheme))
-    null, evaluations, hits = evaluate_null(assignments, evaluate, cache=cache)
+    null, evaluations, hits = evaluate_null(assignments, evaluate, cache=cache, workers=workers)
     b = len(null)
     k = exceedance_count(null, t_obs)
     return PermutationResult(t_obs, null, k, b, permutation_p_value(k, b), monte_carlo_uncertainty(k, b),

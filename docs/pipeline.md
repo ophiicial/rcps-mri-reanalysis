@@ -28,6 +28,11 @@ The primary CLI has two explicit modes: `python -m rcps.analysis.run_primary obs
 Both use `outputs/20260930-175425_panel_62eb246/panel/`; no raw panel rebuilding or scientific overrides
 are exposed. Permutation mode requires the same code commit and panel/spec identity as the completed
 observed run and exact `T_obs` agreement before the null loop and with the permutation result.
+Permutation mode accepts `--workers N` (positive integer, default 1); observed mode rejects this option.
+Assignments are generated once in the parent by the unchanged frozen PCG64 stream. Spawned processes
+only evaluate fixed rows. Exact duplicates are evaluated once, then expanded into their original positions
+with multiplicity preserved. Ordered results and cache counts match serial execution; worker failures
+propagate without retry. Worker count is execution metadata, not part of the frozen scheme or checksum.
 Each run saves `summary.json`, `outer_folds.tsv`, `fold_diagnostics.json`, and `logs/run_metadata.json`;
 permutation additionally saves `null_statistics.npy` and `assignments.npy`. Summary descriptives are the
 currently supported equal-subject MSE means and D_s; additional planned descriptives remain unimplemented.

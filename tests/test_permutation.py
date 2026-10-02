@@ -517,3 +517,86 @@ def test_fabricated_null_with_identity_rows_and_duplicates():
     np.testing.assert_array_equal(res.null, [res.t_obs, t_other, res.t_obs, t_other, t_other, res.t_obs])
     assert res.k == 3 + (3 if t_other >= res.t_obs else 0)
     assert res.p_value == (1 + res.k) / 7 and (res.n_evaluations, res.n_cache_hits) == (2, 4)
+
+
+# Spawn-safe evaluators must be module-level (local closures cannot be pickled).
+def _delayed_row_value(row):
+    import time
+    time.sleep(0.02 * (2 - int(row[0])))
+    return float(row[0])
+
+
+def _failing_row(row):
+    raise RuntimeError("synthetic worker failure")
+
+
+@pytest.mark.parametrize("cache", [True, False])
+def test_spawned_permutation_results_are_bit_identical(cache):
+    scheme = load_scheme(small_config(b=7))
+    ids = scheme.canonical_subjects
+    x, y = coded_panel(ids, seed=9, signal=0.3)
+    a, identity, c = [1, 2, 0, 3, 4, 5], list(range(6)), [2, 0, 1, 5, 3, 4]
+    assignments = PermutationAssignments.from_donors(scheme, [a, identity, a, c, c, identity, a])
+    before = assignments.donors.tobytes()
+    results = [run_permutation_test(ids, x, y, assignments, workers=w, cache=cache) for w in (1, 2, 3)]
+    serial = results[0]
+    assert len(np.unique(serial.null)) == 3  # nontrivial statistics, not an all-zero comparison
+    for result in results[1:]:
+        assert result.assignments_sha256 == serial.assignments_sha256
+        assert result.numpy_version == serial.numpy_version
+        assert result.t_obs.hex() == serial.t_obs.hex()
+        assert result.null.tobytes() == serial.null.tobytes()
+        assert result.k == serial.k and result.b == serial.b == 7
+        assert result.p_value.hex() == serial.p_value.hex()
+        assert result.monte_carlo == serial.monte_carlo
+        assert result.monte_carlo.q_hat.hex() == serial.monte_carlo.q_hat.hex()
+        assert result.monte_carlo.mc_se.hex() == serial.monte_carlo.mc_se.hex()
+        assert tuple(v.hex() for v in result.monte_carlo.clopper_pearson_95) == tuple(
+            v.hex() for v in serial.monte_carlo.clopper_pearson_95)
+        assert (result.n_evaluations, result.n_cache_hits) == ((3, 4) if cache else (7, 0))
+        assert not result.null.flags.writeable
+    assert assignments.donors.tobytes() == before
+    assert serial.null[0] == serial.null[2] == serial.null[6]
+    assert serial.null[1] == serial.null[5] == serial.t_obs
+    assert serial.null[3] == serial.null[4]
+
+
+def test_parallel_order_and_frozen_assignments_unchanged():
+    # Generating the frozen list is cheap and involves no model evaluation.
+    assignments = generate_assignments(frozen_scheme())
+    scheme_before = assignments.scheme.provenance()
+    assert assignments.sha256 == FROZEN_SHA256
+    # Evaluate the entire list cheaply, never fitting 9999 models.
+    expected = np.array([float(r[0]) for r in assignments.donors])
+    for workers in (1, 2, 3):
+        null, _, _ = perm.evaluate_null(assignments, _first_position, workers=workers)
+        assert null.tobytes() == expected.tobytes()
+        assert assignments.sha256 == FROZEN_SHA256
+        assert assignments.scheme.provenance() == scheme_before
+    assert "workers" not in scheme_before and not hasattr(assignments.scheme, "workers")
+    small = load_scheme(small_config(b=4))
+    rows = [[0, 1, 2, 3, 4, 5], [2, 0, 1, 3, 4, 5], [1, 2, 0, 3, 4, 5], [0, 1, 2, 3, 4, 5]]
+    null, evaluations, hits = perm.evaluate_null(
+        PermutationAssignments.from_donors(small, rows), _delayed_row_value, workers=3)
+    assert null.tolist() == [0, 2, 1, 0] and (evaluations, hits) == (3, 1)
+
+
+def _first_position(row):
+    # Fail if evaluation ever attempts to generate a new permutation in a spawned worker.
+    from unittest.mock import patch
+    with patch.object(np.random, "PCG64", side_effect=AssertionError("worker RNG")), \
+         patch.object(perm, "generate_assignments", side_effect=AssertionError("worker generation")):
+        return float(row[0])
+
+
+@pytest.mark.parametrize("workers", [0, -1, True, 1.5])
+def test_invalid_worker_count(workers):
+    assignments = generate_assignments(load_scheme(small_config(b=1)))
+    with pytest.raises(ValueError, match="positive integer"):
+        perm.evaluate_null(assignments, _first_position, workers=workers)
+
+
+def test_spawned_worker_failure_propagates():
+    assignments = generate_assignments(load_scheme(small_config(b=1)))
+    with pytest.raises(RuntimeError, match="synthetic worker failure"):
+        perm.evaluate_null(assignments, _failing_row, workers=2)

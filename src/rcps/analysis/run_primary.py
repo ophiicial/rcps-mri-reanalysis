@@ -25,7 +25,7 @@ from ..provenance import canonical_json_sha256
 from ..qc.verify_canonical import CANONICAL_CONFIG, load_canonical
 from ..runrecord import create_run_dir, sha256_file, write_run_metadata
 from .cv import primary_loso, summarize_loso
-from .permutation import frozen_scheme, generate_assignments, require_frozen_scheme, run_permutation_test
+from .permutation import frozen_scheme, generate_assignments, require_frozen_scheme, run_permutation_test, validate_workers
 
 PANEL_DIR = REPO_ROOT / "outputs" / "20260930-175425_panel_62eb246" / "panel"
 SCHEMA = "rcps-primary-run/1"
@@ -147,12 +147,17 @@ def load_observed_reference(run_dir: Path, identity: dict) -> tuple[float, dict]
                "metadata_sha256": sha256_file(metadata_path)}
 
 
-def run_primary(mode: str, *, observed_run: Path | None = None, argv: list[str] | None = None) -> Path:
+def run_primary(mode: str, *, observed_run: Path | None = None, argv: list[str] | None = None,
+                workers: int | None = None) -> Path:
     """Run only the fixed production panel and scheme. Scientific CLI overrides do not exist."""
     if mode not in ("observed", "permutation"):
         raise ValueError("mode must be observed or permutation")
     if (mode == "permutation") != (observed_run is not None):
         raise ValueError("--observed-run is required only for permutation mode")
+    if mode == "observed" and workers is not None:
+        raise ValueError("workers is only available for permutation mode")
+    worker_count = 1 if workers is None else workers
+    validate_workers(worker_count)
     commit = require_clean_tree()
     panel, manifest, source, inputs = load_panel_artifact(PANEL_DIR)
     frozen = frozen_spec_provenance()
@@ -178,13 +183,13 @@ def run_primary(mode: str, *, observed_run: Path | None = None, argv: list[str] 
     result = None
     if mode == "permutation":
         assignments = generate_assignments(scheme)
-        result = run_permutation_test(panel.subject_ids, panel.x, panel.y, assignments)
+        result = run_permutation_test(panel.subject_ids, panel.x, panel.y, assignments, workers=worker_count)
         require_same_t(observed.t, result.t_obs)
         summary.update({"K": result.k, "B": result.b, "p": result.p_value,
                         "monte_carlo": asdict(result.monte_carlo),
                         "assignment_sha256": result.assignments_sha256, "numpy_version": result.numpy_version,
                         "scheme": scheme.provenance(), "n_evaluations": result.n_evaluations,
-                        "n_cache_hits": result.n_cache_hits})
+                        "n_cache_hits": result.n_cache_hits, "execution": {"workers": worker_count}})
 
     # Never publish completed reportable results if code or inputs changed during computation.
     _equal(require_clean_tree(), commit, "code commit during analysis")
@@ -215,7 +220,8 @@ def run_primary(mode: str, *, observed_run: Path | None = None, argv: list[str] 
                        seeds={"permutation": scheme.seed} if mode == "permutation" else {},
                        inputs=inputs, provenance=provenance,
                        extra={"status": "complete", "mode": mode, "identity": identity,
-                              "artifact_sha256": artifacts, "observed_reference": reference})
+                              "artifact_sha256": artifacts, "observed_reference": reference,
+                              "execution": {"workers": worker_count} if mode == "permutation" else {}})
     return out
 
 
@@ -223,10 +229,13 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("mode", choices=("observed", "permutation"))
     parser.add_argument("--observed-run", type=Path, help="completed observed run; required for permutation")
+    parser.add_argument("--workers", type=int, help="permutation evaluation processes (default: 1)")
     args = parser.parse_args(argv)
+    if args.workers is not None and (args.mode != "permutation" or args.workers < 1):
+        parser.error("--workers requires permutation mode and a positive integer")
     if (args.mode == "permutation") != (args.observed_run is not None):
         parser.error("--observed-run is required only for permutation mode")
-    out = run_primary(args.mode, observed_run=args.observed_run,
+    out = run_primary(args.mode, observed_run=args.observed_run, workers=args.workers,
                       argv=sys.argv if argv is None else ["rcps.analysis.run_primary", *argv])
     print(out)
     return 0
