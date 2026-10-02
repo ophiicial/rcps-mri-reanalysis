@@ -2,8 +2,8 @@
 
 Read [analysis_plan.md](analysis_plan.md) for accepted methodology. A plan statement
 that code “asserts” something is a requirement until the implementation exists.
-There is no Makefile, package installer, real-data modeling CLI, or end-to-end runner.
-The panel builder constructs inputs only; nothing yet passes the real panel to `rcps.analysis`.
+There is no Makefile, package installer, or raw-data-to-inference end-to-end runner.
+The primary runner loads and validates the saved authoritative panel before passing it to `rcps.analysis`.
 Use `PYTHONPATH=src` for module CLIs. Tests add `src` via `tests/conftest.py`.
 
 | Stage | Actual module / function | Input → transformation → output | QC and downstream use |
@@ -17,10 +17,22 @@ Use `PYTHONPATH=src` for module CLIs. Tests add `src` via `tests/conftest.py`.
 | Zero investigation | `rcps.qc.investigate_zeros` | Supplied maps/anatomy/mean PET → scan and cross-condition zero diagnostics | No ROI means or predictive analysis |
 | Ridge primitives | `rcps.analysis.ridge` | Already transformed complete training panels → fitted ROI means/scales/slopes and predictions | Synthetic tests; no extraction or provenance gate |
 | Nested LOSO | `rcps.analysis.cv` | Aligned IDs, X, Y → `OuterFold` objects and `LOSOSummary` | Synthetic tests; no persistence/CLI |
-| Canonical primary panel | `rcps.panel` (`build` CLI; `spec`, `sources`, `mri`, `rcps_roi`, `assemble`) | Verified v1.0.1 aparc.stats, aparc+aseg, supplied rCPS maps → condition ROI means, long table, `CanonicalPanel` X `[18,68,2]` / y `[18,68]`, manifest | Data validity only; see [data-contracts.md](data-contracts.md). Not connected to CV/modeling |
+| Canonical primary panel | `rcps.panel` (`build` CLI; `spec`, `sources`, `mri`, `rcps_roi`, `assemble`) | Verified v1.0.1 aparc.stats, aparc+aseg, supplied rCPS maps → condition ROI means, long table, `CanonicalPanel` X `[18,68,2]` / y `[18,68]`, manifest | Data validity only; see [data-contracts.md](data-contracts.md). Saved artifact consumed by the primary runner |
 | Synthetic calibration/power study | `rcps.analysis.calibration` (CLI `--preset quick|full`) | Own synthetic X/y (frozen strata) → Phase-4 engine per dataset → rejection rates, intervals | Synthetic only; outputs `outputs/<ts>_calibration-synthetic-<preset>_<sha>/`; `full` preset fixed (nulls 500 × B 39; power 200 × B 99), not yet run |
-| Permutation engine | `rcps.analysis.permutation` | Frozen strata/seed/B → pre-generated donor assignments; permuted X → `nested_loso` → T_b, K, p, Monte Carlo uncertainty | Synthetic tests only; no real-data run, CLI or persisted artifact |
-| Real-data P1 runner, sensitivities, correlations, final figures/tables | **Not implemented here** | Frozen plan + validated panels → future run artifacts | Do not invent output filenames or claim completed inference |
+| Permutation engine | `rcps.analysis.permutation` | Frozen strata/seed/B → pre-generated donor assignments; permuted X → `nested_loso` → T_b, K, p, Monte Carlo uncertainty | Used by the primary runner; implementation does not imply completed real-data inference |
+| Real-data P1 runner | `rcps.analysis.run_primary` | Saved canonical panel → manifest/array-hash/provenance gates → observed LOSO or frozen permutation inference | Separate `primary-observed` / `primary-permutation` run directories; clean committed tree required |
+| Sensitivities, correlations, final figures/tables | **Not implemented here** | Frozen plan + validated panels → future run artifacts | Do not claim completed inference |
+
+The primary CLI has two explicit modes: `python -m rcps.analysis.run_primary observed`, then
+`python -m rcps.analysis.run_primary permutation --observed-run outputs/<observed-run>`.
+Both use `outputs/20260930-175425_panel_62eb246/panel/`; no raw panel rebuilding or scientific overrides
+are exposed. Permutation mode requires the same code commit and panel/spec identity as the completed
+observed run and exact `T_obs` agreement before the null loop and with the permutation result.
+Each run saves `summary.json`, `outer_folds.tsv`, `fold_diagnostics.json`, and `logs/run_metadata.json`;
+permutation additionally saves `null_statistics.npy` and `assignments.npy`. Summary descriptives are the
+currently supported equal-subject MSE means and D_s; additional planned descriptives remain unimplemented.
+Canonical-verifier provenance is inherited explicitly from the saved panel build, not rerun on raw data.
+Implementation and synthetic validation do not authorize execution; plan §15 remains a prerequisite.
 
 ## Historical chain (read-only migration evidence)
 
